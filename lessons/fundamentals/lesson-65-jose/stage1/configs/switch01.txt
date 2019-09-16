@@ -1,0 +1,116 @@
+
+!
+! Last configuration change at 10:53:37 CET Mon Sep 16 2019
+!
+version 12.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname satec
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$/HdB$uyuyumOqC2u26k7Y0OlFM.
+!
+username antidote password 7 01120810520F091B245C4F1A0A1218000F
+no aaa new-model
+clock timezone CET 1
+!
+ip cef
+no ip domain-lookup
+ip domain-name satec.es
+!
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ description Interfaz de gestion
+ ip address 10.254.254.1 255.255.255.0
+ duplex auto
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+ duplex auto
+!
+interface Ethernet1/0
+ no ip address
+ duplex auto
+!
+interface Ethernet1/1
+ no ip address
+ duplex auto
+!
+interface Ethernet1/2
+ no ip address
+ duplex auto
+!
+interface Ethernet1/3
+ no ip address
+ duplex auto
+!
+interface Ethernet2/0
+ no ip address
+ duplex auto
+!
+interface Ethernet2/1
+ no ip address
+ duplex auto
+!
+interface Ethernet2/2
+ no ip address
+ duplex auto
+!
+interface Ethernet2/3
+ no ip address
+ duplex auto
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+!
+no ip http server
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input all
+!
+end

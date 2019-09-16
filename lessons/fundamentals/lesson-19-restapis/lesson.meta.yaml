@@ -26,7 +26,7 @@ endpoints:
     type: ssh
 
 - name: vqfx1
-  image: antidotelabs/vqfx-snap1
+  image: josnix/vqfx
   configurationType: napalm-junos
   presentations:
   - name: cli
@@ -34,33 +34,33 @@ endpoints:
     type: ssh
   additionalPorts: [8080]
 
-- name: vqfx2
-  image: antidotelabs/vqfx-snap2
-  configurationType: napalm-junos
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-  additionalPorts: [8080]
+# - name: vqfx2
+#   image: antidotelabs/vqfx-snap2
+#   configurationType: napalm-junos
+#   presentations:
+#   - name: cli
+#     port: 22
+#     type: ssh
+#   additionalPorts: [8080]
 
-- name: vqfx3
-  image: antidotelabs/vqfx-snap3
-  configurationType: napalm-junos
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-  additionalPorts: [8080]
+# - name: vqfx3
+#   image: antidotelabs/vqfx-snap3
+#   configurationType: napalm-junos
+#   presentations:
+#   - name: cli
+#     port: 22
+#     type: ssh
+#   additionalPorts: [8080]
 
-connections:
-- a: vqfx1
-  b: vqfx2
-- a: vqfx2
-  b: vqfx3
-- a: vqfx3
-  b: vqfx1
-- a: vqfx1
-  b: linux1
+# connections:
+# - a: vqfx1
+#   b: vqfx2
+# - a: vqfx2
+#   b: vqfx3
+# - a: vqfx3
+#   b: vqfx1
+# - a: vqfx1
+#   b: linux1
 
 stages:
   - id: 1

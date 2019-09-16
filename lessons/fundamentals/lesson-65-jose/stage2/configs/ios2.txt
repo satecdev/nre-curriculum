@@ -1,0 +1,135 @@
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname 2fffafd88d36
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
+!
+no aaa new-model
+!
+clock timezone CET 1 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+ip auth-proxy max-login-attempts 5
+ip admission max-login-attempts 5
+!
+!
+!
+!
+!
+ip domain name satec.es
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+crypto pki token default removal timeout 0
+!
+!
+username antidote password 7 070E2F58470D161112020A1F173D24362C
+!         
+redundancy
+!
+!
+ip ssh port 2022 rotary 1
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ ip address 10.254.254.1 255.255.255.0
+!
+interface Ethernet0/1
+ no ip address
+ shutdown 
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ mac-address f001.794d.3859
+ no ip address
+!
+interface Ethernet1/1
+ mac-address f0c4.ecbf.c867
+ no ip address
+!
+interface Ethernet1/2
+ mac-address f00b.439a.101c
+ no ip address
+!
+interface Ethernet1/3
+ mac-address f0e7.6a50.4e18
+ no ip address
+!
+interface Ethernet2/0
+ description Otro configurado para la SEGUNDA leccion
+ mac-address f04b.6488.b68f
+ no ip address
+!
+interface Ethernet2/1
+ mac-address f05e.20c0.240c
+ no ip address
+!
+interface Ethernet2/2
+ mac-address f09c.7f01.8b32
+ no ip address
+!
+interface Ethernet2/3
+ mac-address f0c4.e5f0.0e77
+ no ip address
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input ssh
+!
+!
+end
