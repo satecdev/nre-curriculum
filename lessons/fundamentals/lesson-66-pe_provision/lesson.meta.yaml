@@ -1,6 +1,6 @@
 ---
-lessonName: Laboratorio de automatización de configuraciones multivendor
-lessonId: 40
+lessonName: Laboratorio de automatización de red
+lessonId: 66
 category: fundamentals
 lessonDiagram: https://raw.githubusercontent.com/nre-learning/nrelabs-curriculum/v0.3.2/lessons/lesson-12/lessondiagram.png
 tier: prod
@@ -22,7 +22,7 @@ endpoints:
     port: 22
     type: ssh
 
-- name: vqfx31
+- name: vqfx3
   image: antidotelabs/vqfx-snap1
   configurationType: napalm-junos
   presentations:
@@ -30,7 +30,7 @@ endpoints:
     port: 22
     type: ssh
 
-- name: ios11
+- name: ios1
   image: satecdev/vrouter
   configurationType: ansible
   presentations:
@@ -38,40 +38,8 @@ endpoints:
     port: 22
     type: ssh
 
-- name: ios21
+- name: ios2
   image: satecdev/vrouter
-  configurationType: ansible
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-
-- name: switch12
-  image: satecdev/vswitch
-  configurationType: ansible
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-
-- name: switch13
-  image: satecdev/vswitch
-  configurationType: ansible
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-
-- name: switch22
-  image: satecdev/vswitch
-  configurationType: ansible
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-
-- name: switch32
-  image: satecdev/vswitch
   configurationType: ansible
   presentations:
   - name: cli
@@ -87,38 +55,24 @@ endpoints:
     type: ssh
 
 connections:
-- a: ios11
-  b: ios21
-- a: ios11
-  b: vqfx31
-- a: ios21
-  b: vqfx31
-- a: ios11 
-  b: switch12
-- a: switch12
-  b: switch13
-- a: ios21
-  b: switch22
-- a: vqfx31
-  b: switch32
-- a: switch13
+- a: ios1
+  b: ios2
+- a: ios1
+  b: vqfx3
+- a: ios2
+  b: vqfx3
+- a: ios1
   b: vhost
-- a: switch13
+- a: ios1
   b: vhost
-- a: switch13
+- a: ios2
   b: vhost
-- a: switch22
+- a: ios2
   b: vhost
-- a: switch22
+- a: vqfx3
   b: vhost
-- a: switch22
+- a: vqfx3
   b: vhost
-- a: switch32
-  b: vhost
-- a: switch32
-  b: vhost
-#- a: switch32
-#  b: vhost
 
 
 
@@ -126,7 +80,7 @@ connections:
 
 stages:
   - id: 1
-    description: Obtención de información
+    description: Provision de PE
 
 
 

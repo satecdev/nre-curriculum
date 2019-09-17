@@ -7,7 +7,7 @@
   tasks:
   - name: Copy config file
     template:
-     src: ios2.txt
+     src: ios1.txt
      dest: /wd/new_config.txt
      mode: '0644'
   - name: Reload new config

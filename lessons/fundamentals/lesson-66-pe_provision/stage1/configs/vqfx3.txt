@@ -1,100 +1,114 @@
 <configuration operation="replace">
-        <version>15.1X53-D60.4</version>
-        <system>
-            <host-name>vqfx31</host-name>
-            <root-authentication>
-                <encrypted-password>$1$mlo32jo6$BOMVhmtORai2Kr24wRCCv1</encrypted-password>
-                <ssh-rsa>
-                    <name>ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key</name>
-                </ssh-rsa>
-            </root-authentication>
-            <login>
-                <user>
-                    <name>antidote</name>
-                    <class>super-user</class>
-                    <authentication>
-                        <encrypted-password>$1$iH4TNedH$3RKJbtDRO.N4Ua8B6LL/v/</encrypted-password>
-                    </authentication>
-                </user>
-                <password>
-                    <change-type>set-transitions</change-type>
-                    <minimum-changes>0</minimum-changes>
-                </password>
-            </login>
-            <services>
-                <ssh>
-                    <root-login>allow</root-login>
-                </ssh>
-                <netconf>
+            <version>15.1X53-D60.4</version>
+            <system>
+                <host-name>vqfx31</host-name>
+                <root-authentication>
+                    <encrypted-password>$1$mlo32jo6$BOMVhmtORai2Kr24wRCCv1</encrypted-password>
+                    <ssh-rsa>
+                        <name>ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key</name>
+                    </ssh-rsa>
+                </root-authentication>
+                <login>
+                    <user>
+                        <name>antidote</name>
+                        <uid>2001</uid>
+                        <class>super-user</class>
+                        <authentication>
+                            <encrypted-password>$1$iH4TNedH$3RKJbtDRO.N4Ua8B6LL/v/</encrypted-password>
+                        </authentication>
+                    </user>
+                    <password>
+                        <change-type>set-transitions</change-type>
+                        <minimum-changes>0</minimum-changes>
+                    </password>
+                </login>
+                <services>
                     <ssh>
+                        <root-login>allow</root-login>
                     </ssh>
-                    <rfc-compliant/>
-                </netconf>
-                <rest>
-                    <http>
-                        <port>8080</port>
-                    </http>
-                    <enable-explorer/>
-                </rest>
-            </services>
-            <syslog>
-                <user>
-                    <name>*</name>
-                    <contents>
-                        <name>any</name>
-                        <emergency/>
-                    </contents>
-                </user>
-                <file>
-                    <name>messages</name>
-                    <contents>
-                        <name>any</name>
-                        <notice/>
-                    </contents>
-                    <contents>
-                        <name>authorization</name>
-                        <info/>
-                    </contents>
-                </file>
-                <file>
-                    <name>interactive-commands</name>
-                    <contents>
+                    <netconf>
+                        <ssh>
+                        </ssh>
+                        <rfc-compliant/>
+                    </netconf>
+                    <rest>
+                        <http>
+                            <port>8080</port>
+                        </http>
+                        <enable-explorer/>
+                    </rest>
+                </services>
+                <syslog>
+                    <user>
+                        <name>*</name>
+                        <contents>
+                            <name>any</name>
+                            <emergency/>
+                        </contents>
+                    </user>
+                    <file>
+                        <name>messages</name>
+                        <contents>
+                            <name>any</name>
+                            <notice/>
+                        </contents>
+                        <contents>
+                            <name>authorization</name>
+                            <info/>
+                        </contents>
+                    </file>
+                    <file>
                         <name>interactive-commands</name>
-                        <any/>
-                    </contents>
-                </file>
-            </syslog>
-            <extensions>
-                <providers>
-                    <name>juniper</name>
-                    <license-type>
+                        <contents>
+                            <name>interactive-commands</name>
+                            <any/>
+                        </contents>
+                    </file>
+                </syslog>
+                <extensions>
+                    <providers>
                         <name>juniper</name>
-                        <deployment-scope>commercial</deployment-scope>
-                    </license-type>
-                </providers>
-                <providers>
-                    <name>chef</name>
-                    <license-type>
-                        <name>juniper</name>
-                        <deployment-scope>commercial</deployment-scope>
-                    </license-type>
-                </providers>
-            </extensions>
-        </system>
-        <interfaces operation="merge">
-            <interface>
-                <name>em0</name>
-                <unit>
-                    <name>0</name>
-                    <family>
-                        <inet>
-                            <address>
-                                <name>{{ mgmt_addr }}</name>
-                            </address>
-                        </inet>
-                    </family>
-                </unit>
-            </interface>
+                        <license-type>
+                            <name>juniper</name>
+                            <deployment-scope>commercial</deployment-scope>
+                        </license-type>
+                    </providers>
+                    <providers>
+                        <name>chef</name>
+                        <license-type>
+                            <name>juniper</name>
+                            <deployment-scope>commercial</deployment-scope>
+                        </license-type>
+                    </providers>
+                </extensions>
+            </system>
+            <interfaces>
+                <interface>
+                    <name>em0</name>
+                    <unit>
+                        <name>0</name>
+                        <family>
+                            <inet>
+                                <address>
+                                    <name>10.0.0.15/24</name>
+                                </address>
+                            </inet>
+                        </family>
+                    </unit>
+                </interface>
+                <interface>
+                    <name>em1</name>
+                    <unit>
+                        <name>0</name>
+                        <family>
+                            <inet>
+                                <address>
+                                    <name>169.254.0.2/24</name>
+                                </address>
+                            </inet>
+                        </family>
+                    </unit>
+                </interface>
                 <interface>
                     <name>em3</name>
                     <unit>
@@ -105,6 +119,8 @@
                                     <name>10.1.13.3/24</name>
                                 </address>
                             </inet>
+                            <mpls>
+                            </mpls>
                         </family>
                     </unit>
                 </interface>
@@ -118,49 +134,32 @@
                                     <name>10.1.23.3/24</name>
                                 </address>
                             </inet>
+                            <mpls>
+                            </mpls>
                         </family>
                     </unit>
                 </interface>
                 <interface>
                     <name>em5</name>
-                    <vlan-tagging/>
                     <unit>
-                        <name>10</name>
-                        <vlan-id>10</vlan-id>
+                        <name>0</name>
                         <family>
                             <inet>
                                 <address>
-                                    <name>10.10.3.1/24</name>
+                                    <name>20.1.3.1/24</name>
                                 </address>
                             </inet>
                         </family>
                     </unit>
                 </interface>
                 <interface>
-                    <name>em5</name>
-                    <vlan-tagging/>
+                    <name>em6</name>
                     <unit>
-                        <name>20</name>
-                        <vlan-id>20</vlan-id>
+                        <name>0</name>
                         <family>
                             <inet>
                                 <address>
-                                    <name>10.20.3.1/24</name>
-                                </address>
-                            </inet>
-                        </family>
-                    </unit>
-                </interface>
-                <interface>
-                    <name>em5</name>
-                    <vlan-tagging/>
-                    <unit>
-                        <name>30</name>
-                        <vlan-id>30</vlan-id>
-                        <family>
-                            <inet>
-                                <address>
-                                    <name>10.30.3.1/24</name>
+                                    <name>30.1.3.1/24</name>
                                 </address>
                             </inet>
                         </family>
@@ -173,22 +172,81 @@
                         <family>
                             <inet>
                                 <address>
-                                    <name>10.1.0.31/32</name>
+                                    <name>10.1.0.3/32</name>
+                                </address>
+                            </inet>
+                        </family>
+                    </unit>
+                    <unit>
+                        <name>1</name>
+                        <family>
+                            <inet>
+                                <address>
+                                    <name>30.0.0.3/32</name>
                                 </address>
                             </inet>
                         </family>
                     </unit>
                 </interface>
             </interfaces>
-
-        <forwarding-options>
-            <storm-control-profiles>
-                <name>default</name>
-                <all>
-                </all>
-            </storm-control-profiles>
-        </forwarding-options>
+            <forwarding-options>
+                <storm-control-profiles>
+                    <name>default</name>
+                    <all>
+                    </all>
+                </storm-control-profiles>
+            </forwarding-options>
+            <routing-options>
+                <generate>
+                    <route>
+                        <name>0.0.0.0/0</name>
+                        <policy>RO-GEN-DEFAULT</policy>
+                        <discard/>
+                    </route>
+                </generate>
+                <router-id>10.1.0.3</router-id>
+                <autonomous-system>
+                    <as-number>65001</as-number>
+                </autonomous-system>
+            </routing-options>
             <protocols>
+                <bgp>
+                    <group>
+                        <name>BGP-NBR</name>
+                        <local-address>10.1.0.3</local-address>
+                        <family>
+                            <inet>
+                                <unicast>
+                                </unicast>
+                            </inet>
+                            <inet-vpn>
+                                <unicast>
+                                </unicast>
+                            </inet-vpn>
+                        </family>
+                        <authentication-key>$9$MztXds2gJjkPxNb2</authentication-key>
+                        <export>NHS</export>
+                        <peer-as>65001</peer-as>
+                        <local-as>
+                            <as-number>65001</as-number>
+                        </local-as>
+                        <neighbor>
+                            <name>10.1.0.1</name>
+                        </neighbor>
+                        <neighbor>
+                            <name>10.1.0.2</name>
+                        </neighbor>
+                    </group>
+                    <group>
+                        <name>CLIENTES</name>
+                        <type>external</type>
+                        <export>BGP-DEFAULT-ONLY</export>
+                        <peer-as>65002</peer-as>
+                        <neighbor>
+                            <name>20.1.3.100</name>
+                        </neighbor>
+                    </group>
+                </bgp>
                 <ospf>
                     <area>
                         <name>0.0.0.0</name>
@@ -205,34 +263,122 @@
                             <name>em4.0</name>
                             <interface-type>p2p</interface-type>
                         </interface>
-                        <interface>
-                            <name>em5.10</name>
-                            <passive>
-                            </passive>
-                        </interface>
-                        <interface>
-                            <name>em5.20</name>
-                            <passive>
-                            </passive>
-                        </interface>   
-                        <interface>
-                            <name>em5.30</name>
-                            <passive>
-                            </passive>
-                        </interface>   
-                     </area>
+                    </area>
                 </ospf>
+                <ldp>
+                    <interface>
+                        <name>em3.0</name>
+                    </interface>
+                    <interface>
+                        <name>em4.0</name>
+                    </interface>
+                </ldp>
                 <igmp-snooping>
                     <vlan>
                         <name>default</name>
                     </vlan>
                 </igmp-snooping>
             </protocols>
-
-        <vlans>
-            <vlan>
-                <name>default</name>
-                <vlan-id>1</vlan-id>
-            </vlan>
-        </vlans>
-</configuration>
+            <policy-options>
+                <policy-statement>
+                    <name>BGP-DEFAULT-ONLY</name>
+                    <term>
+                        <name>DEFAULT</name>
+                        <from>
+                            <protocol>aggregate</protocol>
+                            <route-filter>
+                                <address>0.0.0.0/0</address>
+                                <exact/>
+                            </route-filter>
+                        </from>
+                        <then>
+                            <accept/>
+                        </then>
+                    </term>
+                    <term>
+                        <name>REJECT</name>
+                        <then>
+                            <reject/>
+                        </then>
+                    </term>
+                </policy-statement>
+                <policy-statement>
+                    <name>NHS</name>
+                    <term>
+                        <name>NHS</name>
+                        <then>
+                            <next-hop>
+                                <self/>
+                            </next-hop>
+                        </then>
+                    </term>
+                </policy-statement>
+                <policy-statement>
+                    <name>RO-GEN-DEFAULT</name>
+                    <term>
+                        <name>R1</name>
+                        <from>
+                            <route-filter>
+                                <address>10.1.0.1/32</address>
+                                <exact/>
+                            </route-filter>
+                        </from>
+                        <then>
+                            <accept/>
+                        </then>
+                    </term>
+                    <term>
+                        <name>R2</name>
+                        <from>
+                            <route-filter>
+                                <address>10.1.0.2/32</address>
+                                <exact/>
+                            </route-filter>
+                        </from>
+                        <then>
+                            <accept/>
+                        </then>
+                    </term>
+                    <term>
+                        <name>REJECT</name>
+                        <then>
+                            <reject/>
+                        </then>
+                    </term>
+                </policy-statement>
+            </policy-options>
+            <routing-instances>
+                <instance>
+                    <name>L3VPN</name>
+                    <instance-type>vrf</instance-type>
+                    <interface>
+                        <name>lo0.1</name>
+                    </interface>
+                    <route-distinguisher>
+                        <rd-type>10.1.0.3:1</rd-type>
+                    </route-distinguisher>
+                    <vrf-target>
+                        <community>target:65001:1</community>
+                    </vrf-target>
+                    <protocols>
+                        <bgp>
+                            <group>
+                                <name>CLIENTES</name>
+                                <type>external</type>
+                                <peer-as>65002</peer-as>
+                                <as-override/>
+                                <neighbor>
+                                    <name>30.1.3.100</name>
+                                </neighbor>
+                            </group>
+                        </bgp>
+                    </protocols>
+                </instance>
+            </routing-instances>
+            <vlans>
+                <vlan>
+                    <name>default</name>
+                    <vlan-id>1</vlan-id>
+                </vlan>
+            </vlans>
+    </configuration>
