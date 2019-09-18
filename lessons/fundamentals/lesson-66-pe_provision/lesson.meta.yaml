@@ -46,13 +46,24 @@ endpoints:
     port: 22
     type: ssh
 
-- name: vhost
+- name: ios4
   image: satecdev/vrouter
   configurationType: ansible
   presentations:
   - name: cli
     port: 22
     type: ssh
+  additionalPorts: [22]
+
+- name: vhost
+  image: satecdev/vrouter
+  configurationType: ansible
+#  presentations:
+#  - name: cli
+#    port: 22
+#    type: ssh
+  additionalPorts: [22]
+
 
 connections:
 - a: ios1
@@ -72,6 +83,12 @@ connections:
 - a: vqfx3
   b: vhost
 - a: vqfx3
+  b: vhost
+- a: ios4
+  b: ios2
+- a: ios4
+  b: vhost
+- a: ios4
   b: vhost
 
 
