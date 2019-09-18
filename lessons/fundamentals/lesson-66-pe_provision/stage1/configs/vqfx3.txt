@@ -110,21 +110,6 @@
                     </unit>
                 </interface>
                 <interface>
-                    <name>em3</name>
-                    <unit>
-                        <name>0</name>
-                        <family>
-                            <inet>
-                                <address>
-                                    <name>10.1.13.3/24</name>
-                                </address>
-                            </inet>
-                            <mpls>
-                            </mpls>
-                        </family>
-                    </unit>
-                </interface>
-                <interface>
                     <name>em4</name>
                     <unit>
                         <name>0</name>
@@ -232,9 +217,6 @@
                             <as-number>65001</as-number>
                         </local-as>
                         <neighbor>
-                            <name>10.1.0.1</name>
-                        </neighbor>
-                        <neighbor>
                             <name>10.1.0.4</name>
                         </neighbor>
                     </group>
@@ -278,10 +260,6 @@
                             <name>lo0.0</name>
                             <passive>
                             </passive>
-                        </interface>
-                        <interface>
-                            <name>em3.0</name>
-                            <interface-type>p2p</interface-type>
                         </interface>
                         <interface>
                             <name>em4.0</name>

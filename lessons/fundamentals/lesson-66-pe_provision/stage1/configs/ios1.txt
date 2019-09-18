@@ -51,27 +51,6 @@ ip ssh version 2
 !
 !
 !
-!
-!
-vrf definition L3VPN
- rd 10.1.0.1:1
- !
- address-family ipv4
-  route-target export 65001:1
-  route-target import 65001:1
- exit-address-family
-!
-
-!
-!
-!
-!
-!
-!
-interface Loopback0
- ip address 10.1.0.1 255.255.255.255
- ip ospf 1 area 0
-!
 interface Ethernet0/0
  ip address 10.254.254.1 255.255.255.0
 !
@@ -89,29 +68,17 @@ interface Ethernet0/3
 !
 interface Ethernet1/0
  mac-address f0e6.ef87.ab63
- ip address 10.1.12.1 255.255.255.0
- ip ospf network point-to-point
- ip ospf 1 area 0
- mpls ip
 !
 interface Ethernet1/1
  mac-address f0ca.e755.e0f8
- ip address 10.1.13.1 255.255.255.0
- ip ospf network point-to-point
- ip ospf 1 area 0
- mpls ip
 !
 interface Ethernet1/2
  mac-address f03b.0dda.3f8a
- ip address 20.1.1.1 255.255.255.0
 !
 interface Ethernet1/3
  mac-address f0cc.643a.c191
- vrf forwarding L3VPN
- ip address 30.1.1.1 255.255.255.0
 !
 interface Ethernet2/0
- description Uno configurado para la primera leccion
  mac-address f0e8.2ace.ccd7
  no ip address
 !
@@ -126,49 +93,6 @@ interface Ethernet2/2
 interface Ethernet2/3
  mac-address f080.f1b9.86bc
  no ip address
-!
-router ospf 1
- passive-interface default
- no passive-interface Ethernet1/0
- no passive-interface Ethernet1/1
-!
-router bgp 65001
- bgp router-id 10.1.0.1
- bgp log-neighbor-changes
- no bgp default ipv4-unicast
- neighbor CLIENTE peer-group
- neighbor CLIENTE remote-as 65002
- neighbor IBGP peer-group
- neighbor IBGP remote-as 65001
- neighbor IBGP password 7 0518071B244F
- neighbor IBGP update-source Loopback0
- neighbor 10.1.0.2 peer-group IBGP
- neighbor 10.1.0.3 peer-group IBGP
- neighbor 20.1.1.100 peer-group CLIENTE
-!
- address-family ipv4
-  neighbor CLIENTE send-community
-  neighbor CLIENTE default-originate
-  neighbor IBGP send-community
-  neighbor IBGP next-hop-self
-  neighbor 20.1.1.100 activate
-  neighbor 10.1.0.2 activate
-  neighbor 10.1.0.3 activate
- exit-address-family
- !
- address-family vpnv4
-  neighbor IBGP send-community both
-  neighbor 10.1.0.2 activate
-  neighbor 10.1.0.3 activate
- exit-address-family
- !
- address-family ipv4 vrf L3VPN
-  redistribute connected
-  neighbor 30.1.1.100 remote-as 65002
-  neighbor 30.1.1.100 activate
-  neighbor 30.1.1.100 as-override
- exit-address-family
- !
 !
 ip forward-protocol nd
 !

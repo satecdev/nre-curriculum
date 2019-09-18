@@ -88,10 +88,6 @@ interface Ethernet0/3
 !
 interface Ethernet1/0
  mac-address f086.d352.db95
- ip address 10.1.12.2 255.255.255.0
- ip ospf network point-to-point
- ip ospf 1 area 0
- mpls ip
 !
 interface Ethernet1/1
  mac-address f0e9.b6b6.ebd9
@@ -131,7 +127,6 @@ interface Ethernet2/3
 !
 router ospf 1
  passive-interface default
- no passive-interface Ethernet1/0
  no passive-interface Ethernet1/1
  no passive-interface Ethernet2/0
 !
@@ -149,7 +144,6 @@ router bgp 65001
  neighbor RR-CLUSTER remote-as 65001
  neighbor RR-CLUSTER password 7 0518071B244F
  neighbor RR-CLUSTER update-source Loopback0
- neighbor 10.1.0.1 peer-group RR-CLIENT
  neighbor 10.1.0.3 peer-group RR-CLUSTER
  neighbor 10.1.0.4 peer-group RR-CLIENT
  neighbor 20.1.2.100 peer-group CLIENTE
@@ -162,7 +156,6 @@ router bgp 65001
   neighbor RR-CLIENT route-reflector-client
   neighbor RR-CLUSTER send-community
   neighbor RR-CLUSTER next-hop-self
-  neighbor 10.1.0.1 activate
   neighbor 10.1.0.3 activate
   neighbor 10.1.0.4 activate
   neighbor 20.1.2.100 activate
