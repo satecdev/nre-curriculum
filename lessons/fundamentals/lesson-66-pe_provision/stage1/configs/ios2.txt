@@ -26,6 +26,7 @@ ip admission max-login-attempts 5
 !
 !
 ip domain name satec.es
+no ip domain-lookup
 ip cef
 no ipv6 cef
 !
@@ -137,30 +138,28 @@ router bgp 65001
  no bgp default ipv4-unicast
  neighbor CLIENTE peer-group
  neighbor CLIENTE remote-as 65002
- neighbor 10.1.0.1 remote-as 65001
- neighbor 10.1.0.1 password 7 0518071B244F
- neighbor 10.1.0.1 update-source Loopback0
- neighbor 10.1.0.3 remote-as 65001
- neighbor 10.1.0.3 password 7 0215054F0E05
- neighbor 10.1.0.3 update-source Loopback0
+ neighbor IBGP peer-group
+ neighbor IBGP remote-as 65001
+ neighbor IBGP password 7 0518071B244F
+ neighbor IBGP update-source Loopback0
+ neighbor 10.1.0.1 peer-group IBGP
+ neighbor 10.1.0.3 peer-group IBGP
  neighbor 20.1.2.100 peer-group CLIENTE
  !
  address-family ipv4
   neighbor CLIENTE send-community
+  neighbor CLIENTE default-originate
+  neighbor IBGP send-community
+  neighbor IBGP next-hop-self
   neighbor 20.1.2.100 activate
   neighbor 10.1.0.1 activate
-  neighbor 10.1.0.1 send-community
-  neighbor 10.1.0.1 next-hop-self
   neighbor 10.1.0.3 activate
-  neighbor 10.1.0.3 send-community
-  neighbor 10.1.0.3 next-hop-self
  exit-address-family
  !
  address-family vpnv4
+  neighbor IBGP send-community both
   neighbor 10.1.0.1 activate
-  neighbor 10.1.0.1 send-community both
   neighbor 10.1.0.3 activate
-  neighbor 10.1.0.3 send-community extended
  exit-address-family
  !
  address-family ipv4 vrf L3VPN
