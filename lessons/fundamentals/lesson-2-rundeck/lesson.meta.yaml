@@ -1,0 +1,41 @@
+---
+lessonName: Rundeck Lab
+lessonId: 69
+category: fundamentals
+tier: prod
+tags:
+- centos7
+- rundeck
+description: Rundeck Lab 
+slug: Linux
+
+endpoints:
+- name: rundeck1 
+  image: satecdev/rundeck-1
+  presentations:
+  - name: cli
+    port: 22
+    type: ssh
+  - name: web
+    port: 80
+    type: http
+
+- name: vqfx31
+  image: antidotelabs/vqfx-snap1
+  configurationType: napalm-junos
+  presentations:
+  - name: cli
+    port: 22
+    type: ssh
+
+- name: ios11
+  image: satecdev/vrouter
+  configurationType: ansible
+  presentations:
+  - name: cli
+    port: 22
+    type: ssh
+
+stages:
+  - id: 1
+    description: rundeck lab 1
