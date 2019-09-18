@@ -87,47 +87,51 @@ interface Ethernet0/3
  shutdown
 !
 interface Ethernet1/0
- mac-address f086.d352.db95
- shutdown
+ mac-address f041.fee6.1782
+ ip address 10.1.12.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ mpls ip
 !
 interface Ethernet1/1
- mac-address f0e9.b6b6.ebd9
+ mac-address f056.8692.6ec7
  ip address 10.1.23.2 255.255.255.0
  ip ospf network point-to-point
  ip ospf 1 area 0
  mpls ip
 !
 interface Ethernet1/2
- mac-address f0f0.b81a.5eed
+ mac-address f000.6de3.0fba
  ip address 20.1.2.1 255.255.255.0
 !
 interface Ethernet1/3
- mac-address f08c.5e1c.44b0
+ mac-address f01a.bce5.4cf1
  vrf forwarding L3VPN
  ip address 30.1.2.1 255.255.255.0
 !
 interface Ethernet2/0
  description R4
- mac-address 0000.0002.0020
+ mac-address f056.8605.e3b2
  ip address 10.1.24.2 255.255.255.0
  ip ospf network point-to-point
  ip ospf 1 area 0
  mpls ip
 !
 interface Ethernet2/1
- mac-address f06f.496a.fd11
+ mac-address f07e.c698.494d
  no ip address
 !
 interface Ethernet2/2
- mac-address f0b2.d38d.7434
+ mac-address f033.dce3.95e0
  no ip address
 !
 interface Ethernet2/3
- mac-address f09b.3d2a.eaf9
+ mac-address f0dc.ee2a.5983
  no ip address
 !
 router ospf 1
  passive-interface default
+ no passive-interface Ethernet1/0
  no passive-interface Ethernet1/1
  no passive-interface Ethernet2/0
 !
@@ -145,6 +149,7 @@ router bgp 65001
  neighbor RR-CLUSTER remote-as 65001
  neighbor RR-CLUSTER password 7 0518071B244F
  neighbor RR-CLUSTER update-source Loopback0
+ neighbor 10.1.0.1 peer-group RR-CLIENT
  neighbor 10.1.0.3 peer-group RR-CLUSTER
  neighbor 10.1.0.4 peer-group RR-CLIENT
  neighbor 20.1.2.100 peer-group CLIENTE
@@ -153,10 +158,11 @@ router bgp 65001
   neighbor CLIENTE send-community
   neighbor CLIENTE default-originate
   neighbor RR-CLIENT send-community
-  neighbor RR-CLIENT next-hop-self
   neighbor RR-CLIENT route-reflector-client
+  neighbor RR-CLIENT next-hop-self
   neighbor RR-CLUSTER send-community
   neighbor RR-CLUSTER next-hop-self
+  neighbor 10.1.0.1 activate
   neighbor 10.1.0.3 activate
   neighbor 10.1.0.4 activate
   neighbor 20.1.2.100 activate
