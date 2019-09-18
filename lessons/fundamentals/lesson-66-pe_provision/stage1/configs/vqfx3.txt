@@ -1,7 +1,7 @@
 <configuration operation="replace">
             <version>15.1X53-D60.4</version>
             <system>
-                <host-name>vqfx31</host-name>
+                <host-name>vqfx3</host-name>
                 <root-authentication>
                     <encrypted-password>$1$mlo32jo6$BOMVhmtORai2Kr24wRCCv1</encrypted-password>
                     <ssh-rsa>
@@ -212,7 +212,34 @@
             <protocols>
                 <bgp>
                     <group>
-                        <name>BGP-NBR</name>
+                        <name>RR-CLIENTS</name>
+                        <local-address>10.1.0.3</local-address>
+                        <family>
+                            <inet>
+                                <unicast>
+                                </unicast>
+                            </inet>
+                            <inet-vpn>
+                                <unicast>
+                                </unicast>
+                            </inet-vpn>
+                        </family>
+                        <cluster>10.1.0.3</cluster>
+                        <authentication-key>$9$MztXds2gJjkPxNb2</authentication-key>
+                        <export>NHS</export>
+                        <peer-as>65001</peer-as>
+                        <local-as>
+                            <as-number>65001</as-number>
+                        </local-as>
+                        <neighbor>
+                            <name>10.1.0.1</name>
+                        </neighbor>
+                        <neighbor>
+                            <name>10.1.0.4</name>
+                        </neighbor>
+                    </group>
+                    <group>
+                        <name>RR-CLUSTER</name>
                         <local-address>10.1.0.3</local-address>
                         <family>
                             <inet>
@@ -230,9 +257,6 @@
                         <local-as>
                             <as-number>65001</as-number>
                         </local-as>
-                        <neighbor>
-                            <name>10.1.0.1</name>
-                        </neighbor>
                         <neighbor>
                             <name>10.1.0.2</name>
                         </neighbor>
@@ -305,13 +329,34 @@
                 <policy-statement>
                     <name>NHS</name>
                     <term>
-                        <name>NHS</name>
+                        <name>EBGP</name>
+                        <from>
+                            <protocol>bgp</protocol>
+                            <neighbor>20.1.3.100</neighbor>
+                            <external>
+                            </external>
+                        </from>
                         <then>
                             <next-hop>
                                 <self/>
                             </next-hop>
                         </then>
                     </term>
+                    <term>
+                        <name>IBGP</name>
+                        <from>
+                            <protocol>bgp</protocol>
+                        </from>
+                        <then>
+                            <accept/>
+                        </then>
+                    </term>
+                    <term>
+                        <name>REJECT</name>
+                        <then>
+                            <reject/>
+                        </then>
+                    </term>             
                 </policy-statement>
                 <policy-statement>
                     <name>RO-GEN-DEFAULT</name>

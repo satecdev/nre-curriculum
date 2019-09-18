@@ -141,28 +141,40 @@ router bgp 65001
  no bgp default ipv4-unicast
  neighbor CLIENTE peer-group
  neighbor CLIENTE remote-as 65002
- neighbor IBGP peer-group
- neighbor IBGP remote-as 65001
- neighbor IBGP password 7 0518071B244F
- neighbor IBGP update-source Loopback0
- neighbor 10.1.0.1 peer-group IBGP
- neighbor 10.1.0.3 peer-group IBGP
+ neighbor RR-CLIENT peer-group
+ neighbor RR-CLIENT remote-as 65001
+ neighbor RR-CLIENT password 7 0518071B244F
+ neighbor RR-CLIENT update-source Loopback0
+ neighbor RR-CLUSTER peer-group
+ neighbor RR-CLUSTER remote-as 65001
+ neighbor RR-CLUSTER password 7 0518071B244F
+ neighbor RR-CLUSTER update-source Loopback0
+ neighbor 10.1.0.1 peer-group RR-CLIENT
+ neighbor 10.1.0.3 peer-group RR-CLUSTER
+ neighbor 10.1.0.4 peer-group RR-CLIENT
  neighbor 20.1.2.100 peer-group CLIENTE
  !
  address-family ipv4
   neighbor CLIENTE send-community
   neighbor CLIENTE default-originate
-  neighbor IBGP send-community
-  neighbor IBGP next-hop-self
+  neighbor RR-CLIENT send-community
+  neighbor RR-CLIENT next-hop-self
+  neighbor RR-CLIENT route-reflector-client
+  neighbor RR-CLUSTER send-community
+  neighbor RR-CLUSTER next-hop-self
   neighbor 10.1.0.1 activate
   neighbor 10.1.0.3 activate
+  neighbor 10.1.0.4 activate
   neighbor 20.1.2.100 activate
  exit-address-family
  !
  address-family vpnv4
-  neighbor IBGP send-community both
+  neighbor RR-CLIENT send-community both
+  neighbor RR-CLIENT route-reflector-client
+  neighbor RR-CLUSTER send-community both
   neighbor 10.1.0.1 activate
   neighbor 10.1.0.3 activate
+  neighbor 10.1.0.4 activate
  exit-address-family
  !
  address-family ipv4 vrf L3VPN

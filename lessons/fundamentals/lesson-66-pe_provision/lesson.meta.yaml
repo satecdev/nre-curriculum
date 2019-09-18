@@ -64,15 +64,15 @@ endpoints:
 #    type: ssh
   additionalPorts: [22]
 
-- name: rundeck
-  image: khornem/blabla
-  presentations:
-  - name: cli
-    port: 22
-    type: ssh
-  - name: web
-    port: 80
-    type: http
+#- name: rundeck
+#  image: khornem/blabla
+#  presentations:
+#  - name: cli
+#    port: 22
+#    type: ssh
+#  - name: web
+#    port: 80
+#    type: http
 
 connections:
 - a: ios1
