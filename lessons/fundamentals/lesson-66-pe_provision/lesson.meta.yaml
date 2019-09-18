@@ -107,6 +107,8 @@ connections:
 stages:
   - id: 1
     description: Provision de PE
+  - id: 2
+    description: Provisión de servicio L3VPN
 
 
 

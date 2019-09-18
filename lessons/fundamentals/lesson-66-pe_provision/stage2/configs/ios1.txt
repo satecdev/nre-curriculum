@@ -1,0 +1,123 @@
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname ios1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
+!
+no aaa new-model
+!
+clock timezone CET 1 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+ip auth-proxy max-login-attempts 5
+ip admission max-login-attempts 5
+!
+!
+!
+!
+!
+ip domain name satec.es
+no ip domain-lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+crypto pki token default removal timeout 0
+!
+!
+username antidote password 7 070E2F58470D161112020A1F173D24362C
+!
+redundancy
+!
+!
+ip ssh port 2022 rotary 1
+ip ssh version 2
+! 
+!
+!
+!
+interface Ethernet0/0
+ ip address 10.254.254.1 255.255.255.0
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ mac-address f0e6.ef87.ab63
+!
+interface Ethernet1/1
+ mac-address f0ca.e755.e0f8
+!
+interface Ethernet1/2
+ mac-address f03b.0dda.3f8a
+!
+interface Ethernet1/3
+ mac-address f0cc.643a.c191
+!
+interface Ethernet2/0
+ mac-address f0e8.2ace.ccd7
+ no ip address
+!
+interface Ethernet2/1
+ mac-address f03b.ec9b.994d
+ no ip address
+!
+interface Ethernet2/2
+ mac-address f017.fb98.5f7b
+ no ip address
+!
+interface Ethernet2/3
+ mac-address f080.f1b9.86bc
+ no ip address
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input ssh
+!
+!
+end

@@ -1,0 +1,283 @@
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname vhost
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition SITE1-INET
+ rd 1:1
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE1-VPN
+ rd 1:2
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE2-INET
+ rd 2:1
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE2-VPN
+ rd 2:2
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE3-INET
+ rd 3:1
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE3-VPN
+ rd 3:2
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE4-INET
+ rd 4:1
+ !
+ address-family ipv4
+ exit-address-family
+!
+vrf definition SITE4-VPN
+ rd 4:2
+ !
+ address-family ipv4
+ exit-address-family
+!
+enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
+!
+no aaa new-model
+!
+clock timezone CET 1 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+ip auth-proxy max-login-attempts 5
+ip admission max-login-attempts 5
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name satec.es
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+crypto pki token default removal timeout 0
+!
+!
+username antidote password 7 070E2F58470D161112020A1F173D24362C
+!
+redundancy
+!
+!
+ip ssh port 2022 rotary 1
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ vrf forwarding SITE1-VPN
+ ip address 30.0.0.1 255.255.255.255
+!
+interface Loopback1
+ vrf forwarding SITE1-INET
+ ip address 20.0.0.1 255.255.255.255
+!
+interface Loopback2
+ vrf forwarding SITE2-VPN
+ ip address 30.0.0.2 255.255.255.255
+!
+interface Loopback3
+ vrf forwarding SITE2-INET
+ ip address 20.0.0.2 255.255.255.255
+!
+interface Loopback4
+ vrf forwarding SITE3-VPN
+ ip address 30.0.0.3 255.255.255.255
+!
+interface Loopback5
+ vrf forwarding SITE3-INET
+ ip address 20.0.0.3 255.255.255.255
+!
+interface Loopback6
+ vrf forwarding SITE4-VPN
+ ip address 30.0.0.4 255.255.255.255
+!
+interface Loopback7
+ vrf forwarding SITE4-INET
+ ip address 20.0.0.4 255.255.255.255
+!
+interface Ethernet0/0
+ ip address 10.254.254.1 255.255.255.0
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ mac-address f062.aee9.f806
+ vrf forwarding SITE1-VPN
+ ip address 30.1.1.100 255.255.255.0
+!
+interface Ethernet1/1
+ mac-address f01b.1c92.0dc0
+ vrf forwarding SITE1-INET
+ ip address 20.1.1.100 255.255.255.0
+!
+interface Ethernet1/2
+ mac-address f0d5.5d53.2381
+ vrf forwarding SITE2-VPN
+ ip address 30.1.2.100 255.255.255.0
+!
+interface Ethernet1/3
+ mac-address f0ce.1a9b.dd95
+ vrf forwarding SITE2-INET
+ ip address 20.1.2.100 255.255.255.0
+!
+interface Ethernet2/0
+ mac-address f0c7.5b1e.3804
+ vrf forwarding SITE3-VPN
+ ip address 30.1.3.100 255.255.255.0
+!
+interface Ethernet2/1
+ mac-address f020.29b4.c2c8
+ vrf forwarding SITE3-INET
+ ip address 20.1.3.100 255.255.255.0
+!
+interface Ethernet2/2
+ mac-address f052.99b0.f635
+ vrf forwarding SITE4-VPN
+ ip address 30.1.4.100 255.255.255.0
+!
+interface Ethernet2/3
+ mac-address f07c.abb5.6b58
+ vrf forwarding SITE4-INET
+ ip address 20.1.4.100 255.255.255.0
+!
+router bgp 65002
+ no bgp log-neighbor-changes
+ no bgp default ipv4-unicast
+ neighbor 20.1.1.1 remote-as 65001
+ neighbor 20.1.2.1 remote-as 65001
+ neighbor 20.1.3.1 remote-as 65001
+ neighbor 30.1.2.1 remote-as 65001
+ neighbor 30.1.3.1 remote-as 65001
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE1-INET
+  redistribute connected
+  neighbor 20.1.1.1 remote-as 65001
+  neighbor 20.1.1.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE1-VPN
+  redistribute connected
+  neighbor 30.1.1.1 remote-as 65001
+  neighbor 30.1.1.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE2-INET
+  redistribute connected
+  neighbor 20.1.2.1 remote-as 65001
+  neighbor 20.1.2.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE2-VPN
+  redistribute connected
+  neighbor 30.1.2.1 remote-as 65001
+  neighbor 30.1.2.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE3-INET
+  redistribute connected
+  neighbor 20.1.3.1 remote-as 65001
+  neighbor 20.1.3.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE3-VPN
+  redistribute connected
+  neighbor 30.1.3.1 remote-as 65001
+  neighbor 30.1.3.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE4-INET
+  redistribute connected
+  neighbor 20.1.4.1 remote-as 65001
+  neighbor 20.1.4.1 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf SITE4-VPN
+  redistribute connected
+  neighbor 30.1.4.1 remote-as 65001
+  neighbor 30.1.4.1 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input ssh
+!
+!
+end

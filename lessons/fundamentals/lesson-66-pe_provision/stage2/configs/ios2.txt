@@ -1,0 +1,207 @@
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname ios2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition L3VPN
+ rd 10.1.0.2:1
+ !
+ address-family ipv4
+  route-target export 65001:1
+  route-target import 65001:1
+ exit-address-family
+!
+enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
+!
+no aaa new-model
+!
+clock timezone CET 1 0
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+ip auth-proxy max-login-attempts 5
+ip admission max-login-attempts 5
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name satec.es
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+crypto pki token default removal timeout 0
+!
+!
+username antidote password 7 070E2F58470D161112020A1F173D24362C
+!
+redundancy
+!
+!
+ip ssh port 2022 rotary 1
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.1.0.2 255.255.255.255
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ ip address 10.254.254.1 255.255.255.0
+!
+interface Ethernet0/1
+ no ip address
+ shutdown
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+interface Ethernet1/0
+ mac-address f086.d352.db95
+ shutdown
+!
+interface Ethernet1/1
+ mac-address f0e9.b6b6.ebd9
+ ip address 10.1.23.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ mpls ip
+!
+interface Ethernet1/2
+ mac-address f0f0.b81a.5eed
+ ip address 20.1.2.1 255.255.255.0
+!
+interface Ethernet1/3
+ mac-address f08c.5e1c.44b0
+ vrf forwarding L3VPN
+ ip address 30.1.2.1 255.255.255.0
+!
+interface Ethernet2/0
+ description R4
+ mac-address 0000.0002.0020
+ ip address 10.1.24.2 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ mpls ip
+!
+interface Ethernet2/1
+ mac-address f06f.496a.fd11
+ no ip address
+!
+interface Ethernet2/2
+ mac-address f0b2.d38d.7434
+ no ip address
+!
+interface Ethernet2/3
+ mac-address f09b.3d2a.eaf9
+ no ip address
+!
+router ospf 1
+ passive-interface default
+ no passive-interface Ethernet1/1
+ no passive-interface Ethernet2/0
+!
+router bgp 65001
+ bgp router-id 10.1.0.2
+ bgp log-neighbor-changes
+ no bgp default ipv4-unicast
+ neighbor CLIENTE peer-group
+ neighbor CLIENTE remote-as 65002
+ neighbor RR-CLIENT peer-group
+ neighbor RR-CLIENT remote-as 65001
+ neighbor RR-CLIENT password 7 0518071B244F
+ neighbor RR-CLIENT update-source Loopback0
+ neighbor RR-CLUSTER peer-group
+ neighbor RR-CLUSTER remote-as 65001
+ neighbor RR-CLUSTER password 7 0518071B244F
+ neighbor RR-CLUSTER update-source Loopback0
+ neighbor 10.1.0.3 peer-group RR-CLUSTER
+ neighbor 10.1.0.4 peer-group RR-CLIENT
+ neighbor 20.1.2.100 peer-group CLIENTE
+ !
+ address-family ipv4
+  neighbor CLIENTE send-community
+  neighbor CLIENTE default-originate
+  neighbor RR-CLIENT send-community
+  neighbor RR-CLIENT next-hop-self
+  neighbor RR-CLIENT route-reflector-client
+  neighbor RR-CLUSTER send-community
+  neighbor RR-CLUSTER next-hop-self
+  neighbor 10.1.0.3 activate
+  neighbor 10.1.0.4 activate
+  neighbor 20.1.2.100 activate
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor RR-CLIENT send-community both
+  neighbor RR-CLIENT route-reflector-client
+  neighbor RR-CLUSTER send-community both
+  neighbor 10.1.0.1 activate
+  neighbor 10.1.0.3 activate
+  neighbor 10.1.0.4 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf L3VPN
+  redistribute connected
+  neighbor 30.1.2.100 remote-as 65002
+  neighbor 30.1.2.100 activate
+  neighbor 30.1.2.100 as-override
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login local
+ transport input ssh
+!
+!
+end
