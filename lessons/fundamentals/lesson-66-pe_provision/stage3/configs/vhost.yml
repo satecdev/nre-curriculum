@@ -1,0 +1,17 @@
+- name: Carga configuraciones
+  hosts: all
+  vars:
+    ansible_user: antidote
+    ansible_password: antidotepassword
+  gather_facts: no
+  tasks:
+  - name: Copy config file
+    template:
+     src: vhost.txt
+     dest: /wd/new_config.txt
+     mode: '0644'
+  - name: Reload new config
+    command: /replace_config.py
+  - name: Adjust hostname & macs
+    command: /setup_config.py
+    
