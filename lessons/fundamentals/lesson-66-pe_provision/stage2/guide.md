@@ -1,5 +1,7 @@
 # Provision de un servicio L3VPN
 
+## Introducción
+
 Un servicio habitual en una operadora es la provisión de una L3VPN full-mesh.
 
 Con este tipo de servicio se proporciona una conexión privada entre diferentes sedes.
@@ -57,7 +59,7 @@ router bgp 65001
 En JUNOS las plantillas equivalentes serían:
 * Configuración de la vrf:
 
-``` 
+```
 !-- configuración de la routing instance
 set routing-instances {{ vrf.name }} instance-type vrf
 set routing-instances {{ vrf.name }} route-distinguisher {{ system.id }}:{{ vrf.id }}
@@ -66,6 +68,8 @@ set routing-instances {{ vrf.name }} protocols bgp group CLIENTES type external
 set routing-instances {{ vrf.name }} protocols bgp group CLIENTES peer-as 65002
 set routing-instances {{ vrf.name }} protocols bgp group CLIENTES as-override
 ```
+
+
 
 * Configuración de vecinos
 ```
@@ -79,41 +83,43 @@ set routing-instances {{ vrf.name }} protocols bgp group CLIENTES neighbor {{ in
 
 ```
 
+## Datos para la configuración
+
 Una vez entendidas las plantillas de configuración, vamos a aplicarlos para crear una VP en los routers `ios1`, `ios2` e `ios4`.
 
 Nuestros datos serán:
 
-```
+``` yaml
 ios1:
   vrf:
-  name: L3VPN
-  id: 1
-  interfaces:
-  - name: ethernet1/3
-    address: 30.1.1.1
-    mask: 255.255.255.0
-    prefix_len: 24
-    nbr_address: 30.1.1.100
+    name: L3VPN
+    id: 1
+    interfaces:
+    - name: ethernet1/3
+      address: 30.1.1.1
+      mask: 255.255.255.0
+      prefix_len: 24
+      nbr_address: 30.1.1.100
 ios2:
   vrf:
-  name: L3VPN
-  id: 1
-  interfaces:
-  - name: ethernet1/3
-    address: 30.1.2.1
-    mask: 255.255.255.0
-    prefix_len: 24
-    nbr_address: 30.1.2.100
+    name: L3VPN
+    id: 1
+    interfaces:
+    - name: ethernet1/3
+      address: 30.1.2.1
+      mask: 255.255.255.0
+      prefix_len: 24
+      nbr_address: 30.1.2.100
 ios4:
   vrf:
-  name: L3VPN
-  id: 1
-  interfaces:
-  - name: ethernet1/2
-    address: 30.1.2.1
-    mask: 255.255.255.0
-    prefix_len: 24
-    nbr_address: 30.1.4.100
+    name: L3VPN
+    id: 1
+    interfaces:
+    - name: ethernet1/2
+      address: 30.1.2.1
+      mask: 255.255.255.0
+      prefix_len: 24
+      nbr_address: 30.1.4.100
 ```
 
 ## Configuración en ios1
@@ -161,22 +167,27 @@ ping vrf L3VPN 30.1.1.100
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* Levanta la sesión BGP:
+* **BGP:** Levanta la sesión:
 ```
 !-- comprobación de que la sesión BGP levanta
 show bgp vpnv4 unicast vrf L3VPN summary
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+* **BGP:** Se aprenden prefijos:
+```
 !-- verificación de que se aprenden prefijos.
 show bgp vpnv4 unicast vrf L3VPN
 show ip route vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
+* **BGP:** Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
  * `ios2`:
 
 ```
 !-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.1:1
+show bgp vpnv4 unicast rd 10.1.0.1:1 | no-more
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
 
@@ -184,8 +195,8 @@ show bgp vpnv4 unicast rd 10.1.0.1:1
 
 ```
 !-- verificación de que se aprenden prefijos.
-show route receive-protocol bgp 10.1.0.1
-show route protocol bgp next-hop 10.1.0.1
+show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 | no-more
+show route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 | no-more
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
@@ -236,36 +247,43 @@ ping vrf L3VPN 30.1.4.100
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-* Levanta la sesión BGP:
+* **BGP**: sesión levantada
+    * Sesión BGP levantada
 ```
 !-- comprobación de que la sesión BGP levanta
 show bgp vpnv4 unicast vrf L3VPN summary
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
+
+* **BGP**: se aprenden rutas.
+
+```
 !-- verificación de que se aprenden prefijos, tanto del vecino como de ios1
 show bgp vpnv4 unicast vrf L3VPN
 show ip route vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-* Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
- * `ios2`:
+
+* **BGP**: Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
+  * `ios2`:
 
 ```
 !-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.4:1
+show bgp vpnv4 unicast rd 10.1.0.4:1 | no-more
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
 
- * `vqfx3`:
+   * `vqfx3`:
 
 ```
-!-- verificación de que se aprenden prefijos.
-show route receive-protocol bgp 10.1.0.4
-show route protocol bgp next-hop 10.1.0.4
+show route receive-protocol bgp 10.1.0.4 table L3VPN.inet.0 | no-more
+show route protocol bgp next-hop 10.1.0.4 table L3VPN.inet.0 | no-more
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
 
-* Los prefijos están presentes en `ios1` :
+* **BGP**: Los prefijos están presentes en `ios1` :
 ```
 !-- verificación de que se aprenden prefijos, tanto del vecino como de ios4
 show bgp vpnv4 unicast vrf L3VPN
@@ -273,20 +291,33 @@ show ip route vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* Conectividad en la L3VPN:
- * `ios1`:
+* **CONECTIVIDAD**: Conectividad en la L3VPN:
+* `ios1`: ping
 ```
 !-- prueba de conectividad
 ping vrf L3VPN 30.0.0.4
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+* `ios1`: traceroute
+```
+!-- prueba de conectividad
 traceroute vrf L3VPN 30.0.0.4
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
 
- * `ios4`:
+
+ * `ios4`: ping
 ```
 !-- prueba de conectividad
 ping vrf L3VPN 30.0.0.1
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
+
+ * `ios4`: traceroute
+```
+!-- prueba de conectividad
 traceroute vrf L3VPN 30.0.0.1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
@@ -332,34 +363,39 @@ wr
 
 Realizamos verificaciones de la configuración:
 
-* Tenemos conectividad en el enlace:
+* **CONECTIVIDAD LOCAL:** Tenemos conectividad en el enlace:
 ```
-ping vrf L3VPN 30.1.4.100
+ping vrf L3VPN 30.1.2.100
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
 
-* Levanta la sesión BGP:
+* **BGP:** Levanta la sesión BGP:
 ```
 !-- comprobación de que la sesión BGP levanta
 show bgp vpnv4 unicast vrf L3VPN summary
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+
+* **BGP:** Se aprendend prefijos:
+```
 !-- verificación de que se aprenden prefijos, tanto del vecino como de ios1 e ios4
 show bgp vpnv4 unicast vrf L3VPN
 show ip route vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
 
-* Los prefijos están presentes en los reflectores de rutas ( `vqfx3`)
+
+* **BGP:** Los prefijos están presentes en los reflectores de rutas ( `vqfx3`)
  * `vqfx3`:
 
 ```
-!-- verificación de que se aprenden prefijos.
-show route receive-protocol bgp 10.1.0.2
-show route protocol bgp next-hop 10.1.0.2
+show route receive-protocol bgp 10.1.0.2 table L3VPN.inet.0 | no-more
+show route protocol bgp next-hop 10.1.0.2 table L3VPN.inet.0 | no-more
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
 
-* Los prefijos están presentes en `ios1` :
+* **BGP:** Los prefijos están presentes en `ios1` :
 ```
 !-- verificación de que se aprenden prefijos, tanto del vecino como de ios4
 show bgp vpnv4 unicast vrf L3VPN
@@ -367,32 +403,71 @@ show ip route vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* Conectividad en la L3VPN:
- * `ios1`:
+* **Conectividad en la L3VPN:**
+ * `ios1`: ping  
 ```
 !-- prueba de conectividad
 ping vrf L3VPN 30.0.0.2
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+ * `ios1`: traceroute
+```
+!-- prueba de conectividad
 traceroute vrf L3VPN 30.0.0.2
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
 
- * `ios2`:
+ * `ios2`: ping contra site 1
 ```
 !-- prueba de conectividad contra ios1
 ping vrf L3VPN 30.0.0.1
+
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+
+
+ * `ios2`: traceroute contra site 1
+```
+!-- prueba de conectividad contra ios1
 traceroute vrf L3VPN 30.0.0.1
+
+
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+
+
+ * `ios2`: ping contra site 4
+```
+
 !-- prueba de conectividad contra ios4
 ping vrf L3VPN 30.0.0.4
+
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+
+
+ * `ios2`: traceroute contra site 4
+```
+!-- prueba de conectividad contra ios4
 traceroute vrf L3VPN 30.0.0.4
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
 
- * `ios4`:
+
+
+ * `ios4`: ping contra site2
 ```
 !-- prueba de conectividad
 ping vrf L3VPN 30.0.0.2
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
+
+ * `ios4`: traceroute contra site 2
+```
+!-- prueba de conectividad
 traceroute vrf L3VPN 30.0.0.2
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>

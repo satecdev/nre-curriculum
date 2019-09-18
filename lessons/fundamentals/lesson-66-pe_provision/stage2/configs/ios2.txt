@@ -9,14 +9,6 @@ boot-start-marker
 boot-end-marker
 !
 !
-vrf definition L3VPN
- rd 10.1.0.2:1
- !
- address-family ipv4
-  route-target export 65001:1
-  route-target import 65001:1
- exit-address-family
-!
 enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
 !
 no aaa new-model
@@ -106,8 +98,7 @@ interface Ethernet1/2
 !
 interface Ethernet1/3
  mac-address f01a.bce5.4cf1
- vrf forwarding L3VPN
- ip address 30.1.2.1 255.255.255.0
+ shut
 !
 interface Ethernet2/0
  description R4
@@ -177,12 +168,6 @@ router bgp 65001
   neighbor 10.1.0.4 activate
  exit-address-family
  !
- address-family ipv4 vrf L3VPN
-  redistribute connected
-  neighbor 30.1.2.100 remote-as 65002
-  neighbor 30.1.2.100 activate
-  neighbor 30.1.2.100 as-override
- exit-address-family
 !
 ip forward-protocol nd
 !
