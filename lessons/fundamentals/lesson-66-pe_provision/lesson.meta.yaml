@@ -1,5 +1,5 @@
 ---
-lessonName: Laboratorio de automatización de red
+lessonName: Laboratorio adding Rundeck
 lessonId: 66
 category: fundamentals
 lessonDiagram: https://raw.githubusercontent.com/nre-learning/nrelabs-curriculum/v0.3.2/lessons/lesson-12/lessondiagram.png
@@ -65,14 +65,14 @@ endpoints:
   additionalPorts: [22]
 
 - name: rundeck
- image: registry.int.satec.es/netautolab/satec-jt-rundeck
- presentations:
- - name: cli
-   port: 22
-   type: ssh
- - name: web
-   port: 80
-   type: http
+  image: registry.int.satec.es/netautolab/satec-jt-rundeck
+  presentations:
+  - name: cli
+    port: 22
+    type: ssh
+  - name: web
+    port: 80
+    type: http
 
 connections:
 - a: ios1
@@ -99,8 +99,6 @@ connections:
   b: vhost
 - a: ios4
   b: vhost
-
-
 
 
 
