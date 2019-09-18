@@ -88,6 +88,7 @@ interface Ethernet0/3
 !
 interface Ethernet1/0
  mac-address f086.d352.db95
+ shutdown
 !
 interface Ethernet1/1
  mac-address f0e9.b6b6.ebd9
