@@ -89,7 +89,7 @@ Una vez entendidas las plantillas de configuración, vamos a aplicarlos para cre
 
 Nuestros datos serán:
 
-``` yaml
+```yaml
 ios1:
   vrf:
     name: L3VPN
@@ -187,14 +187,13 @@ show ip route vrf L3VPN
 
 ```
 !-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.1:1 | no-more
+show bgp vpnv4 unicast rd 10.1.0.1:1 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
 
  * `vqfx3`:
 
 ```
-!-- verificación de que se aprenden prefijos.
 show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 | no-more
 show route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 | no-more
 
@@ -248,7 +247,6 @@ ping vrf L3VPN 30.1.4.100
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
 * **BGP**: sesión levantada
-    * Sesión BGP levantada
 ```
 !-- comprobación de que la sesión BGP levanta
 show bgp vpnv4 unicast vrf L3VPN summary
@@ -270,7 +268,7 @@ show ip route vrf L3VPN
 
 ```
 !-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.4:1 | no-more
+show bgp vpnv4 unicast rd 10.1.0.4:1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
 

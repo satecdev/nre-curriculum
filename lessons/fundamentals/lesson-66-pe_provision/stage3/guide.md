@@ -1,474 +1,310 @@
-# Provision de un servicio L3VPN
+# Troubleshooting
 
-## Introducción
+## Punto de partida
 
-Un servicio habitual en una operadora es la provisión de una L3VPN full-mesh.
+Los pilares en los que se los procedimientos de *troubleshooting* en una red en producción de servicios verificados son dos:
+* La verificación de conectividades.
+* La comparación de un servicio o equipo que funciona con el defectuoso.
 
-Con este tipo de servicio se proporciona una conexión privada entre diferentes sedes.
+A partir de la información obtenida el ingeniero de red debe correlarla y obtener conclusiones.
 
-Para proporcionar el servicio es necesario definir:
-* route-distinguiser: campo de 8 bytes que permite crear direcciones únicas VPNv4 al añadirlo a un prefijo IPv4.
-* route-target: community extendida que dicta la política de qué prefijos forman parte de una VPN.
+La verificación de conectividades depende de los entornos puede ser tediosa. Cuando se notifica un fallo de comunicación del tipo *"No llego al servidor X desde la oficina Y"* en un servicio normalmente: 
+* Comprobaciones locales de conectividad:
+    * Conectividad del router PE con el router CE.
+    * Conectividad del router PE con el *endpoint* de ese site (si no está detrás de un firewall).
+    * Conectividad desde el CE con el *endpoint* si es posible.
+* Comprobaciones entre los dispositivos de red:
+    * Conectividad PE-PE
+    * Conectividad CE local con PE remoto
+    * Etc.. 
+Estas comprobaciones en ocasiones es necesario realizarlas con diferentes tamaños de paquetes.
 
-En nuestro caso utilizaremos el siguiente formato:
-* RD = {{ dirección_lo0 }}:{{ vrf.id }}
-* route-target = {{ as=65001 }}:{{ vrf.id }}
+Aparte de estas verificaciones se suelen realizar otras comprobaciones estándar, tales como:
+* ¿Están los prefijos en las respectivas tablas de rutas?
+* ¿Se anuncian los prefijos al core?
+* ¿Se anuncian los prefijos del PE al CE?
 
-El identificador de VPN que utilizaremos será el `1`.
+Para problemas simples la correlación de la información anterior suele proporcionar el origen del problema.
 
-La plantilla en IOS para configurar esta vpn sería:
-* Configuración de la vrf:
+En problemas complejos pueden ser necesarias más comprobaciones.
+
+## Automatización de comprobaciones
+
+El objeto de la automazión de las comprobaciones es doble:
+* La obtención de información relevante para su análisis y presentación en un formato visual sencillo.
+* En base a la información obtenida analizarla y presentar una posible causa.
+
+Si una red está correctamente inventariada existen sistemas desde los que se puede obtener la información necearia para realizar todas las pruebas:
+* En qué PEs están conectadas las sedes de cliente.
+* Cuáles son los parámetros de configuración de un servicio:
+    * si es un L3VPN los rd y rt.
+    * si es un servicio de internet cuáles son los prefijos de cliente.
+    * Etc..
+* Etc...  
+
+A partir de esa información se puede generar una matriz de pruebas que realice un sistema automático.
+
+El siguiente paso sería dotar de mayor inteligencia a ese sistema para que se comporte como un *sistema experto*
+
+# Laboratorio de troubleshooting.
+
+## Preparación del laboratorio
+
+Todos los problemas que se van a reportar son de comunicación entre los sites 1 y 4 en la L3VPN. 
+En el laboratorio se asume que la herramienta de automatización ha obtenido del inventario todos los datos necesarios para realizar las pruebas.
+
+Se realizarán las siguientes pruebas de conectividad:
+* **Conectividad Local**:
+  * ping de `ios1` a CE local
+  * ping de `ios4` a CE local
+  * ping de `ios1` a loopback CE local
+  * ping de `ios4` a loopback CE local
+* **Conectividad en el core de red**:
+  * ping de `ios1` a `ios4` en la L3VPN.
+  * ping de `ios1` a `ios2` en la L3VPN.
+  * ping de `ios4` a `ios1` en la L3VPN.
+  * ping de `ios4` a `ios2` en la L3VPN.
+  * ping de `ios2` a `ios1` en la L3VPN.
+  * ping de `ios2` a `ios4` en la L3VPN
+  * ping entre las loopbacks de LSPs de `ios1` a `ios4` en tabla global.
+  * ping entre las loopbacks de LSPs de `ios4` a `ios1` en tabla global.
+  * traceroute entre las loopbacks de LSPs de `ios1` a `ios4` en tabla global.
+  * traceroute entre las loopbacks de LSPs de `ios4` a `ios1` en tabla global.
+  * traceroute de `ios1` a `ios4` en la L3VPN.
+  * traceroute de `ios1` a `ios2` en la L3VPN.
+  * traceroute de `ios2` a `ios1` en la L3VPN.
+  * traceroute de `ios2` a `ios4` en la L3VPN.
+  * traceroute de `ios4` a `ios1` en la L3VPN
+  * traceroute de `ios4` a `ios2` en la L3VPN
+* **Conectividad contra CEs pasando por la red**:
+  * ping de `ios1` a CE de site4
+  * ping de `ios1` a CE de site2
+  * ping de `ios4` a CE de site1
+  * ping de `ios4` a CE de site2
+  * ping de `ios2` a CE de site1
+  * ping de `ios2` a CE de site4
+  * traceroute de `ios1` a CE de site4
+  * traceroute de `ios1` a CE de site2
+  * traceroute de `ios4` a CE de site1
+  * traceroute de `ios4` a CE de site2
+  * traceroute de `ios2` a CE de site1
+  * traceroute de `ios2` a CE de site4
+Se realizarán también las siguientes comprobaciones de routing:
+  * Verificación de estado de sesión BGP `ios1` - CE
+  * Verificación de estado de sesión BGP `ios4` - CE
+  * Verificación de prefijo 30.0.0.1 en `ios1`
+  * Verificación de prefijo 30.0.0.4 en `ios1`
+  * Verificación de prefijo 30.0.0.1 en `ios4`
+  * Verificación de prefijo 30.0.0.4 en `ios4`
+  * Verificación de prefijo 30.0.0.1 en `ios2`
+  * Verificación de prefijo 30.0.0.4 en `ios2`
+
+Si agrupamos las pruebas por equipos tendríamos:
+
+* `ios1`
+```
+!-- conectividad local enlace en L3VPN
+ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
+!-- conectividad local loopback CE en L3VPN
+ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+!-- conectividad con ios4 en L3VPN
+ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
+!-- conectividad con ios2 en L3VPN
+ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
+!-- conectividad con ios4 en L3VPN
+traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1
+!-- conectividad con ios2 en L3VPN
+traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1
+!-- conectividad con ios4 en GRT
+ping 10.1.0.4 repeat 2 timeout 1 source loopback0
+!-- traceroute con ios4 en GRT
+traceroute 10.1.0.4 timeout 1 probe 1 source loopback0
+!-- ping contra loopback CE site4 en L3VPN
+ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+!-- ping contra loopback CE site2 en L3VPN
+ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+!-- traceroute contra loopback CE site4 en L3VPN
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
+!-- traceroute contra loopback CE site2 en L3VPN
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
+!-- verificación prefijos 30.0.0.1
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
+!-- verificación prefijos 30.0.0.2
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+!-- verificación prefijos 30.0.0.4
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
 ```
-!-- definición de la vrf
-vrf definition {{ vrf.name }}
- rd {{ system.id }}:{{ vrf.id }}
- !
- address-family ipv4 {{ vrf.name }}
-  route-target export 65001:{{ vrf.id }}
-  route-target import 65001:{{ vrf.id}}
- exit-address-family
-!
-!-- definición en BGP 
-router bgp 65001
-  address-family ipv4 vrf {{ vrf.name }}
-  redistribute connected
- exit-address-family
-!
+
+
+* `ios4`
+```
+!-- conectividad local enlace en L3VPN
+ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
+!-- conectividad local loopback CE en L3VPN
+ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+!-- conectividad con ios1 en L3VPN
+ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
+!-- conectividad con ios2 en L3VPN
+ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
+!-- conectividad con ios1 en L3VPN
+traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1
+!-- conectividad con ios2 en L3VPN
+traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1
+!-- conectividad con ios1 en GRT
+ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+!-- traceroute con ios1 en GRT
+traceroute 10.1.0.1 timeout 1 probe 1source loopback0
+!-- ping contra loopback CE site1 en L3VPN
+ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+!-- ping contra loopback CE site2 en L3VPN
+ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+!-- traceroute contra loopback CE site1 en L3VPN
+traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
+!-- traceroute contra loopback CE site2 en L3VPN
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
+!-- verificación prefijos 30.0.0.1
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
+!-- verificación prefijos 30.0.0.2
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+!-- verificación prefijos 30.0.0.4
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 ```
 
-* Configuración de vecinos en la vrf:
+* `ios2`
 ```
-!-- configuración de la interfaz en la vrf
-interface {{ intf.name }}
- vrf forwarding {{ intf.name }}
- ip address {{ intf.address }} {{ intf.mask }}
-!
-!-- configuración del vecino BGP
-!-- definición en BGP 
-router bgp 65001
- address-family ipv4 vrf {{ vrf.name }}
-  neighbor {{ intf.nbr_address }} remote-as 65002
-  neighbor {{ intf.nbr_address }} activate
-  neighbor {{ intf.nbr_address }} as-override
- exit-address-family
- !
-!
-```
+!-- conectividad con ios1 en L3VPN
+ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
+!-- conectividad con ios4 en L3VPN
+ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
+!-- conectividad con ios1 en L3VPN
+traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1
+!-- conectividad con ios4 en L3VPN
+traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1
+!-- ping contra loopback CE site1 en L3VPN
+ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+!-- ping contra loopback CE site2 en L3VPN
+ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+!-- traceroute contra loopback CE site1 en L3VPN
+traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
+!-- traceroute contra loopback CE site2 en L3VPN
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
+!-- verificación prefijos 30.0.0.1
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
+!-- verificación prefijos 30.0.0.2
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+!-- verificación prefijos 30.0.0.4
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
-En JUNOS las plantillas equivalentes serían:
-* Configuración de la vrf:
-
-```
-!-- configuración de la routing instance
-set routing-instances {{ vrf.name }} instance-type vrf
-set routing-instances {{ vrf.name }} route-distinguisher {{ system.id }}:{{ vrf.id }}
-set routing-instances {{ vrf.name }} vrf-target target:65001:{{ vrf.id }}
-set routing-instances {{ vrf.name }} protocols bgp group CLIENTES type external
-set routing-instances {{ vrf.name }} protocols bgp group CLIENTES peer-as 65002
-set routing-instances {{ vrf.name }} protocols bgp group CLIENTES as-override
-```
-
-
-
-* Configuración de vecinos
-```
-!-- configuración de la interfaz
-set interfaces {{ intf.name }} family inet address {{ intf.address }}/{{ intf.prefix_len}}
-set interfaces {{ intf.name }} family inet address {{ intf.address }}/{{ intf.prefix_len}}
-!-- adición de la interfaz a la vrf
-set routing-instances {{ vrf.name }} interface {{ intf.name }
-!-- configuración del vecino BGP
-set routing-instances {{ vrf.name }} protocols bgp group CLIENTES neighbor {{ intf.nbr_address }}
 
 ```
 
-## Datos para la configuración
+## Ticket: fallo de conectividad con del site 1 con el site 4
 
-Una vez entendidas las plantillas de configuración, vamos a aplicarlos para crear una VP en los routers `ios1`, `ios2` e `ios4`.
 
-Nuestros datos serán:
 
-``` yaml
-ios1:
-  vrf:
-    name: L3VPN
-    id: 1
-    interfaces:
-    - name: ethernet1/3
-      address: 30.1.1.1
-      mask: 255.255.255.0
-      prefix_len: 24
-      nbr_address: 30.1.1.100
-ios2:
-  vrf:
-    name: L3VPN
-    id: 1
-    interfaces:
-    - name: ethernet1/3
-      address: 30.1.2.1
-      mask: 255.255.255.0
-      prefix_len: 24
-      nbr_address: 30.1.2.100
-ios4:
-  vrf:
-    name: L3VPN
-    id: 1
-    interfaces:
-    - name: ethernet1/2
-      address: 30.1.2.1
-      mask: 255.255.255.0
-      prefix_len: 24
-      nbr_address: 30.1.4.100
+* conectividad local enlace en L3VPN
 ```
-
-## Configuración en ios1
-
-Primero introducimos la configuración en este equipo:
-
-```
-term len 0
-enable
-satec
-conf t
-vrf definition L3VPN
- rd 10.1.0.1:1
- !
- address-family ipv4
-  route-target export 65001:1
-  route-target import 65001:1
- exit-address-family
-!
-interface Ethernet1/3
- no shut
- vrf forwarding L3VPN
- ip address 30.1.1.1 255.255.255.0
-!
-
-router bgp 65001
- address-family ipv4 vrf L3VPN
-  redistribute connected
-  neighbor 30.1.1.100 remote-as 65002
-  neighbor 30.1.1.100 activate
-  neighbor 30.1.1.100 as-override
- exit-address-family
- !
-!
-end
-wr
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-Realizamos verificaciones de la configuración:
-
-* Tenemos conectividad en el enlace:
-```
-ping vrf L3VPN 30.1.1.100
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* **BGP:** Levanta la sesión:
-```
-!-- comprobación de que la sesión BGP levanta
-show bgp vpnv4 unicast vrf L3VPN summary
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* **BGP:** Se aprenden prefijos:
-```
-!-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast vrf L3VPN
-show ip route vrf L3VPN
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* **BGP:** Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
- * `ios2`:
-
-```
-!-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.1:1 | no-more
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
-
- * `vqfx3`:
-
-```
-!-- verificación de que se aprenden prefijos.
-show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 | no-more
-show route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 | no-more
-
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
-
-
-## Configuración en `ios4`
-
-Primero introducimos la configuración en este equipo:
-
-```
-term len 0
-enable
-satec
-conf t
-vrf definition L3VPN
- rd 10.1.0.4:1
- !
- address-family ipv4
-  route-target export 65001:1
-  route-target import 65001:1
- exit-address-family
-!
-interface Ethernet1/2
- no shut
- vrf forwarding L3VPN
- ip address 30.1.4.1 255.255.255.0
-!
-
-router bgp 65001
- address-family ipv4 vrf L3VPN
-  redistribute connected
-  neighbor 30.1.4.100 remote-as 65002
-  neighbor 30.1.4.100 activate
-  neighbor 30.1.4.100 as-override
- exit-address-family
- !
-!
-end
-wr
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-Realizamos verificaciones de la configuración:
-
-* Tenemos conectividad en el enlace:
-```
-ping vrf L3VPN 30.1.4.100
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* **BGP**: sesión levantada
-    * Sesión BGP levantada
-```
-!-- comprobación de que la sesión BGP levanta
-show bgp vpnv4 unicast vrf L3VPN summary
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* **BGP**: se aprenden rutas.
-
-```
-!-- verificación de que se aprenden prefijos, tanto del vecino como de ios1
-show bgp vpnv4 unicast vrf L3VPN
-show ip route vrf L3VPN
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-
-* **BGP**: Los prefijos están presentes en los reflectores de rutas (`ios2`, `vqfx3`)
-  * `ios2`:
-
-```
-!-- verificación de que se aprenden prefijos.
-show bgp vpnv4 unicast rd 10.1.0.4:1 | no-more
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button> 
-
-   * `vqfx3`:
-
-```
-show route receive-protocol bgp 10.1.0.4 table L3VPN.inet.0 | no-more
-show route protocol bgp next-hop 10.1.0.4 table L3VPN.inet.0 | no-more
-
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
-
-* **BGP**: Los prefijos están presentes en `ios1` :
-```
-!-- verificación de que se aprenden prefijos, tanto del vecino como de ios4
-show bgp vpnv4 unicast vrf L3VPN
-show ip route vrf L3VPN
+!-- conectividad local enlace en L3VPN
+ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* **CONECTIVIDAD**: Conectividad en la L3VPN:
-* `ios1`: ping
+* conectividad local loopback CE en L3VPN
 ```
-!-- prueba de conectividad
-ping vrf L3VPN 30.0.0.4
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* `ios1`: traceroute
-```
-!-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.4
+!-- conectividad local loopback CE en L3VPN
+ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-
-
- * `ios4`: ping
+* conectividad con ios4 en L3VPN
 ```
-!-- prueba de conectividad
-ping vrf L3VPN 30.0.0.1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
- * `ios4`: traceroute
-```
-!-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-
-
-## Configuración en `ios2`
-
-Primero introducimos la configuración en este equipo:
-
-```
-term len 0
-enable
-satec
-conf t
-vrf definition L3VPN
- rd 10.1.0.2:1
- !
- address-family ipv4
-  route-target export 65001:1
-  route-target import 65001:1
- exit-address-family
-!
-interface Ethernet1/3
- no shut
- vrf forwarding L3VPN
- ip address 30.1.2.1 255.255.255.0
-!
-
-router bgp 65001
- address-family ipv4 vrf L3VPN
-  redistribute connected
-  neighbor 30.1.2.100 remote-as 65002
-  neighbor 30.1.2.100 activate
-  neighbor 30.1.2.100 as-override
- exit-address-family
- !
-!
-end
-wr
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-Realizamos verificaciones de la configuración:
-
-* **CONECTIVIDAD LOCAL:** Tenemos conectividad en el enlace:
-```
-ping vrf L3VPN 30.1.2.100
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* **BGP:** Levanta la sesión BGP:
-```
-!-- comprobación de que la sesión BGP levanta
-show bgp vpnv4 unicast vrf L3VPN summary
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* **BGP:** Se aprendend prefijos:
-```
-!-- verificación de que se aprenden prefijos, tanto del vecino como de ios1 e ios4
-show bgp vpnv4 unicast vrf L3VPN
-show ip route vrf L3VPN
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-
-* **BGP:** Los prefijos están presentes en los reflectores de rutas ( `vqfx3`)
- * `vqfx3`:
-
-```
-show route receive-protocol bgp 10.1.0.2 table L3VPN.inet.0 | no-more
-show route protocol bgp next-hop 10.1.0.2 table L3VPN.inet.0 | no-more
-
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
-
-* **BGP:** Los prefijos están presentes en `ios1` :
-```
-!-- verificación de que se aprenden prefijos, tanto del vecino como de ios4
-show bgp vpnv4 unicast vrf L3VPN
-show ip route vrf L3VPN
+!-- conectividad con ios4 en L3VPN
+ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-* **Conectividad en la L3VPN:**
- * `ios1`: ping  
+* conectividad con ios2 en L3VPN
 ```
-!-- prueba de conectividad
-ping vrf L3VPN 30.0.0.2
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
- * `ios1`: traceroute
-```
-!-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.2
+!-- conectividad con ios2 en L3VPN
+ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-
- * `ios2`: ping contra site 1
+* conectividad con ios4 en L3VPN
 ```
-!-- prueba de conectividad contra ios1
-ping vrf L3VPN 30.0.0.1
-
+!-- conectividad con ios4 en L3VPN
+traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-
- * `ios2`: traceroute contra site 1
+* conectividad con ios2 en L3VPN
 ```
-!-- prueba de conectividad contra ios1
-traceroute vrf L3VPN 30.0.0.1
-
-
+!-- conectividad con ios2 en L3VPN
+traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-
- * `ios2`: ping contra site 4
+* conectividad con ios4 en GRT
 ```
-
-!-- prueba de conectividad contra ios4
-ping vrf L3VPN 30.0.0.4
-
+!-- conectividad con ios4 en GRT
+ping 10.1.0.4 repeat 2 timeout 1 source loopback0
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
-
- * `ios2`: traceroute contra site 4
+* traceroute con ios4 en GRT
 ```
-!-- prueba de conectividad contra ios4
-traceroute vrf L3VPN 30.0.0.4
-
+!-- traceroute con ios4 en GRT
+traceroute 10.1.0.4 timeout 1 probe 1 source loopback0
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
+* ping contra loopback CE site4 en L3VPN
+```
+!-- ping contra loopback CE site4 en L3VPN
+ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
+* ping contra loopback CE site2 en L3VPN
+```
+!-- ping contra loopback CE site2 en L3VPN
+ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
- * `ios4`: ping contra site2
+* traceroute contra loopback CE site4 en L3VPN
 ```
-!-- prueba de conectividad
-ping vrf L3VPN 30.0.0.2
+!-- traceroute contra loopback CE site4 en L3VPN
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
- * `ios4`: traceroute contra site 2
+* traceroute contra loopback CE site2 en L3VPN
 ```
-!-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.2
+!-- traceroute contra loopback CE site2 en L3VPN
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+* verificación prefijos 30.0.0.1
+```
+!-- verificación prefijos 30.0.0.1
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+* verificación prefijos 30.0.0.2
+```
+!-- verificación prefijos 30.0.0.2
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+
+* verificación prefijos 30.0.0.4
+```
+!-- verificación prefijos 30.0.0.4
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
