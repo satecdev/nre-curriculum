@@ -62,7 +62,7 @@ term len 0
 term mon
 enable
 satec
-traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1
+traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 5
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
@@ -124,7 +124,7 @@ show ldp neighbor
 Verificamos que el camino a `ios1` ya está etiquetado:
 
 ```
-traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1
+traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 5
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>

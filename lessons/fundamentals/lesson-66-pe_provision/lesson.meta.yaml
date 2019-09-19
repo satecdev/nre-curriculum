@@ -2,7 +2,7 @@
 lessonName: Laboratorio adding Rundeck
 lessonId: 66
 category: fundamentals
-lessonDiagram: https://raw.githubusercontent.com/nre-learning/nrelabs-curriculum/v0.3.2/lessons/lesson-12/lessondiagram.png
+lessonDiagram: https://cdn1.imggmi.com/uploads/2019/9/19/53d489bb95e6b5b2acb9b8f039220a5b-full.png
 tier: prod
 prereqs:
   - 14  # YAML
@@ -65,7 +65,7 @@ endpoints:
   additionalPorts: [22]
 
 - name: rundeck
-  image: registry.int.satec.es/netautolab/satec-jt-rundeck
+  image: khornem/rdkblabla
   presentations:
   - name: cli
     port: 22

@@ -362,7 +362,7 @@ show bgp all summary
 
 * connectividad MPLS:
 ```
-traceroute 10.1.0.4 source 10.1.0.3
+traceroute 10.1.0.4 source 10.1.0.1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
