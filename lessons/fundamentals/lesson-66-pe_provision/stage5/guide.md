@@ -19,11 +19,11 @@ Si revisamos los traceroute que en la tabla global, se puede observar que no se 
 
 
 ```
-term len 0
-term mon
 enable
 satec
-traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 5
+term len 0
+term mon
+traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 0 5
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
@@ -38,10 +38,10 @@ Por tanto:
 
 **`ios2`**
 ```
-term len 0
-term mon
 enable
 satec
+term len 0
+term mon
 show mpls interfaces
 show mpls ldp neighbor
 
@@ -76,7 +76,7 @@ wr
 
 ```
 show mpls interfaces
-show ldp neighbor
+show mpls ldp neighbor
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>

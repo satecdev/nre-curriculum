@@ -127,16 +127,17 @@ Con estos datos se pretende construir la topología adjunta:
 
 ![lesson2](https://cdn1.imggmi.com/uploads/2019/9/19/307d0c24e2e61af815907e3c0348d7ea-full.png)
 
+A continuación se describen todos los pasos necesarioas para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
-
-## Configuración en ios1
+## Paso 1: Configuración en ios1
 
 Primero introducimos la configuración en este equipo:
 
 ```
-term len 0
 enable
 satec
+term len 0
+term mon
 conf t
 vrf definition L3VPN
  rd 10.1.0.1:1
@@ -209,14 +210,15 @@ show route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 | no-more
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('vqfx3', this)">Run this snippet</button> 
 
 
-## Configuración en `ios4`
+## Paso 2: Configuración en `ios4`
 
 Primero introducimos la configuración en este equipo:
 
 ```
-term len 0
 enable
 satec
+term len 0
+term mon
 conf t
 vrf definition L3VPN
  rd 10.1.0.4:1
@@ -331,14 +333,15 @@ traceroute vrf L3VPN 30.0.0.1
 
 
 
-## Configuración en `ios2`
+## Paso 3: Configuración en `ios2`
 
 Primero introducimos la configuración en este equipo:
 
 ```
-term len 0
 enable
 satec
+term len 0
+term mon
 conf t
 vrf definition L3VPN
  rd 10.1.0.2:1
@@ -422,7 +425,7 @@ ping vrf L3VPN 30.0.0.2
  * `ios1`: traceroute
 ```
 !-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.2
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 
@@ -439,7 +442,7 @@ ping vrf L3VPN 30.0.0.1
  * `ios2`: traceroute contra site 1
 ```
 !-- prueba de conectividad contra ios1
-traceroute vrf L3VPN 30.0.0.1
+traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
 
 
 ```
@@ -459,7 +462,7 @@ ping vrf L3VPN 30.0.0.4
  * `ios2`: traceroute contra site 4
 ```
 !-- prueba de conectividad contra ios4
-traceroute vrf L3VPN 30.0.0.4
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
@@ -476,7 +479,7 @@ ping vrf L3VPN 30.0.0.2
  * `ios4`: traceroute contra site 2
 ```
 !-- prueba de conectividad
-traceroute vrf L3VPN 30.0.0.2
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 

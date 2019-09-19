@@ -20,6 +20,7 @@ echo http://antidote-local:30001/$SYRINGE_FULL_REF
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck', this)">Run this snippet</button>
 
+A continuación se describen todos los pasos necesarioas para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
 ## Parte 1: Preconfiguración completa del nuevo equipo
 
@@ -37,6 +38,7 @@ Primero se comprueba la configuración inicial del equipo:
 ```
 enable
 satec
+term mon
 term len 0
 show running
 ```
@@ -89,7 +91,6 @@ router bgp 65001
   neighbor CLIENTE default-originate
   neighbor IBGP send-community
   neighbor IBGP next-hop-self
-  neighbor 20.1.1.100 activate
   neighbor 10.1.0.2 activate
   neighbor 10.1.0.3 activate
  exit-address-family
@@ -139,6 +140,7 @@ Vamos a configurar primero el enlace contra `ios2`:
 ```
 enable
 satec
+term mon
 term len 0
 show interface e1/0
 show run interface e1/0
@@ -365,7 +367,7 @@ show bgp all summary
 
 * connectividad MPLS:
 ```
-traceroute 10.1.0.4 source 10.1.0.1
+traceroute 10.1.0.4 source 10.1.0.1 probe 1 timeout 1 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
 

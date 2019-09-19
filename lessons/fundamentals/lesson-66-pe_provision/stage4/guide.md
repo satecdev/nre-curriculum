@@ -19,13 +19,13 @@ Con la batería de pruebas vemos:
 
 Parece que es un problema en la definición de la L3VPN.
 
-Si verificamos en detalle los route-target de los prefijos vemos que los de `ios4`se están generando con un route target incorrecto:
+Si verificamos en detalle los route-target de los prefijos vemos que los de `ios4` se están generando con un route target incorrecto. `65002:1` en vez de `65001`:
 
 ```
-term len 0
-term mon
 enable
 satec
+term len 0
+term mon
 show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
 ```
@@ -55,11 +55,11 @@ wr
 
 
 
-Esperamos a que levante la sesión BGP:
+Esperamos a que levante la sesión BGP y verificamos el prefijo.
 
 ```
 show bgp all summary
-
+show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
