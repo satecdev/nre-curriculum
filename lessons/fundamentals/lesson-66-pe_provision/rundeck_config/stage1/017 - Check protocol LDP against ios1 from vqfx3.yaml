@@ -3,7 +3,7 @@
   executionEnabled: true
   id: 368089c3-630d-471e-922b-0191dc69ed57
   loglevel: INFO
-  name: 017 - Check session up against ios1 from vqfx3
+  name: 017 - Check protocol LDP against ios1 from vqfx3
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -22,7 +22,7 @@
           show ldp neighbor
           show ldp session
           show ldp database session 10.1.0.1
-      description: 017 - Check session up against ios1 from vqfx3
+      description: 017 - Check protocol LDP against ios1 from vqfx3
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
