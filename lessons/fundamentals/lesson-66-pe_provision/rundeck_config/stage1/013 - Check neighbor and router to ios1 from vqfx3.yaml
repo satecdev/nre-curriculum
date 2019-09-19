@@ -19,6 +19,7 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           show ospf neighbor
           show route 10.1.0.1 exact
       description: 013 - Check neighbor and router to ios1 from vqfx3

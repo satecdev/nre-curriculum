@@ -19,6 +19,7 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           show ldp neighbor
           show ldp session
           show ldp database session 10.1.0.1

@@ -19,11 +19,12 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           configure
           set protocols bgp group RR-CLIENTS neighbor 10.1.0.1
           show | compare
           commit and-quit
-   description: 020 - Configurate protocol BGP vqfx3
+      description: 020 - Configurate protocol BGP vqfx3
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false

@@ -19,8 +19,9 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           show bgp summary
-   description: 021 - Check neighbors BGP against ios1 from vqfx3
+      description: 021 - Check neighbors BGP against ios1 from vqfx3
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
