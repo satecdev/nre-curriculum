@@ -110,7 +110,12 @@ stages:
   - id: 2
     description: Provisión de servicio L3VPN
   - id: 3
-    description: Troubleshooting
+    description: Troubleshooting - Ticket 01
+  - id: 4
+    description: Troubleshooting - Ticket 02
+  - id: 5
+    description: Troubleshooting - Ticket 03
+
 
 
 

@@ -3,13 +3,13 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 service password-encryption
 !
-hostname ios4
+hostname ios1
 !
 boot-start-marker
 boot-end-marker
 !
 !
-enable secret 5 $1$gC/r$gJ0svfGiYp8f/Xs26zt0n0
+enable secret 5 $1$01WM$uRcU7FpXXBdJ7lwUOjJhw0
 !
 no aaa new-model
 !
@@ -25,8 +25,8 @@ ip admission max-login-attempts 5
 !
 !
 !
-no ip domain lookup
 ip domain name satec.es
+no ip domain-lookup
 ip cef
 no ipv6 cef
 !
@@ -53,6 +53,15 @@ ip ssh version 2
 !
 !
 !
+vrf definition L3VPN
+ rd 10.1.0.1:1
+ !
+ address-family ipv4
+  route-target export 65001:1
+  route-target import 65001:1
+ exit-address-family
+!
+
 !
 !
 !
@@ -60,7 +69,7 @@ ip ssh version 2
 !
 !
 interface Loopback0
- ip address 10.1.0.4 255.255.255.255
+ ip address 10.1.0.1 255.255.255.255
  ip ospf 1 area 0
 !
 interface Ethernet0/0
@@ -79,39 +88,43 @@ interface Ethernet0/3
  shutdown
 !
 interface Ethernet1/0
- mac-address 0000.0004.0010
- ip address 10.1.24.4 255.255.255.0
+ mac-address f0e6.ef87.ab63
+ ip address 10.1.12.1 255.255.255.0
  ip ospf network point-to-point
  ip ospf 1 area 0
  mpls ip
 !
 interface Ethernet1/1
- mac-address f06e.faf6.ba3c
- ip address 20.1.4.1 255.255.255.0
+ mac-address f0ca.e755.e0f8
+ ip address 10.1.13.1 255.255.255.0
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ mpls ip
 !
 interface Ethernet1/2
- mac-address f0fe.224f.9f2e
- shutdown
+ mac-address f03b.0dda.3f8a
+ ip address 20.1.1.1 255.255.255.0
 !
 interface Ethernet1/3
- mac-address f060.cc52.2185
- no ip address
+ mac-address f0cc.643a.c191
+ vrf forwarding L3VPN
+ ip address 30.1.1.1 255.255.255.0
 !
 interface Ethernet2/0
- description Otro configurado para la primera leccion
- mac-address f085.3aad.c6a8
+ description Uno configurado para la primera leccion
+ mac-address f0e8.2ace.ccd7
  no ip address
 !
 interface Ethernet2/1
- mac-address f012.6d96.4103
+ mac-address f03b.ec9b.994d
  no ip address
 !
 interface Ethernet2/2
- mac-address f0cb.692c.0c6b
+ mac-address f017.fb98.5f7b
  no ip address
 !
 interface Ethernet2/3
- mac-address f066.37f5.9a21
+ mac-address f080.f1b9.86bc
  no ip address
 !
 router ospf 1
@@ -120,7 +133,7 @@ router ospf 1
  no passive-interface Ethernet1/1
 !
 router bgp 65001
- bgp router-id 10.1.0.4
+ bgp router-id 10.1.0.1
  bgp log-neighbor-changes
  no bgp default ipv4-unicast
  neighbor CLIENTE peer-group
@@ -131,23 +144,29 @@ router bgp 65001
  neighbor IBGP update-source Loopback0
  neighbor 10.1.0.2 peer-group IBGP
  neighbor 10.1.0.3 peer-group IBGP
- neighbor 20.1.4.100 peer-group CLIENTE
- !
+ neighbor 20.1.1.100 peer-group CLIENTE
+!
  address-family ipv4
-  redistribute connected
   neighbor CLIENTE send-community
   neighbor CLIENTE default-originate
   neighbor IBGP send-community
   neighbor IBGP next-hop-self
+  neighbor 20.1.1.100 activate
   neighbor 10.1.0.2 activate
   neighbor 10.1.0.3 activate
-  neighbor 20.1.4.100 activate
  exit-address-family
  !
  address-family vpnv4
   neighbor IBGP send-community both
   neighbor 10.1.0.2 activate
   neighbor 10.1.0.3 activate
+ exit-address-family
+ !
+ address-family ipv4 vrf L3VPN
+  redistribute connected
+  neighbor 30.1.1.100 remote-as 65002
+  neighbor 30.1.1.100 activate
+  neighbor 30.1.1.100 as-override
  exit-address-family
  !
 !

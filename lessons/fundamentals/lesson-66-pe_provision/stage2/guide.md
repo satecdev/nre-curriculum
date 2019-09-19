@@ -51,6 +51,7 @@ router bgp 65001
   neighbor {{ intf.nbr_address }} remote-as 65002
   neighbor {{ intf.nbr_address }} activate
   neighbor {{ intf.nbr_address }} as-override
+  neighbor {{ intf.nbr_address }} timers 5 15
  exit-address-family
  !
 !
@@ -151,6 +152,7 @@ router bgp 65001
   neighbor 30.1.1.100 remote-as 65002
   neighbor 30.1.1.100 activate
   neighbor 30.1.1.100 as-override
+  neighbor 30.1.1.100 timers 5 15
  exit-address-family
  !
 !
@@ -230,6 +232,7 @@ router bgp 65001
   neighbor 30.1.4.100 remote-as 65002
   neighbor 30.1.4.100 activate
   neighbor 30.1.4.100 as-override
+  neighbor 30.1.4.100 timers 5 15
  exit-address-family
  !
 !
@@ -351,6 +354,7 @@ router bgp 65001
   neighbor 30.1.2.100 remote-as 65002
   neighbor 30.1.2.100 activate
   neighbor 30.1.2.100 as-override
+  neighbor 30.1.2.100 timers 5 15
  exit-address-family
  !
 !

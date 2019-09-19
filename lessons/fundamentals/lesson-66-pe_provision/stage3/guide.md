@@ -127,6 +127,8 @@ ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
 !-- traceroute contra loopback CE site2 en L3VPN
 traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
+!-- verificación sesión BGP
+show bgp vpnv4 unicast vrf L3VPN summary
 !-- verificación prefijos 30.0.0.1
 show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
 !-- verificación prefijos 30.0.0.2
@@ -163,6 +165,8 @@ ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
 !-- traceroute contra loopback CE site2 en L3VPN
 traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
+!-- verificación sesión BGP
+show bgp vpnv4 unicast vrf L3VPN summary
 !-- verificación prefijos 30.0.0.1
 show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
 !-- verificación prefijos 30.0.0.2
@@ -199,389 +203,84 @@ show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
 ```
 
-## Ticket: fallo de conectividad con del site 1 con el site 4
+## Ticket 01: fallo de conectividad con del site 1 con el site 4
 
+Como primer paso abrimos rundeck.
 
-### `ios1`
+La url de rundeck la obtenemos en la ejecución del siguiente snippet:
 
-* conectividad local enlace en L3VPN
+**INSERT RUNDECK SNIPPET**
+
+La url obtenida se copia y pega en un navegador y se accede a ella.
+
+**INSTRUCCIONES DE RUNDECK**
+
+Tras la ejecución de la prueba veamos los resultados de forma tabulada:
+
+* Sesiones BGP
+
+| equipo | Estado |
+| :---: | :---: |
+| ios1 | ok |
+| ios2 | ok |
+| ios4 | **X** |
+
+* Tabla BGP
+
+| equipo | 30.0.0.1 | 30.0.0.2 | 30.0.0.4 |
+| :---: | :---: | :---: | :---: |
+| ios1 | ok | ok | **X** |
+| ios2 | ok | ok | **X** |
+| ios4 | ok | ok | **X** |
+
+* Conectividad en L3VPN
+
+| equipo | ios1 l3vpn | Ios2 l3vpn | ios4 l3vpn | ce1 local | ce2 local | ce4 local | ce1 lbk | ce2 lbck | ce4lbk | 
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| ios1 l3vpn | ok | ok | ok | ok | n/a | n/a | ok | ok | **X** |
+| ios2 l3vpn | ok | ok | ok | n/a | ok | n/a | ok | ok | **X** |
+| ios4 l3vpn | ok | ok | ok | n/a | n/a | ok | ok | ok | **X** |
+
+* Conectividad en tabla global via ping
+
+| equipo | ios1 | ios2 | ios4 |
+| :---: | :---: | :---: | :---: |
+| ios1 | ok | ok | ok |
+| ios2 | ok | ok | ok |
+| ios4 | ok | ok | ok |
+
+* Conectividad en tabla global via traceroute
+
+| equipo | ios1 | ios2 | ios4 |
+| :---: | :---: | :---: | :---: |
+| ios1 | ok | ok | ok |
+| ios2 | ok | ok | ok |
+| ios4 | ok | ok | ok |
+
+Vemos que con la primera batería de prueba bastaría para comprobar que el problema reside en que la sesión BGP no levanta en ios4, aún teniendo ping local.
+
+Si verificamos la configuración de al interfaz `Ethernet1/2` de `ios4` se puede ver que la dirección IP asignada no es consistente con el diagrama. Corregimos la configuración:
+
 ```
-!-- conectividad local enlace en L3VPN
+term len 0
+term mon
 enable
 satec
-ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
+conf t
+int ethernet1/2
+ ip address 30.1.4.1 255.255.255.0
+end
+wr
 
-* conectividad local loopback CE en L3VPN
-```
-!-- conectividad local loopback CE en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* conectividad con ios4 en L3VPN
-```
-!-- conectividad con ios4 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* conectividad con ios2 en L3VPN
-```
-!-- conectividad con ios2 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* conectividad con ios4 en L3VPN
-```
-!-- conectividad con ios4 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* conectividad con ios2 en L3VPN
-```
-!-- conectividad con ios2 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* conectividad con ios4 en GRT
-```
-!-- conectividad con ios4 en GRT
-enable
-satec
-ping 10.1.0.4 repeat 2 timeout 1 source loopback0
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* traceroute con ios4 en GRT
-```
-!-- traceroute con ios4 en GRT
-enable
-satec
-traceroute 10.1.0.4 timeout 1 probe 1 source loopback0
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* ping contra loopback CE site4 en L3VPN
-```
-!-- ping contra loopback CE site4 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* ping contra loopback CE site2 en L3VPN
-```
-!-- ping contra loopback CE site2 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site4 en L3VPN
-```
-!-- traceroute contra loopback CE site4 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site2 en L3VPN
-```
-!-- traceroute contra loopback CE site2 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.1
-```
-!-- verificación prefijos 30.0.0.1
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.2
-```
-!-- verificación prefijos 30.0.0.2
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.4
-```
-!-- verificación prefijos 30.0.0.4
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios1', this)">Run this snippet</button>
-
-
-
-
-
-### `ios4`
-* conectividad local enlace en L3VPN
-```
-!-- conectividad local enlace en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-* conectividad local loopback CE en L3VPN
+Esperamos a que levante la sesión BGP:
+
 ```
-!-- conectividad local loopback CE en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+show bgp vpnv4 unicast vrf L3VPN summary
+
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-* conectividad con ios1 en L3VPN
-```
-!-- conectividad con ios1 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* conectividad con ios2 en L3VPN
-```
-!-- conectividad con ios2 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* conectividad con ios1 en L3VPN
-```
-!-- conectividad con ios1 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* conectividad con ios2 en L3VPN
-```
-!-- conectividad con ios2 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* conectividad con ios1 en GRT
-```
-!-- conectividad con ios1 en GRT
-enable
-satec
-ping 10.1.0.1 repeat 2 timeout 1 source loopback0
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* traceroute con ios1 en GRT
-```
-!-- traceroute con ios1 en GRT
-enable
-satec
-traceroute 10.1.0.1 timeout 1 probe 1source loopback0
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* ping contra loopback CE site1 en L3VPN
-```
-!-- ping contra loopback CE site1 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* ping contra loopback CE site2 en L3VPN
-```
-!-- ping contra loopback CE site2 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site1 en L3VPN
-```
-!-- traceroute contra loopback CE site1 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site2 en L3VPN
-```
-!-- traceroute contra loopback CE site2 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.1
-```
-!-- verificación prefijos 30.0.0.1
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.2
-```
-!-- verificación prefijos 30.0.0.2
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.4
-```
-!-- verificación prefijos 30.0.0.4
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
-
-
-
-
-
-### `ios2`
-
-
-* conectividad con ios1 en L3VPN
-```
-!-- conectividad con ios1 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* conectividad con ios4 en L3VPN
-```
-!-- conectividad con ios4 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* conectividad con ios1 en L3VPN
-```
-!-- conectividad con ios1 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* conectividad con ios4 en L3VPN
-```
-!-- conectividad con ios4 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* ping contra loopback CE site1 en L3VPN
-```
-!-- ping contra loopback CE site1 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* ping contra loopback CE site2 en L3VPN
-```
-!-- ping contra loopback CE site2 en L3VPN
-enable
-satec
-ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site1 en L3VPN
-```
-!-- traceroute contra loopback CE site1 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* traceroute contra loopback CE site2 en L3VPN
-```
-!-- traceroute contra loopback CE site2 en L3VPN
-enable
-satec
-traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.1
-```
-!-- verificación prefijos 30.0.0.1
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.2
-```
-!-- verificación prefijos 30.0.0.2
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
-* verificación prefijos 30.0.0.4
-```
-!-- verificación prefijos 30.0.0.4
-enable
-satec
-show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
-```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios2', this)">Run this snippet</button>
-
+Una vez levantado podemos volver a repetir las pruebas.
