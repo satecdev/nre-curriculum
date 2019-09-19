@@ -3,7 +3,7 @@
   executionEnabled: true
   id: 368089c3-630d-471e-922b-0191dc69ed46
   loglevel: INFO
-  name: 006 - Check connectivity ethernet1/0 ios2
+  name: 006 - Check connectivity ethernet1-0 ios2
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -25,7 +25,7 @@
           show run interface e1/0
           show interface ethernet1/0
           ping 10.1.12.1
-      description: 006 - Check connectivity ethernet1/0 ios2
+      description: 006 - Check connectivity ethernet1-0 ios2
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false

@@ -1,9 +1,9 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed45
+  id: 368089c3-630d-471e-922b-0191dc69ed58
   loglevel: INFO
-  name: 005 - Configurate interface ethernet1-0 ios2
+  name: 018 - Configurate protocol BGP ios2
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -23,15 +23,23 @@
           satec
           term len 0
           conf t
-          interface Ethernet1/0
-           no shut
-           ip address 10.1.12.2 255.255.255.0
+          router bgp 65001
+          neighbor 10.1.0.1 peer-group RR-CLIENT
+          !
+          address-family ipv4
+          neighbor 10.1.0.1 activate
+          exit-address-family
+          !
+          address-family vpnv4
+          neighbor 10.1.0.1 activate
+          exit-address-family
+          !
           !
           end
           wr
-      description: 005 - Configurate interface ethernet1-0 ios2
+      description: 018 - Configurate protocol BGP ios2
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
     strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed45
+  uuid: 368089c3-630d-471e-922b-0191dc69ed58

@@ -3,7 +3,7 @@
   executionEnabled: true
   id: 368089c3-630d-471e-922b-0191dc69ed44
   loglevel: INFO
-  name: 004 - Check configuration interface ethernet1/0 ios2
+  name: 004 - Check configuration interface ethernet1-0 ios2
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -24,7 +24,7 @@
           term len 0
           show interface e1/0
           show run interface e1/0
-      description: 004 - Check configuration interface ethernet1/0 ios2
+      description: 004 - Check configuration interface ethernet1-0 ios2
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
