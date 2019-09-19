@@ -1,0 +1,32 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed60
+  loglevel: INFO
+  name: 020 - Configurate protocol BGP vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set protocols bgp group RR-CLIENTS neighbor 10.1.0.1
+          show | compare
+          commit and-quit
+      description: 020 - Configurate protocol BGP vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed60

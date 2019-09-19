@@ -1,0 +1,28 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed47
+  loglevel: INFO
+  name: 007 - Check configuration interface em3 vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          show configuration interface em3
+      description: 007 - Check configuration interface em3 vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed47
