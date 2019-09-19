@@ -13,6 +13,14 @@ La adición de un nuevo equipo tendría las siguientes etapas:
 
 En cada paso es necesario ir comprobando que se ha cumplimentado correctamente.
 
+> Herramientas: Abrir rundeck en una nueva ventana, para ello ejecutar el siguiente snippet y acceder a rundeck
+
+```
+echo http://antidote-local:30001/$SYRINGE_FULL_REF
+```
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck', this)">Run this snippet</button>
+
+
 ## Parte 1: Preconfiguración completa del nuevo equipo
 
 En despliegues grandes es habitual enviar todos los equipos preconfigurados, de forma que durante la integración del nuevo equipo sólo es necesario configurar en extremos remotos.
