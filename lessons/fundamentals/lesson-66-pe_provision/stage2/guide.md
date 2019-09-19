@@ -84,7 +84,7 @@ set routing-instances {{ vrf.name }} protocols bgp group CLIENTES neighbor {{ in
 
 ```
 
-## Datos para la configuración
+## Datos para la configuración de un servicio L3VPN
 
 Una vez entendidas las plantillas de configuración, vamos a aplicarlos para crear una VP en los routers `ios1`, `ios2` e `ios4`.
 
@@ -122,6 +122,12 @@ ios4:
       prefix_len: 24
       nbr_address: 30.1.4.100
 ```
+
+Con estos datos se pretende construir la topología adjunta:
+
+![lesson2](https://cdn1.imggmi.com/uploads/2019/9/19/307d0c24e2e61af815907e3c0348d7ea-full.png)
+
+
 
 ## Configuración en ios1
 

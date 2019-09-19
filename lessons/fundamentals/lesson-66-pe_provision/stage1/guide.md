@@ -29,6 +29,9 @@ Esta configuración se realiza habitualmente en base a plantillas.
 
 El equipo que se va a insertar en red es `ios1`.
 
+![lesson1](https://cdn1.imggmi.com/uploads/2019/9/19/7b56c268ea304425b62e779e40d2345f-full.png)
+
+
 Primero se comprueba la configuración inicial del equipo:
 
 ```

@@ -1,56 +1,17 @@
 # Ticket 03: fallo de conectividad con del site 1 con el site 4
 
-Como primer paso abrimos rundeck.
+## Ejecución de pruebas en rundeck
 
-La url de rundeck la obtenemos en la ejecución del siguiente snippet:
+Como primer paso abrimos rundeck y ejecutamos la batería de pruebas.
 
-** INSERT RUNDECK SNIPPET **
 
-La url obtenida se copia y pega en un navegador y se accede a ella.
-
-** INSTRUCCIONES DE RUNDECK **
+## Análisis de los resultados
 
 Tras la ejecución de la prueba veamos los resultados de forma tabulada:
 
-* Sesiones BGP
+![stage5](https://cdn1.imggmi.com/uploads/2019/9/19/eb9562072d8d4bdb610a4bdcf6508077-full.png)
 
-|equipo|Estado|
-|:---:|:---:|
-|ios1|ok|
-|ios2|ok|
-|ios4|ok|
 
-* Tabla BGP
-
-|equipo|30.0.0.1|30.0.0.2|30.0.0.4|
-|:---:|:---:|:---:|:---:|
-|ios1|ok|ok|ok|
-|ios2|ok|ok|ok|
-|ios4|ok|ok|ok|
-
-* Conectividad en L3VPN
-
-|equipo|ios1 l3vpn|Ios2 l3vpn|ios4 l3vpn|ce1 local|ce2 local|ce4 local|ce1 lbk|ce2 lbck|ce4lbk|
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|ios1 l3vpn|ok|ok|**X**|ok|n/a|n/a|ok|ok|**X**|
-|ios2 l3vpn|ok|ok|**X**|n/a|ok|n/a|ok|ok|**X**|
-|ios4 l3vpn|**x**|**x**|ok|n/a|n/a|ok|ok|ok|ok|
-
-* Conectividad en tabla global via ping
-
-|equipo|ios1|ios2|ios4|
-|:---:|:---:|:---:|:---:|
-|ios1|ok|ok|ok|
-|ios2|ok|ok|ok|
-|ios4|ok|ok|ok|
-
-* Conectividad en tabla global via traceroute
-
-|equipo|ios1|ios2|ios4|
-|:---:|:---:|:---:|:---:|
-|ios1|ok|ok|ok|
-|ios2|ok|ok|ok|
-|ios4|*ok*|ok|ok|
 
 En este caso el plano de control es correcto extremo a extremo y hay conectividad en la tabla global.
 
@@ -124,7 +85,7 @@ show ldp neighbor
 Verificamos que el camino a `ios1` ya está etiquetado:
 
 ```
-traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 5
+traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 0 5
 
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>

@@ -112,21 +112,21 @@ ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
 !-- conectividad con ios2 en L3VPN
 ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
 !-- conectividad con ios4 en L3VPN
-traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1 ttl 0 5
 !-- conectividad con ios2 en L3VPN
-traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1 ttl 0 5
 !-- conectividad con ios4 en GRT
 ping 10.1.0.4 repeat 2 timeout 1 source loopback0
 !-- traceroute con ios4 en GRT
-traceroute 10.1.0.4 timeout 1 probe 1 source loopback0 ttl 5
+traceroute 10.1.0.4 timeout 1 probe 1 source loopback0 ttl 0 5
 !-- ping contra loopback CE site4 en L3VPN
 ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
 !-- ping contra loopback CE site2 en L3VPN
 ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 !-- traceroute contra loopback CE site4 en L3VPN
-traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5
 !-- traceroute contra loopback CE site2 en L3VPN
-traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
 !-- verificación sesión BGP
 show bgp vpnv4 unicast vrf L3VPN summary
 !-- verificación prefijos 30.0.0.1
@@ -150,21 +150,21 @@ ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
 !-- conectividad con ios2 en L3VPN
 ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
 !-- conectividad con ios1 en L3VPN
-traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1 ttl 0 5
 !-- conectividad con ios2 en L3VPN
-traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1 ttl 0 5
 !-- conectividad con ios1 en GRT
 ping 10.1.0.1 repeat 2 timeout 1 source loopback0
 !-- traceroute con ios1 en GRT
-traceroute 10.1.0.1 timeout 1 probe 1source loopback0 ttl 5
+traceroute 10.1.0.1 timeout 1 probe 1source loopback0 ttl 0 5
 !-- ping contra loopback CE site1 en L3VPN
 ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
 !-- ping contra loopback CE site2 en L3VPN
 ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 !-- traceroute contra loopback CE site1 en L3VPN
-traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
 !-- traceroute contra loopback CE site2 en L3VPN
-traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
 !-- verificación sesión BGP
 show bgp vpnv4 unicast vrf L3VPN summary
 !-- verificación prefijos 30.0.0.1
@@ -182,17 +182,17 @@ ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
 !-- conectividad con ios4 en L3VPN
 ping vrf L3VPN 30.1.4.1 repeat 2 timeout 1
 !-- conectividad con ios1 en L3VPN
-traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1 ttl 0 5
 !-- conectividad con ios4 en L3VPN
-traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1 ttl 0 5
 !-- ping contra loopback CE site1 en L3VPN
 ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
 !-- ping contra loopback CE site2 en L3VPN
 ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
 !-- traceroute contra loopback CE site1 en L3VPN
-traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
 !-- traceroute contra loopback CE site2 en L3VPN
-traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 5
+traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5
 !-- verificación prefijos 30.0.0.1
 show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
 !-- verificación prefijos 30.0.0.2
@@ -205,57 +205,12 @@ show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
 ## Ticket 01: fallo de conectividad con del site 1 con el site 4
 
-Como primer paso abrimos rundeck.
+Como primer paso abrimos rundeck y ejecutamos el trabajo **INSERTAR NOMBRE DE TRABAJO**
 
-La url de rundeck la obtenemos en la ejecución del siguiente snippet:
+El resultado de la ejecución del trabajo se muestra a contiuación de forma tabulada:
 
-**INSERT RUNDECK SNIPPET**
+![stage3](https://cdn1.imggmi.com/uploads/2019/9/19/21304f46e267304cf77bce0e58db52df-full.png)
 
-La url obtenida se copia y pega en un navegador y se accede a ella.
-
-**INSTRUCCIONES DE RUNDECK**
-
-Tras la ejecución de la prueba veamos los resultados de forma tabulada:
-
-* Sesiones BGP
-
-| equipo | Estado |
-| :---: | :---: |
-| ios1 | ok |
-| ios2 | ok |
-| ios4 | **X** |
-
-* Tabla BGP
-
-| equipo | 30.0.0.1 | 30.0.0.2 | 30.0.0.4 |
-| :---: | :---: | :---: | :---: |
-| ios1 | ok | ok | **X** |
-| ios2 | ok | ok | **X** |
-| ios4 | ok | ok | **X** |
-
-* Conectividad en L3VPN
-
-| equipo | ios1 l3vpn | Ios2 l3vpn | ios4 l3vpn | ce1 local | ce2 local | ce4 local | ce1 lbk | ce2 lbck | ce4lbk | 
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| ios1 l3vpn | ok | ok | ok | ok | n/a | n/a | ok | ok | **X** |
-| ios2 l3vpn | ok | ok | ok | n/a | ok | n/a | ok | ok | **X** |
-| ios4 l3vpn | ok | ok | ok | n/a | n/a | ok | ok | ok | **X** |
-
-* Conectividad en tabla global via ping
-
-| equipo | ios1 | ios2 | ios4 |
-| :---: | :---: | :---: | :---: |
-| ios1 | ok | ok | ok |
-| ios2 | ok | ok | ok |
-| ios4 | ok | ok | ok |
-
-* Conectividad en tabla global via traceroute
-
-| equipo | ios1 | ios2 | ios4 |
-| :---: | :---: | :---: | :---: |
-| ios1 | ok | ok | ok |
-| ios2 | ok | ok | ok |
-| ios4 | ok | ok | ok |
 
 Vemos que con la primera batería de prueba bastaría para comprobar que el problema reside en que la sesión BGP no levanta en ios4, aún teniendo ping local.
 
