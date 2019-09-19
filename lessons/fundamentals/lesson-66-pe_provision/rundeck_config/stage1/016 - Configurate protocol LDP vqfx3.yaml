@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed56
+  loglevel: INFO
+  name: 016 - Configurate protocol LDP vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set interfaces em3 unit 0 family mpls
+          set protocols ldp interface em3.0
+          show | compare
+          commit and-quit
+      description: 016 - Configurate protocol LDP vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed56

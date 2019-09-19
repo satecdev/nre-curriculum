@@ -19,6 +19,9 @@
     commands:
     - configuration:
         commandsList: |2-
+          enable
+          satec
+          term len 0
           conf t
           !-- configuración de interfaz de loopback
           interface Loopback0
