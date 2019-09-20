@@ -19,6 +19,7 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           configure
           set interfaces em3 unit 0 family inet address 10.1.13.3/24
           show | compare

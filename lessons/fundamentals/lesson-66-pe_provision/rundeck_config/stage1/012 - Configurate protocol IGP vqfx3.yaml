@@ -19,6 +19,7 @@
     commands:
     - configuration:
         commandsList: |2-
+          [CTRL-C]
           configure
           set protocols ospf area 0.0.0.0 interface em3.0 interface-type p2p
           show | compare
