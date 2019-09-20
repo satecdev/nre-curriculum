@@ -1,0 +1,33 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed95
+  loglevel: INFO
+  name: 001 - Check connectivity L3VPN ios4
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios4
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          term mon
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
+          show run vrf L3VPN
+      description: 001 - Check connectivity L3VPN ios4
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed95
