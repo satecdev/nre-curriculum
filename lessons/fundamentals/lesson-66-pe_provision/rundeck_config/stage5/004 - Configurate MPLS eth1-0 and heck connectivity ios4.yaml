@@ -1,0 +1,43 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc70ed01
+  loglevel: INFO
+  name: 004 - Configurate MPLS eth1-0 and check connectivity ios4
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios4
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          term mon
+          conf t
+          interface ethernet1/0
+          mpls ip
+          !
+          end
+          wr
+          
+          show mpls interfaces
+          show mpls ldp neighbor
+
+          traceroute 10.1.0.1 source 10.1.0.4 probe 1 timeout 1 ttl 0 5
+      
+      description: 004 - Configurate MPLS eth1-0 and check connectivity ios4
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc70ed01

@@ -1,0 +1,41 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed93
+  loglevel: INFO
+  name: 023 - Check connectivity L3VPN ping & traceroute ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          term mon
+          !-- prueba de conectividad contra ios1
+          ping vrf L3VPN 30.0.0.1
+          !-- prueba de conectividad contra ios1
+          traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1
+          !-- prueba de conectividad contra ios4
+          ping vrf L3VPN 30.0.0.4
+          !-- prueba de conectividad contra ios4
+          traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1
+          !-- prueba de conectividad contra ios1
+
+      description: 023 - Check connectivity L3VPN ping & traceroute ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed93

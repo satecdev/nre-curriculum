@@ -1,0 +1,29 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed90
+  loglevel: INFO
+  name: 020 - Check BGP prefixes vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          show route receive-protocol bgp 10.1.0.2 table L3VPN.inet.0 | no-more
+          show route protocol bgp next-hop 10.1.0.2 table L3VPN.inet.0 | no-more
+      description: 020 - Check BGP prefixes vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed90

@@ -1,0 +1,40 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed96
+  loglevel: INFO
+  name: 002 - Fix route-target and check ios4
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios4
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          term mon
+          conf t
+          vrf definition L3VPN
+          address-family ipv4
+          no route-target export 65002:1
+          route-target export 65001:1
+          end
+          clear ip bgp *
+          wr
+
+      description: 002 - Fix route-target and check ios4
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed96
