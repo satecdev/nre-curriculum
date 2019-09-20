@@ -1,9 +1,9 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed73
+  id: 368089c3-630d-471e-922b-0191dc69ed82
   loglevel: INFO
-  name: 004 - Cconfigure Ethernet1-2 ios4
+  name: 012 - Check BGP prefixes vqfx3
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -12,26 +12,18 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ios4
+    filter: vqfx3
   nodesSelectedByDefault: true
   scheduleEnabled: true
   sequence:
     commands:
     - configuration:
         commandsList: |2-
-          term len 0
-          term mon
-          enable
-          satec
-          conf t
-          int ethernet1/2
-          ip address 30.1.4.1 255.255.255.0
-          end
-          wr
-
-      description: 004 - Cconfigure Ethernet1-2 ios4
+          show route receive-protocol bgp 10.1.0.4 table L3VPN.inet.0 | no-more
+          show route protocol bgp next-hop 10.1.0.4 table L3VPN.inet.0 | no-more
+      description: 012 - Check BGP prefixes vqfx3
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
     strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed73
+  uuid: 368089c3-630d-471e-922b-0191dc69ed82

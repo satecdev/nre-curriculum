@@ -1,9 +1,9 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed73
+  id: 368089c3-630d-471e-922b-0191dc69ed81
   loglevel: INFO
-  name: 004 - Cconfigure Ethernet1-2 ios4
+  name: 011 - Check BGP prefixes ios2
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -12,26 +12,23 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: ios4
+    filter: ios2
   nodesSelectedByDefault: true
   scheduleEnabled: true
   sequence:
     commands:
     - configuration:
         commandsList: |2-
-          term len 0
-          term mon
           enable
           satec
-          conf t
-          int ethernet1/2
-          ip address 30.1.4.1 255.255.255.0
-          end
-          wr
+          term len 0
+          term mon
+          !-- verificación de que se aprenden prefijos.
+          show bgp vpnv4 unicast rd 10.1.0.4:1 
 
-      description: 004 - Cconfigure Ethernet1-2 ios4
+      description: 011 - Check BGP prefixes ios2
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: false
     strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed73
+  uuid: 368089c3-630d-471e-922b-0191dc69ed81

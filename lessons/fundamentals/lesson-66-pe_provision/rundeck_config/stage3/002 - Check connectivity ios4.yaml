@@ -18,7 +18,7 @@
   sequence:
     commands:
     - configuration:
-        commandsList: |-
+        commandsList: |2-
           enable
           satec
           term len 0

@@ -1,0 +1,59 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed66
+  loglevel: INFO
+  name: 001 - Configurate L3VPN ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          term mon
+          conf t
+          vrf definition L3VPN
+           rd 10.1.0.1:1
+           !
+           address-family ipv4
+            route-target export 65001:1
+            route-target import 65001:1
+           exit-address-family
+          !
+          interface Ethernet1/3
+           no shut
+           vrf forwarding L3VPN
+           ip address 30.1.1.1 255.255.255.0
+          !
+
+          router bgp 65001
+           address-family ipv4 vrf L3VPN
+            redistribute connected
+            neighbor 30.1.1.100 remote-as 65002
+            neighbor 30.1.1.100 activate
+            neighbor 30.1.1.100 as-override
+            neighbor 30.1.1.100 timers 5 15
+           exit-address-family
+           !
+          !
+          end
+          wr
+
+      description: 001 - Configurate L3VPN ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed66
