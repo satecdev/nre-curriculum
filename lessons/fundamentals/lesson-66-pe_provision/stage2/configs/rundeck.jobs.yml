@@ -1,0 +1,873 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed40
+  loglevel: INFO
+  name: 002 - Show running config
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios.*
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |-
+          enable
+          satec
+          term len 0
+          show running
+      description: Get running config
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed40
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed42
+  loglevel: INFO
+  name: 001 - Configure ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          conf t
+          !-- configuración de interfaz de loopback
+          interface Loopback0
+          ip address 10.1.0.1 255.255.255.255
+          ip ospf 1 area 0
+          !
+          !-- configuración de interfaces mpls de core
+          interface Ethernet1/0
+          ip address 10.1.12.1 255.255.255.0
+          ip ospf network point-to-point
+          ip ospf 1 area 0
+          mpls ip
+          !
+          interface Ethernet1/1
+          ip address 10.1.13.1 255.255.255.0
+          ip ospf network point-to-point
+          ip ospf 1 area 0
+          mpls ip
+          !
+          !-- configuración de IGP
+          router ospf 1
+          passive-interface default
+          no passive-interface Ethernet1/0
+          no passive-interface Ethernet1/1
+          !
+          !-- configuración de BGP
+          router bgp 65001
+          bgp router-id 10.1.0.1
+          bgp log-neighbor-changes
+          no bgp default ipv4-unicast
+          neighbor CLIENTE peer-group
+          neighbor CLIENTE remote-as 65002
+          neighbor IBGP peer-group
+          neighbor IBGP remote-as 65001
+          neighbor IBGP password 7 0518071B244F
+          neighbor IBGP update-source Loopback0
+          neighbor 10.1.0.2 peer-group IBGP
+          neighbor 10.1.0.3 peer-group IBGP
+          !
+          address-family ipv4
+            neighbor CLIENTE send-community
+            neighbor CLIENTE default-originate
+            neighbor IBGP send-community
+            neighbor IBGP next-hop-self
+            neighbor 20.1.1.100 activate
+            neighbor 10.1.0.2 activate
+            neighbor 10.1.0.3 activate
+          exit-address-family
+          !
+          address-family vpnv4
+            neighbor IBGP send-community both
+            neighbor 10.1.0.2 activate
+            neighbor 10.1.0.3 activate
+          exit-address-family
+          !
+          !
+          end
+          wr
+      description: 002 - Get running config
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed42
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed43
+  loglevel: INFO
+  name: 003 - Check routing status ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show running
+          show ip ospf neighbor
+          show mpls ldp neighbor
+          show bgp all summary
+      description: 003 - Check routing status ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed43
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed44
+  loglevel: INFO
+  name: 004 - Check configuration interface ethernet1-0 ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show interface e1/0
+          show run interface e1/0
+      description: 004 - Check configuration interface ethernet1-0 ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed44
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed45
+  loglevel: INFO
+  name: 005 - Configurate interface ethernet1-0 ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          conf t
+          interface Ethernet1/0
+           no shut
+           ip address 10.1.12.2 255.255.255.0
+          !
+          end
+          wr
+      description: 005 - Configurate interface ethernet1-0 ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed45
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed46
+  loglevel: INFO
+  name: 006 - Check connectivity ethernet1-0 ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show run interface e1/0
+          show interface ethernet1/0
+          ping 10.1.12.1
+      description: 006 - Check connectivity ethernet1-0 ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed46
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed47
+  loglevel: INFO
+  name: 007 - Check configuration interface em3 vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          show configuration interface em3
+      description: 007 - Check configuration interface em3 vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed47
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed48
+  loglevel: INFO
+  name: 008 - Configurate interface em3 vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set interfaces em3 unit 0 family inet address 10.1.13.3/24
+          show | compare
+          commit and-quit
+      description: 008 - Configurate interface em3 vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed48
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed49
+  loglevel: INFO
+  name: 009 - Check connectivity em3 vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          show configuration interface em3
+          ping 10.1.13.1 rapid count 5
+      description: 009 - Check connectivity em3 vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed49
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed50
+  loglevel: INFO
+  name: 010 - Configurate protocol IGP ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          conf t
+          interface Ethernet1/0
+           ip ospf network point-to-point
+           ip ospf 1 area 0
+          !
+          router ospf 1
+           no passive-interface Ethernet1/0
+          !
+          end
+          wr
+      description: 010 - Configurate protocol IGP ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed50
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed51
+  loglevel: INFO
+  name: 011 - Check neighbor and router to ios1 from ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show ip ospf neighbor
+          show ip route 10.1.0.1
+      description: 011 - Check neighbor and router to ios1 from ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed51
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed52
+  loglevel: INFO
+  name: 012 - Configurate protocol IGP vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set protocols ospf area 0.0.0.0 interface em3.0 interface-type p2p
+          show | compare
+          commit and-quit
+      description: 012 - Configurate protocol IGP vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed52
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed53
+  loglevel: INFO
+  name: 013 - Check neighbor and router to ios1 from vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          show ospf neighbor
+          show route 10.1.0.1 exact
+      description: 013 - Check neighbor and router to ios1 from vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed53
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed54
+  loglevel: INFO
+  name: 014 - Configurate protocol LDP ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          conf t
+          interface Ethernet1/0
+           mpls ip
+          !
+          end
+          wr
+      description: 014 - Configurate protocol LDP ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed54
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed55
+  loglevel: INFO
+  name: 015 - Check protocol LDP against ios1 from ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show mpls ldp neighbor
+      description: 015 - Check protocol LDP against ios1 from ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed55
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed56
+  loglevel: INFO
+  name: 016 - Configurate protocol LDP vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set interfaces em3 unit 0 family mpls
+          set protocols ldp interface em3.0
+          show | compare
+          commit and-quit
+      description: 016 - Configurate protocol LDP vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed56
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed57
+  loglevel: INFO
+  name: 017 - Check protocol LDP against ios1 from vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          show ldp neighbor
+          show ldp session
+          show ldp database session 10.1.0.1
+      description: 017 - Check protocol LDP against ios1 from vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed57
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed58
+  loglevel: INFO
+  name: 018 - Configurate protocol BGP ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          conf t
+          router bgp 65001
+          neighbor 10.1.0.1 peer-group RR-CLIENT
+          !
+          address-family ipv4
+          neighbor 10.1.0.1 activate
+          exit-address-family
+          !
+          address-family vpnv4
+          neighbor 10.1.0.1 activate
+          exit-address-family
+          !
+          !
+          end
+          wr
+      description: 018 - Configurate protocol BGP ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed58
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed59
+  loglevel: INFO
+  name: 019 - Check neighbors BGP against ios1 from ios2
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show bgp all
+          show bgp all summary | i 10.1.0.1
+      description: 019 - Check neighbors BGP against ios1 from ios2
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed59
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed60
+  loglevel: INFO
+  name: 020 - Configurate protocol BGP vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          configure
+          set protocols bgp group RR-CLIENTS neighbor 10.1.0.1
+          show | compare
+          commit and-quit
+      description: 020 - Configurate protocol BGP vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed60
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed61
+  loglevel: INFO
+  name: 021 - Check neighbors BGP against ios1 from vqfx3
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          [CTRL-C]
+          show bgp summary
+      description: 021 - Check neighbors BGP against ios1 from vqfx3
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed61
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed62
+  loglevel: INFO
+  name: 022 - Check OSPF ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show ip ospf neighbor
+          show ip ospf database
+      description: 022 - Check OSPF ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed62
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed63
+  loglevel: INFO
+  name: 023 - Check MPLS ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show mpls ldp neighbor
+          show mpls forwarding
+      description: 023 - Check MPLS ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed63
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed64
+  loglevel: INFO
+  name: 024 - Check BGP ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          show bgp all summary
+      description: 024 - Check BGP ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed64
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 368089c3-630d-471e-922b-0191dc69ed65
+  loglevel: INFO
+  name: 025 - Check connectivity MPLS ios1
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: |2-
+          enable
+          satec
+          term len 0
+          traceroute 10.1.0.4 source 10.1.0.1 probe 1 timeout 1 ttl 0 5
+      description: 025 - Check connectivity MPLS ios1
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: false
+    strategy: node-first
+  uuid: 368089c3-630d-471e-922b-0191dc69ed65

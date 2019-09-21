@@ -1,0 +1,10 @@
+- name: Carga configuraciones
+  hosts: all
+  vars:
+    ansible_user: antidote
+    ansible_password: antidotepassword
+  gather_facts: no
+  tasks:
+  - name: test echo
+    command: echo hola > /antidote/stage1/configs/blabla
+
