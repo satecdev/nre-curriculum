@@ -17,8 +17,8 @@ curl -vvv -X DELETE -H "Accept: application/json"  --cookie /antidote/${STAGE}/c
 
 
 #-- Create project. PENDING QUOTES FORMAT in order to use variable STAGE
-curl -vvv -X POST -H "Content-Type: application/json" -d {"name":"SATEC","config":{"project.label":"SATEC-label","resources.source.2.type":"file","resources.source.2.config.file":"/antidote/${STAGE}/configs/rundeckinventory.json","resources.source.2.config.format":"resourcejson"}} --cookie /antidote/${STAGE}/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
-#curl -vvv -X POST -H "Content-Type: application/json" -d '{ "name": "SATEC", "config": { "project.label":"SATEC-label", "resources.source.2.type":"file", "resources.source.2.config.file":"/antidote/stage2/configs/rundeckinventory.json", "resources.source.2.config.format":"resourcejson" } }' --cookie /antidote/stage2/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
+#curl -vvv -X POST -H "Content-Type: application/json" -d {"name":"SATEC","config":{"project.label":"SATEC-label","resources.source.2.type":"file","resources.source.2.config.file":"/antidote/${STAGE}/configs/rundeckinventory.json","resources.source.2.config.format":"resourcejson"}} --cookie /antidote/${STAGE}/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
+curl -vvv -X POST -H "Content-Type: application/json" -d '{ "name": "SATEC", "config": { "project.label":"SATEC-label", "resources.source.2.type":"file", "resources.source.2.config.file":"/antidote/rundeckinventory.json", "resources.source.2.config.format":"resourcejson" } }' --cookie /antidote/stage2/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
 
 #-- add key 
 curl -vvv -X POST -H "Content-type: application/x-rundeck-data-password" -d "antidotepassword" --cookie /antidote/${STAGE}/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/storage/keys/antidote/cpe"
