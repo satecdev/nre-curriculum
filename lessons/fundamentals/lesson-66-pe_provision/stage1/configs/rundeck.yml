@@ -26,8 +26,8 @@
       owner: antidote
       group: antidote
       mode: '0644'
-  - name: Delete project
-    shell: rd projects delete -p stage1 -y
+  # - name: Delete project
+  #   shell: rd projects delete -p stage1 -y
   - name: Create project
     shell: rd projects create -p stage1
   - name: Load keys
