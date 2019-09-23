@@ -1,7 +1,7 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 35be6d57-a892-49be-81ee-32e599ebf30a
+  id: 00000000-0000-0000-0000-000000000000
   loglevel: INFO
   name: '[000] get ios1 device configuration'
   nodeFilterEditable: false
@@ -25,7 +25,7 @@
           term len 0
 
           show running'
-      description: job_name
+      description: '[000][EXEC] get ios1 device configuration'
       nodeStep: true
       plugins:
         LogFilter:
@@ -38,15 +38,16 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ ! -z "${data.result}" ]'
+      description: '[000][TEST] get ios1 device configuration'
       nodeStep: true
       type: localexec
     keepgoing: true
     strategy: node-first
-  uuid: 35be6d57-a892-49be-81ee-32e599ebf30a
+  uuid: 00000000-0000-0000-0000-000000000000
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 009dcfe7-357e-442e-a64b-2a680f3735f6
+  id: 00000000-0000-0000-0000-000000000001
   loglevel: INFO
   name: '[001] load ios1 preconfiguration'
   nodeFilterEditable: false
@@ -83,7 +84,7 @@
           \ !\n address-family vpnv4\n  neighbor IBGP send-community both\n  neighbor\
           \ 10.1.0.2 activate\n  neighbor 10.1.0.3 activate\n exit-address-family\n\
           \ !\n!\nend\nwr\n"
-      description: job_name
+      description: '[001][EXEC] load ios1 preconfiguration'
       nodeStep: true
       plugins:
         LogFilter:
@@ -96,15 +97,16 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result}" ]'
+      description: '[001][TEST] load ios1 preconfiguration'
       nodeStep: true
       type: localexec
     keepgoing: true
     strategy: node-first
-  uuid: 009dcfe7-357e-442e-a64b-2a680f3735f6
+  uuid: 00000000-0000-0000-0000-000000000001
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: a96044b2-8a0c-4598-b8bb-1b07b456e49d
+  id: 00000000-0000-0000-0000-000000000002
   loglevel: INFO
   name: '[002] get ios1 device configuration'
   nodeFilterEditable: false
@@ -128,7 +130,7 @@
           term len 0
 
           show running'
-      description: job_name
+      description: '[002][EXEC] get ios1 device configuration'
       nodeStep: true
       plugins:
         LogFilter:
@@ -141,15 +143,16 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ ! -z "${data.result}" ]'
+      description: '[002][TEST] get ios1 device configuration'
       nodeStep: true
       type: localexec
     keepgoing: true
     strategy: node-first
-  uuid: a96044b2-8a0c-4598-b8bb-1b07b456e49d
+  uuid: 00000000-0000-0000-0000-000000000002
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: cbcaa9fb-35f9-40b9-ac0d-88d6a9b3dad3
+  id: 00000000-0000-0000-0000-000000000003
   loglevel: INFO
   name: '[003] standard protocols check (ospf|ldp|bgp)'
   nodeFilterEditable: false
@@ -179,16 +182,16 @@
           show bgp all summary
 
           '
-      description: job_name
+      description: '[003][EXEC] standard protocols check (ospf|ldp|bgp)'
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: true
     strategy: node-first
-  uuid: cbcaa9fb-35f9-40b9-ac0d-88d6a9b3dad3
+  uuid: 00000000-0000-0000-0000-000000000003
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: efc58ee6-1d60-460c-b74d-87976ac48f52
+  id: 00000000-0000-0000-0000-000000000004
   loglevel: INFO
   name: '[004] verify current ios2 interface configuration'
   nodeFilterEditable: false
@@ -207,16 +210,16 @@
     - configuration:
         commandsList: "enable\nsatec\nterm len 0\nshow interface Ethernet1/0\nshow\
           \ run interface Ethernet1/0      \n"
-      description: job_name
+      description: '[004][EXEC] verify current ios2 interface configuration'
       nodeStep: true
       type: ssh-node-step-executor
     keepgoing: true
     strategy: node-first
-  uuid: efc58ee6-1d60-460c-b74d-87976ac48f52
+  uuid: 00000000-0000-0000-0000-000000000004
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 6004f70f-c173-48d1-a6c5-02c863cd974f
+  id: 00000000-0000-0000-0000-000000000005
   loglevel: INFO
   name: '[005] configure ios2 link'
   nodeFilterEditable: false
@@ -235,7 +238,7 @@
     - configuration:
         commandsList: "enable\nsatec\nterm len 0\nconf t\ninterface Ethernet1/0\n\
           \ no shut\n ip address 10.1.12.2 255.255.255.0\n!\nend\nwr      \n"
-      description: job_name
+      description: '[005][EXEC] configure ios2 link'
       nodeStep: true
       plugins:
         LogFilter:
@@ -247,9 +250,911 @@
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result}" ]'
+        command: '[ -z "${data.result}" ]'
+      description: '[005][TEST] configure ios2 link'
       nodeStep: true
       type: localexec
     keepgoing: true
     strategy: node-first
-  uuid: 6004f70f-c173-48d1-a6c5-02c863cd974f
+  uuid: 00000000-0000-0000-0000-000000000005
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000006
+  loglevel: INFO
+  name: '[006] Verify ios2 - ios1 local connectivity'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nshow run interface e1/0\nshow interface\
+          \ ethernet1/0\nping 10.1.12.1    \n"
+      description: '[006][EXEC] Verify ios2 - ios1 local connectivity'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*percent is 0 .*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[006][TEST] Verify ios2 - ios1 local connectivity'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000006
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000007
+  loglevel: INFO
+  name: '[007] Verify vqfx3 current interface configuration'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'show configuration interface em3
+
+          '
+      description: '[007][EXEC] Verify vqfx3 current interface configuration'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(known|syntax)*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[007][TEST] Verify vqfx3 current interface configuration'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000007
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000008
+  loglevel: INFO
+  name: '[008] Configure vqfx interface'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'configure
+
+          set interfaces em3 unit 0 family inet address 10.1.13.3/24
+
+          show | compare
+
+          commit and-quit
+
+          '
+      description: '[008][EXEC] Configure vqfx interface'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(error)*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[008][TEST] Configure vqfx interface'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000008
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000009
+  loglevel: INFO
+  name: '[009] Verify ping connectivity between vqfx3 and ios1'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'show configuration interface em3
+
+          ping 10.1.13.1 rapid count 5
+
+          '
+      description: '[009][EXEC] Verify ping connectivity between vqfx3 and ios1'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(4|5) packets received.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[009][TEST] Verify ping connectivity between vqfx3 and ios1'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000009
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000010
+  loglevel: INFO
+  name: '[010] configure OSPF in ios2 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nconf t\ninterface Ethernet1/0\n\
+          \ ip ospf network point-to-point\n ip ospf 1 area 0\n!\nrouter ospf 1\n\
+          \ no passive-interface Ethernet1/0\n!\nend\nwr     \n"
+      description: '[010][EXEC] configure OSPF in ios2 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(% In).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[010][TEST] configure OSPF in ios2 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000010
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000011
+  loglevel: INFO
+  name: '[011] Verify OSPF in ios2 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nshow ip ospf neighbor\nshow ip route\
+          \ 10.1.0.1   \n"
+      description: '[011][EXEC] Verify OSPF in ios2 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*10\.1\.0\.1 +0 +(FULL).*10.1.12.1.*from 10.1.0.1.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[011][TEST] Verify OSPF in ios2 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000011
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000012
+  loglevel: INFO
+  name: '[012] Configure OSPF vqfx interface'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'configure
+
+          set interfaces em3 unit 0 family inet address 10.1.13.3/24
+
+          show | compare
+
+          commit and-quit
+
+          '
+      description: '[012][EXEC] Configure OSPF vqfx interface'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(error)*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[012][TEST] Configure OSPF vqfx interface'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000012
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000013
+  loglevel: INFO
+  name: '[013] Verify OSPF in vqfx3 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'show ospf neighbor
+
+          show route 10.1.0.1 exact table inet.0
+
+          '
+      description: '[013][EXEC] Verify OSPF in vqfx3 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(Full +10.1.0.1).*via em3.0.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[013][TEST] Verify OSPF in vqfx3 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000013
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000014
+  loglevel: INFO
+  name: '[014] configure LDP in ios2 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nconf t\ninterface Ethernet1/0\n\
+          \ mpls ip\n!\nend\nwr  \n"
+      description: '[014][EXEC] configure LDP in ios2 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(% In).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[014][TEST] configure LDP in ios2 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000014
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000015
+  loglevel: INFO
+  name: '[015] Verify LDP in ios2 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nshow mpls ldp neighbor  \n"
+      description: '[015][EXEC] Verify LDP in ios2 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: '.*Peer LDP Ident: (10.1.0.1).*'
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[015][TEST] Verify LDP in ios2 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000015
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000016
+  loglevel: INFO
+  name: '[016] Configure LDP vqfx interface'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'configure
+
+          set interfaces em3 unit 0 family mpls
+
+          set protocols ldp interface em3.0
+
+          show | compare
+
+          commit and-quit
+
+          '
+      description: '[016][EXEC] Configure LDP vqfx interface'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(error)*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[016][TEST] Configure LDP vqfx interface'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000016
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000017
+  loglevel: INFO
+  name: '[017] Verify LDP in vqfx3 - ios1 link'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'show ldp neighbor
+
+          show ldp session
+
+          show ldp database session 10.1.0.1
+
+          '
+      description: '[017][EXEC] Verify LDP in vqfx3 - ios1 link'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(10.1.0.1 +Operational).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[017][TEST] Verify LDP in vqfx3 - ios1 link'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000017
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000018
+  loglevel: INFO
+  name: '[018] configure BGP session in ios2 against ios1'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\nconf t\n\nrouter bgp 65001\nneighbor\
+          \ 10.1.0.1 peer-group RR-CLIENT\n!\naddress-family ipv4\n neighbor 10.1.0.1\
+          \ activate\nexit-address-family\n!\naddress-family vpnv4\n neighbor 10.1.0.1\
+          \ activate\nexit-address-family\n!        \nend\nwr\n"
+      description: '[018][EXEC] configure BGP session in ios2 against ios1'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(% In).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[018][TEST] configure BGP session in ios2 against ios1'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000018
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000019
+  loglevel: INFO
+  name: '[019] Verify ios2 - ios1 BGP session'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          show bgp all
+
+          show ip bgp neighbor 10.1.0.1
+
+          show bgp all summary | i 10.1.0.1
+
+          '
+      description: '[019][EXEC] Verify ios2 - ios1 BGP session'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*BGP state = (Established).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[019][TEST] Verify ios2 - ios1 BGP session'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000019
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000020
+  loglevel: INFO
+  name: '[020] configure BGP session in vqfx3 against ios1'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'configure
+
+          set protocols bgp group RR-CLIENTS neighbor 10.1.0.1
+
+          show | compare
+
+          commit and-quit
+
+          '
+      description: '[020][EXEC] configure BGP session in vqfx3 against ios1'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(error)*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result}" ]'
+      description: '[020][TEST] configure BGP session in vqfx3 against ios1'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000020
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000021
+  loglevel: INFO
+  name: '[021] Verify vqfx3 - ios1 BGP session'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'show bgp summary | no-more
+
+          '
+      description: '[021][EXEC] Verify vqfx3 - ios1 BGP session'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*10.1.0.1 +65001 +\d+ +\d+ +\d+ +\d+ +\d+:\d+:\d+ +(Establ).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[021][TEST] Verify vqfx3 - ios1 BGP session'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000021
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000022
+  loglevel: INFO
+  name: '[022] Verify ios1 is integraged - OSPF'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          show ip ospf neighbor
+
+          show ip ospf database
+
+          '
+      description: '[022][EXEC] Verify ios1 is integraged - OSPF'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(10.1.0.3.*FULL.*10.1.0.2.*FULL).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[022][TEST] Verify ios1 is integraged - OSPF'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000022
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000023
+  loglevel: INFO
+  name: '[023] Verify ios1 is integraged - LDP'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          show mpls ldp neighbor
+
+          show mpls forwarding
+
+          '
+      description: '[023][EXEC] Verify ios1 is integraged - LDP'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: '.*(Ident: 10.1.0.2.*Ident: 10.1.0.3).*'
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[023][TEST] Verify ios1 is integraged - LDP'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000023
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000024
+  loglevel: INFO
+  name: '[024] Verify ios1 is integraged - BGP'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          show bgp all summary
+
+          '
+      description: '[024][EXEC] Verify ios1 is integraged - BGP'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*(10.1.0.2.*:\d{2} +\d+.*10.1.0.3.*:\d{2} +\d+.*).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[024][TEST] Verify ios1 is integraged - BGP'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000024
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000025
+  loglevel: INFO
+  name: '[025] Verify ios1 is integraged - traceroute against ios4'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\ntraceroute 10.1.0.4 source 10.1.0.1\
+          \ probe 1 timeout 1 \n"
+      description: '[025][EXEC] Verify ios1 is integraged - traceroute against ios4'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result
+            regex: .*MPLS. Label \d+.*(10.1.24.4).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result}" ]'
+      description: '[025][TEST] Verify ios1 is integraged - traceroute against ios4'
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000025

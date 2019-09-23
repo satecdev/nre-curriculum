@@ -1,0 +1,10 @@
+jobs:
+- name: "ios2: verificación de que se aprenden prefijos de ce1"
+  filter: ios2
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- ios2: verificación de que se aprenden prefijos de ce1
+    show bgp vpnv4 unicast rd 10.1.0.1:1 30.0.0.1
