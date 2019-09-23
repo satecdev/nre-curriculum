@@ -1,0 +1,150 @@
+jobs:
+- name: "ios4: conectividad local enlace en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad local enlace en L3VPN
+    ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
+- name: "ios4: conectividad local loopback CE en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad local loopback CE en L3VPN
+    ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+- name: "ios4: conectividad con ios1 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad con ios1 en L3VPN
+    ping vrf L3VPN 30.1.1.1 repeat 2 timeout 1
+- name: "ios4: conectividad con ios2 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad con ios2 en L3VPN
+    ping vrf L3VPN 30.1.2.1 repeat 2 timeout 1
+- name: "ios4: conectividad con ios1 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad con ios1 en L3VPN
+    traceroute vrf L3VPN 30.1.1.1 probe 1 timeout 1 ttl 0 5
+- name: "ios4: conectividad con ios2 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad con ios2 en L3VPN
+    traceroute vrf L3VPN 30.1.2.1 probe 1 timeout 1 ttl 0 5
+- name: "ios4: conectividad con ios1 en GRT"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad con ios1 en GRT
+    ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+- name: "ios4: traceroute con ios1 en GRT"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  regex_negate: true
+  vendor: ios
+  commandsList: |
+    !-- traceroute con ios1 en GRT
+    traceroute 10.1.0.1 timeout 1 probe 1 source loopback0 ttl 0 5
+- name: "ios4: ping contra loopback CE site1 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- ping contra loopback CE site1 en L3VPN
+    ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+- name: "ios4: ping contra loopback CE site2 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- ping contra loopback CE site2 en L3VPN
+    ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+- name: "ios4: traceroute contra loopback CE site1 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  vendor: ios
+  commandsList: |
+    !-- traceroute contra loopback CE site1 en L3VPN
+    traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
+- name: "ios4: traceroute contra loopback CE site2 en L3VPN"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  vendor: ios
+  commandsList: |
+    !-- traceroute contra loopback CE site2 en L3VPN
+    traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
+- name: "ios4: verificación sesión BGP"
+  filter: ios4
+  regex: true
+  regex_negate: False
+  regex_expr: .*30.1.4.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+ +(\d+).*
+  vendor: ios
+  commandsList: |
+    !-- verificación sesión BGP
+    show bgp vpnv4 unicast vrf L3VPN summary
+
+- name: "ios4: verificación prefijos 30.0.0.1"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- verificación prefijos 30.0.0.1
+    show bgp vpnv4 unicast vrf L3VPN 30.0.0.1
+
+- name: "ios4: verificación prefijos 30.0.0.2"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- verificación prefijos 30.0.0.2
+    show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+
+- name: "ios4: verificación prefijos 30.0.0.4"
+  filter: ios4
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- verificación prefijos 30.0.0.4
+    show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
+
