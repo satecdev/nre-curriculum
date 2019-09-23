@@ -53,4 +53,4 @@
       export SERVERNAME=$(cat /tmp/SERVERNAME)
       export SERVERPORT=$(cat /tmp/SERVERPORT)
       export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
-      rd projects archives import -p "stage2" --file /projects/stage2-20190923-124242.rdproject.jar
+      rd projects archives import -p "stage2" --include-acl --include-config --noExecutions --include-scm  --file /projects/stage2-20190923-124242.rdproject.jar
