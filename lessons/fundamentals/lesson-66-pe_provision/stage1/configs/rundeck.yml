@@ -7,24 +7,24 @@
   tasks:
   - name: Copy project jar
     copy:
-      src: stage1-20190920-121200.rdproject.jar
+      src: stage2-20190923-124242.rdproject.jar
       dest: /projects/
       owner: antidote
-      group: antidote
+      group: rundeck
       mode: '0644'
   - name: Copy inventory file 
     copy:
       src: rundeckinventory.json
       dest: /projects/
       owner: antidote
-      group: antidote
+      group: rundeck
       mode: '0644'
   - name: Copy password file
     copy:
       src: password
       dest: /projects/
       owner: antidote
-      group: antidote
+      group: rundeck
       mode: '0644'
   - name: Create project
     shell: |
@@ -32,7 +32,7 @@
       export SERVERNAME=$(cat /tmp/SERVERNAME)
       export SERVERPORT=$(cat /tmp/SERVERPORT)
       export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
-      rd projects create -p stage1
+      rd projects create -p stage2
   - name: Load keys
     shell: |
       export SYRINGE_FULL_REF=$(cat /tmp/SYRINGE_FULL_REF)
@@ -53,4 +53,4 @@
       export SERVERNAME=$(cat /tmp/SERVERNAME)
       export SERVERPORT=$(cat /tmp/SERVERPORT)
       export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
-      rd projects archives import -p "stage1" --file /projects/stage1-20190920-121200.rdproject.jar
+      rd projects archives import -p "stage2" --file /projects/stage2-20190923-124242.rdproject.jar
