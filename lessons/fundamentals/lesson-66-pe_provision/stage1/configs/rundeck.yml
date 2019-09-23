@@ -14,7 +14,7 @@
       mode: '0644'
   - name: Copy inventory file 
     copy:
-      src: rundeckinventory
+      src: rundeckinventory.json
       dest: /projects/
       owner: antidote
       group: antidote
