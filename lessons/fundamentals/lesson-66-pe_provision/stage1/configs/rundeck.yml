@@ -33,6 +33,8 @@
   - name: Load keys
     shell: "rd keys create -t password -p /antidote/cpe -f /projects/password"
   - name: Import nodes 
-    shell: curl -vvv -X POST -H "Content-Type: application/json" -d '{ "name": "stage1", "config": { "project.label":"stage1", "resources.source.2.type":"file", "resources.source.2.config.file":"/projects/rundeckinventory.json", "resources.source.2.config.format":"resourcejson" } }' --cookie /antidote/stage1/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
+    shell: |
+      curl -vvv -X POST -H "Content-Type: application/json" -d '{ "name": "stage1", "config": { "project.label":"stage1", "resources.source.2.type":"file", "resources.source.2.config.file":"/projects/rundeckinventory.json", "resources.source.2.config.format":"resourcejson" } }' --cookie /antidote/stage1/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
   - name: Load project
-    shell: "rd projects archives import -p "stage1" --file /projects/stage1-20190920-121200.rdproject.jar"
+    shell: |
+      rd projects archives import -p "stage1" --file /projects/stage1-20190920-121200.rdproject.jar
