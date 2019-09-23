@@ -10,21 +10,21 @@
       src: stage2-20190923-124242.rdproject.jar
       dest: /projects/
       owner: antidote
-      group: rundeck
+      group: antidote
       mode: '0644'
   - name: Copy inventory file 
     copy:
       src: rundeckinventory.json
       dest: /projects/
       owner: antidote
-      group: rundeck
+      group: antidote
       mode: '0644'
   - name: Copy password file
     copy:
       src: password
       dest: /projects/
       owner: antidote
-      group: rundeck
+      group: antidote
       mode: '0644'
   - name: Create project
     shell: |
