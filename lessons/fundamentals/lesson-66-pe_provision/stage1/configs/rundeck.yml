@@ -26,15 +26,30 @@
       owner: antidote
       group: antidote
       mode: '0644'
-  # - name: Delete project
-  #   shell: rd projects delete -p stage1 -y
   - name: Create project
-    shell: rd projects create -p stage1
+    shell: |
+      export SYRINGE_FULL_REF=$(cat /tmp/SYRINGE_FULL_REF)
+      export SERVERNAME=$(cat /tmp/SERVERNAME)
+      export SERVERPORT=$(cat /tmp/SERVERPORT)
+      export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
+      rd projects create -p stage1
   - name: Load keys
-    shell: "rd keys create -t password -p /antidote/cpe -f /projects/password"
+    shell: |
+      export SYRINGE_FULL_REF=$(cat /tmp/SYRINGE_FULL_REF)
+      export SERVERNAME=$(cat /tmp/SERVERNAME)
+      export SERVERPORT=$(cat /tmp/SERVERPORT)
+      export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
+      rd keys create -t password -p /antidote/cpe -f /projects/password
+  - name: Get cookie for auth
+    shell: |
+      curl -D - -X POST -H "Content-Type: application/x-www-form-urlencoded"   -H "Cache-Control: no-cache"   -d "j_username=admin&j_password=admin"   --cookie-jar /antidote/${STAGE}/configs/rd_cookie   http://localhost:4440/${SYRINGE_FULL_REF}/j_security_check 
   - name: Import nodes 
     shell: |
       curl -vvv -X POST -H "Content-Type: application/json" -d '{ "name": "stage1", "config": { "project.label":"stage1", "resources.source.2.type":"file", "resources.source.2.config.file":"/projects/rundeckinventory.json", "resources.source.2.config.format":"resourcejson" } }' --cookie /antidote/stage1/configs/rd_cookie "http://localhost:4440/${SYRINGE_FULL_REF}/api/32/projects"
   - name: Load project
     shell: |
+      export SYRINGE_FULL_REF=$(cat /tmp/SYRINGE_FULL_REF)
+      export SERVERNAME=$(cat /tmp/SERVERNAME)
+      export SERVERPORT=$(cat /tmp/SERVERPORT)
+      export RD_BYPASS_URL=http://$SERVERNAME:$SERVERPORT/$SYRINGE_FULL_REF/
       rd projects archives import -p "stage1" --file /projects/stage1-20190920-121200.rdproject.jar
