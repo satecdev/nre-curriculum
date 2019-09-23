@@ -36,7 +36,7 @@ jobs:
 
 - name: " Configuración en ios2 de la L3VPN"
   regex: false
-  filter: ios1
+  filter: ios2
   vendor: ios
   commandsList: |
     !-- Configuración en ios4 de la L3VPN
@@ -70,7 +70,7 @@ jobs:
 
 - name: " Configuración en ios4 de la L3VPN"
   regex: false
-  filter: ios1
+  filter: ios4
   vendor: ios
   commandsList: |
     !-- Configuración en ios4 de la L3VPN

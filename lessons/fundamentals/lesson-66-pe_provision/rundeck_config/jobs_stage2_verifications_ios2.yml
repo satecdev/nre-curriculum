@@ -1,0 +1,46 @@
+jobs:
+- name: "ios2:ping a la interfaz del CE local"
+  filter: ios2
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- ios2:ping a la interfaz del CE local
+    ping vrf L3VPN 30.1.2.100
+- name: "ios2: comprobación de que la sesión BGP levanta"
+  filter: ios2
+  regex: true
+  regex_negate: False
+  regex_expr: .*30.1.2.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+ +(\d+).*
+  vendor: ios
+  commandsList: |
+    !-- ios2: comprobación de que la sesión BGP levanta
+    show bgp vpnv4 unicast vrf L3VPN summary
+- name: "ios2: verificación de que se aprenden prefijos de ce2 via BGP."
+  filter: ios2
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- ios2: verificación de que se aprenden prefijos de ce2 via BGP.
+    show bgp vpnv4 unicast vrf L3VPN 30.0.0.2
+- name: "ios2: verificación de que se aprenden prefijos de ce2 en la tabla de rutas."
+  filter: ios2
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- ios2: verificación de que se aprenden prefijos de ce2 en la tabla de rutas.
+    show ip route vrf L3VPN 30.0.0.2
+- name: "ios2: verificación de que se aprenden prefijos de ce2"
+  filter: ios2
+  regex: true
+  regex_negate: true
+  regex_expr: .*Network not in (table).*
+  vendor: ios
+  commandsList: |
+    !-- ios2: verificación de que se aprenden prefijos de ce2
+    show bgp vpnv4 unicast rd 10.1.0.2:1 30.0.0.2

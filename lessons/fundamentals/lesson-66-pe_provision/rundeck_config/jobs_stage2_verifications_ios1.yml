@@ -35,30 +35,3 @@ jobs:
   commandsList: |
     !-- ios1: verificación de que se aprenden prefijos de ce1 en la tabla de rutas.
     show ip route vrf L3VPN 30.0.0.1
-- name: "ios2: verificación de que se aprenden prefijos de ce1"
-  filter: ios2
-  regex: true
-  regex_negate: true
-  regex_expr: .*Network not in (table).*
-  vendor: ios
-  commandsList: |
-    !-- ios2: verificación de que se aprenden prefijos de ce1
-    show bgp vpnv4 unicast rd 10.1.0.1:1 30.0.0.1
-- name: "vqfx3: verificación de prefijos recibidos de ios1"
-  filter: vqfx3
-  regex: true
-  regex_negate: false
-  regex_expr: .*30.0.0.1/32 +(10.1.0.1).*
-  vendor: juniper
-  commandsList: |
-    !-- vqfx3: verificación de prefijos recibidos de ios1
-    show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more
-- name: "vqfx3: verificación de prefijos anunciados ios1"
-  filter: vqfx3
-  regex: true
-  regex_negate: false
-  regex_expr: .*(30.0.0.1/32).*
-  vendor: juniper
-  commandsList: |
-    !-- vqfx3: verificación de prefijos anunciados ios1
-    show route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more

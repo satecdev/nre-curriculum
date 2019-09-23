@@ -1,9 +1,740 @@
 - defaultTab: nodes
   description: ''
   executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed40
+  id: 00000000-0000-0000-0000-000000000000
   loglevel: INFO
-  name: 002 - Show running config
+  name: "[000]  Configuraci\xF3n en ios1 de la L3VPN"
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- Configuraci\xF3n en ios1 de\
+          \ la L3VPN\nconf t\nvrf definition L3VPN\n rd 10.1.0.1:1\n !\n address-family\
+          \ ipv4\n  route-target export 65001:1\n  route-target import 65001:1\n exit-address-family\n\
+          !\ninterface Ethernet1/3\n no shut\n vrf forwarding L3VPN\n ip address 30.1.1.1\
+          \ 255.255.255.0\n!\n\nrouter bgp 65001\n address-family ipv4 vrf L3VPN\n\
+          \  redistribute connected\n  neighbor 30.1.1.100 remote-as 65002\n  neighbor\
+          \ 30.1.1.100 activate\n  neighbor 30.1.1.100 as-override\n  neighbor 30.1.1.100\
+          \ timers 5 15\n exit-address-family\n !\n!\nend\nwr\n"
+      description: "[000][EXEC]  Configuraci\xF3n en ios1 de la L3VPN"
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000000
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000001
+  loglevel: INFO
+  name: "[001]  Configuraci\xF3n en ios2 de la L3VPN"
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- Configuraci\xF3n en ios4 de\
+          \ la L3VPN\nconf t\nvrf definition L3VPN\n rd 10.1.0.2:1\n !\n address-family\
+          \ ipv4\n  route-target export 65001:1\n  route-target import 65001:1\n exit-address-family\n\
+          !\ninterface Ethernet1/3\n no shut\n vrf forwarding L3VPN\n ip address 30.1.2.1\
+          \ 255.255.255.0\n!\n\nrouter bgp 65001\n address-family ipv4 vrf L3VPN\n\
+          \  redistribute connected\n  neighbor 30.1.2.100 remote-as 65002\n  neighbor\
+          \ 30.1.2.100 activate\n  neighbor 30.1.2.100 as-override\n  neighbor 30.1.2.100\
+          \ timers 5 15\n exit-address-family\n !\n!\nend\nwr\n"
+      description: "[001][EXEC]  Configuraci\xF3n en ios2 de la L3VPN"
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000001
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000002
+  loglevel: INFO
+  name: "[002]  Configuraci\xF3n en ios4 de la L3VPN"
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios4
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- Configuraci\xF3n en ios4 de\
+          \ la L3VPN\nconf t\nvrf definition L3VPN\n rd 10.1.0.4:1\n !\n address-family\
+          \ ipv4\n  route-target export 65001:1\n  route-target import 65001:1\n exit-address-family\n\
+          !\ninterface Ethernet1/2\n no shut\n vrf forwarding L3VPN\n ip address 30.1.4.1\
+          \ 255.255.255.0\n!\n\nrouter bgp 65001\n address-family ipv4 vrf L3VPN\n\
+          \  redistribute connected\n  neighbor 30.1.4.100 remote-as 65002\n  neighbor\
+          \ 30.1.4.100 activate\n  neighbor 30.1.4.100 as-override\n  neighbor 30.1.4.100\
+          \ timers 5 15\n exit-address-family\n !\n!\nend\nwr\n"
+      description: "[002][EXEC]  Configuraci\xF3n en ios4 de la L3VPN"
+      nodeStep: true
+      type: ssh-node-step-executor
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000002
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000101
+  loglevel: INFO
+  name: '[101] ios1: l3vpn configuration verification at ios1'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios1
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- ios1:ping a la interfaz del CE local
+
+          ping vrf L3VPN 30.1.1.100
+
+          '
+      description: '[000][EXEC] ios1:ping a la interfaz del CE local'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: '[000][TEST] ios1:ping a la interfaz del CE local'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios1: comprobaci\xF3n de que\
+          \ la sesi\xF3n BGP levanta\nshow bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[001][EXEC] ios1: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*30.1.1.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] ios1: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios1: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce1 via BGP.\nshow bgp vpnv4 unicast vrf L3VPN\
+          \ 30.0.0.1\n"
+      description: "[002][EXEC] ios1: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1 via BGP."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result2
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result2}" ]'
+      description: "[002][TEST] ios1: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1 via BGP."
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios1: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce1 en la tabla de rutas.\nshow ip route vrf L3VPN\
+          \ 30.0.0.1\n"
+      description: "[003][EXEC] ios1: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1 en la tabla de rutas."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result3
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result3}" ]'
+      description: "[003][TEST] ios1: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1 en la tabla de rutas."
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000101
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000102
+  loglevel: INFO
+  name: '[102] ios1: l3vpn configuration verification at ios2-rr'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce1\nshow bgp vpnv4 unicast rd 10.1.0.1:1 30.0.0.1\n"
+      description: "[000][EXEC] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result0}" ]'
+      description: "[000][TEST] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce1"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000102
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000103
+  loglevel: INFO
+  name: '[103] ios1: l3vpn configuration verification at vqfx3-rr'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos recibidos de ios1\n\
+          show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more\n"
+      description: "[000][EXEC] vqfx3: verificaci\xF3n de prefijos recibidos de ios1"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*30.0.0.1/32 +(10.1.0.1).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: "[000][TEST] vqfx3: verificaci\xF3n de prefijos recibidos de ios1"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos anunciados ios1\nshow\
+          \ route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more"
+      description: "[001][EXEC] vqfx3: verificaci\xF3n de prefijos anunciados ios1"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*(30.0.0.1/32).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] vqfx3: verificaci\xF3n de prefijos anunciados ios1"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000103
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000201
+  loglevel: INFO
+  name: '[201] ios2: l3vpn configuration verification at ios2'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- ios2:ping a la interfaz del CE local
+
+          ping vrf L3VPN 30.1.2.100
+
+          '
+      description: '[000][EXEC] ios2:ping a la interfaz del CE local'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: '[000][TEST] ios2:ping a la interfaz del CE local'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: comprobaci\xF3n de que\
+          \ la sesi\xF3n BGP levanta\nshow bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[001][EXEC] ios2: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*30.1.2.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] ios2: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce2 via BGP.\nshow bgp vpnv4 unicast vrf L3VPN\
+          \ 30.0.0.2\n"
+      description: "[002][EXEC] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2 via BGP."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result2
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result2}" ]'
+      description: "[002][TEST] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2 via BGP."
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce2 en la tabla de rutas.\nshow ip route vrf L3VPN\
+          \ 30.0.0.2\n"
+      description: "[003][EXEC] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2 en la tabla de rutas."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result3
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result3}" ]'
+      description: "[003][TEST] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2 en la tabla de rutas."
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce2\nshow bgp vpnv4 unicast rd 10.1.0.2:1 30.0.0.2\n"
+      description: "[004][EXEC] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result4
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result4}" ]'
+      description: "[004][TEST] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce2"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000201
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000202
+  loglevel: INFO
+  name: '[202] ios2: l3vpn configuration verification vqfx3-rr'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos recibidos de ios1\n\
+          show route receive-protocol bgp 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more\n"
+      description: "[000][EXEC] vqfx3: verificaci\xF3n de prefijos recibidos de ios1"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*30.0.0.1/32 +(10.1.0.1).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: "[000][TEST] vqfx3: verificaci\xF3n de prefijos recibidos de ios1"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos anunciados ios1\nshow\
+          \ route protocol bgp next-hop 10.1.0.1 table L3VPN.inet.0 30.0.0.1 | no-more"
+      description: "[001][EXEC] vqfx3: verificaci\xF3n de prefijos anunciados ios1"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*(30.0.0.1/32).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] vqfx3: verificaci\xF3n de prefijos anunciados ios1"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000202
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000301
+  loglevel: INFO
+  name: '[301] ios4: l3vpn configuration verification at ios4'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios4
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- ios4:ping a la interfaz del CE local
+
+          ping vrf L3VPN 30.1.4.100
+
+          '
+      description: '[000][EXEC] ios4: ping a la interfaz del CE local'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: '[000][TEST] ios4: ping a la interfaz del CE local'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios4: comprobaci\xF3n de que\
+          \ la sesi\xF3n BGP levanta\nshow bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[001][EXEC] ios4: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*30.1.4.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] ios4: comprobaci\xF3n de que la sesi\xF3n BGP levanta"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios4: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce4 via BGP.\nshow bgp vpnv4 unicast vrf L3VPN\
+          \ 30.0.0.4\n"
+      description: "[002][EXEC] ios4: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4 via BGP."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result2
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result2}" ]'
+      description: "[002][TEST] ios4: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4 via BGP."
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios4: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce4 en la tabla de rutas.\nshow ip route vrf L3VPN\
+          \ 30.0.0.4\n"
+      description: "[003][EXEC] ios4: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4 en la tabla de rutas."
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result3
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result3}" ]'
+      description: "[003][TEST] ios4: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4 en la tabla de rutas."
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000301
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000302
+  loglevel: INFO
+  name: '[302] ios4: l3vpn configuration verification at ios2-rr'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: ios2
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- ios2: verificaci\xF3n de que\
+          \ se aprenden prefijos de ce4\nshow bgp vpnv4 unicast rd 10.1.0.4:1 30.0.0.4\n"
+      description: "[000][EXEC] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result0}" ]'
+      description: "[000][TEST] ios2: verificaci\xF3n de que se aprenden prefijos\
+        \ de ce4"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000302
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000303
+  loglevel: INFO
+  name: '[303] ios4: l3vpn configuration verification at vqfx3-rr'
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: vqfx3
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos recibidos de ios4\n\
+          show route receive-protocol bgp 10.1.0.4 table L3VPN.inet.0 30.0.0.4 | no-more\n"
+      description: "[000][EXEC] vqfx3: verificaci\xF3n de prefijos recibidos de ios4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*30.0.0.4/32 +(10.1.0.4).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result0}" ]'
+      description: "[000][TEST] vqfx3: verificaci\xF3n de prefijos recibidos de ios4"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "!-- vqfx3: verificaci\xF3n de prefijos anunciados ios4\nshow\
+          \ route protocol bgp next-hop 10.1.0.4 table L3VPN.inet.0 30.0.0.4 | no-more"
+      description: "[001][EXEC] vqfx3: verificaci\xF3n de prefijos anunciados ios4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .*(30.0.0.4/32).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result1}" ]'
+      description: "[001][TEST] vqfx3: verificaci\xF3n de prefijos anunciados ios4"
+      nodeStep: true
+      type: localexec
+    keepgoing: true
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000303
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000400
+  loglevel: INFO
+  name: '[400] end to end connectivity tests'
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -18,856 +749,171 @@
   sequence:
     commands:
     - configuration:
-        commandsList: |-
-          enable
+        commandsList: 'enable
+
           satec
+
           term len 0
-          show running
-      description: Get running config
+
+          !-- ping contra la loopback de ce1
+
+          ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+
+          '
+      description: '[000][EXEC] ping contra la loopback de ce1'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result0
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed40
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed42
-  loglevel: INFO
-  name: 001 - Configure ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          enable
+        command: '[ ! -z "${data.result0}" ]'
+      description: '[000][TEST] ping contra la loopback de ce1'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
           satec
+
           term len 0
-          conf t
-          !-- configuración de interfaz de loopback
-          interface Loopback0
-          ip address 10.1.0.1 255.255.255.255
-          ip ospf 1 area 0
-          !
-          !-- configuración de interfaces mpls de core
-          interface Ethernet1/0
-          ip address 10.1.12.1 255.255.255.0
-          ip ospf network point-to-point
-          ip ospf 1 area 0
-          mpls ip
-          !
-          interface Ethernet1/1
-          ip address 10.1.13.1 255.255.255.0
-          ip ospf network point-to-point
-          ip ospf 1 area 0
-          mpls ip
-          !
-          !-- configuración de IGP
-          router ospf 1
-          passive-interface default
-          no passive-interface Ethernet1/0
-          no passive-interface Ethernet1/1
-          !
-          !-- configuración de BGP
-          router bgp 65001
-          bgp router-id 10.1.0.1
-          bgp log-neighbor-changes
-          no bgp default ipv4-unicast
-          neighbor CLIENTE peer-group
-          neighbor CLIENTE remote-as 65002
-          neighbor IBGP peer-group
-          neighbor IBGP remote-as 65001
-          neighbor IBGP password 7 0518071B244F
-          neighbor IBGP update-source Loopback0
-          neighbor 10.1.0.2 peer-group IBGP
-          neighbor 10.1.0.3 peer-group IBGP
-          !
-          address-family ipv4
-            neighbor CLIENTE send-community
-            neighbor CLIENTE default-originate
-            neighbor IBGP send-community
-            neighbor IBGP next-hop-self
-            neighbor 20.1.1.100 activate
-            neighbor 10.1.0.2 activate
-            neighbor 10.1.0.3 activate
-          exit-address-family
-          !
-          address-family vpnv4
-            neighbor IBGP send-community both
-            neighbor 10.1.0.2 activate
-            neighbor 10.1.0.3 activate
-          exit-address-family
-          !
-          !
-          end
-          wr
-      description: 002 - Get running config
+
+          !-- traceroute contra la loobpack de ce1
+
+          traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
+
+          '
+      description: '[001][EXEC] traceroute contra la loobpack de ce1'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result1
+            regex: .* (5) + \*.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed42
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed43
-  loglevel: INFO
-  name: 003 - Check routing status ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          enable
+        command: '[ -z "${data.result1}" ]'
+      description: '[001][TEST] traceroute contra la loobpack de ce1'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
           satec
+
           term len 0
-          show running
-          show ip ospf neighbor
-          show mpls ldp neighbor
-          show bgp all summary
-      description: 003 - Check routing status ios1
+
+          !-- ping contra la loopback de ce2
+
+          ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+
+          '
+      description: '[002][EXEC] ping contra la loopback de ce2'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result2
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed43
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed44
-  loglevel: INFO
-  name: 004 - Check configuration interface ethernet1-0 ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          enable
+        command: '[ ! -z "${data.result2}" ]'
+      description: '[002][TEST] ping contra la loopback de ce2'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
           satec
+
           term len 0
-          show interface e1/0
-          show run interface e1/0
-      description: 004 - Check configuration interface ethernet1-0 ios2
+
+          !-- traceroute contra la loobpack de ce2
+
+          traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
+
+          '
+      description: '[003][EXEC] traceroute contra la loobpack de ce2'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result3
+            regex: .* (5) + \*.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed44
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed45
-  loglevel: INFO
-  name: 005 - Configurate interface ethernet1-0 ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          enable
+        command: '[ -z "${data.result3}" ]'
+      description: '[003][TEST] traceroute contra la loobpack de ce2'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
           satec
+
           term len 0
-          conf t
-          interface Ethernet1/0
-           no shut
-           ip address 10.1.12.2 255.255.255.0
-          !
-          end
-          wr
-      description: 005 - Configurate interface ethernet1-0 ios2
+
+          !-- ping contra la loopback de ce4
+
+          ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+
+          '
+      description: '[004][EXEC] ping contra la loopback de ce4'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result4
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed45
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed46
-  loglevel: INFO
-  name: 006 - Check connectivity ethernet1-0 ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          enable
+        command: '[ ! -z "${data.result4}" ]'
+      description: '[004][TEST] ping contra la loopback de ce4'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
           satec
+
           term len 0
-          show run interface e1/0
-          show interface ethernet1/0
-          ping 10.1.12.1
-      description: 006 - Check connectivity ethernet1-0 ios2
+
+          !-- traceroute contra la loobpack de ce4
+
+          traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5'
+      description: '[005][EXEC] traceroute contra la loobpack de ce4'
       nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result5
+            regex: .* (5) + \*.*
+          type: key-value-data-multilines
       type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed46
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed47
-  loglevel: INFO
-  name: 007 - Check configuration interface em3 vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
     - configuration:
-        commandsList: |2-
-          show configuration interface em3
-      description: 007 - Check configuration interface em3 vqfx3
+        command: '[ -z "${data.result5}" ]'
+      description: '[005][TEST] traceroute contra la loobpack de ce4'
       nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
+      type: localexec
+    keepgoing: true
     strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed47
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed48
-  loglevel: INFO
-  name: 008 - Configurate interface em3 vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          configure
-          set interfaces em3 unit 0 family inet address 10.1.13.3/24
-          show | compare
-          commit and-quit
-      description: 008 - Configurate interface em3 vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed48
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed49
-  loglevel: INFO
-  name: 009 - Check connectivity em3 vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          show configuration interface em3
-          ping 10.1.13.1 rapid count 5
-      description: 009 - Check connectivity em3 vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed49
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed50
-  loglevel: INFO
-  name: 010 - Configurate protocol IGP ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          conf t
-          interface Ethernet1/0
-           ip ospf network point-to-point
-           ip ospf 1 area 0
-          !
-          router ospf 1
-           no passive-interface Ethernet1/0
-          !
-          end
-          wr
-      description: 010 - Configurate protocol IGP ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed50
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed51
-  loglevel: INFO
-  name: 011 - Check neighbor and router to ios1 from ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show ip ospf neighbor
-          show ip route 10.1.0.1
-      description: 011 - Check neighbor and router to ios1 from ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed51
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed52
-  loglevel: INFO
-  name: 012 - Configurate protocol IGP vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          configure
-          set protocols ospf area 0.0.0.0 interface em3.0 interface-type p2p
-          show | compare
-          commit and-quit
-      description: 012 - Configurate protocol IGP vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed52
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed53
-  loglevel: INFO
-  name: 013 - Check neighbor and router to ios1 from vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          show ospf neighbor
-          show route 10.1.0.1 exact
-      description: 013 - Check neighbor and router to ios1 from vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed53
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed54
-  loglevel: INFO
-  name: 014 - Configurate protocol LDP ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          conf t
-          interface Ethernet1/0
-           mpls ip
-          !
-          end
-          wr
-      description: 014 - Configurate protocol LDP ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed54
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed55
-  loglevel: INFO
-  name: 015 - Check protocol LDP against ios1 from ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show mpls ldp neighbor
-      description: 015 - Check protocol LDP against ios1 from ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed55
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed56
-  loglevel: INFO
-  name: 016 - Configurate protocol LDP vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          configure
-          set interfaces em3 unit 0 family mpls
-          set protocols ldp interface em3.0
-          show | compare
-          commit and-quit
-      description: 016 - Configurate protocol LDP vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed56
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed57
-  loglevel: INFO
-  name: 017 - Check protocol LDP against ios1 from vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          show ldp neighbor
-          show ldp session
-          show ldp database session 10.1.0.1
-      description: 017 - Check protocol LDP against ios1 from vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed57
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed58
-  loglevel: INFO
-  name: 018 - Configurate protocol BGP ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          conf t
-          router bgp 65001
-          neighbor 10.1.0.1 peer-group RR-CLIENT
-          !
-          address-family ipv4
-          neighbor 10.1.0.1 activate
-          exit-address-family
-          !
-          address-family vpnv4
-          neighbor 10.1.0.1 activate
-          exit-address-family
-          !
-          !
-          end
-          wr
-      description: 018 - Configurate protocol BGP ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed58
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed59
-  loglevel: INFO
-  name: 019 - Check neighbors BGP against ios1 from ios2
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios2
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show bgp all
-          show bgp all summary | i 10.1.0.1
-      description: 019 - Check neighbors BGP against ios1 from ios2
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed59
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed60
-  loglevel: INFO
-  name: 020 - Configurate protocol BGP vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          configure
-          set protocols bgp group RR-CLIENTS neighbor 10.1.0.1
-          show | compare
-          commit and-quit
-      description: 020 - Configurate protocol BGP vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed60
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed61
-  loglevel: INFO
-  name: 021 - Check neighbors BGP against ios1 from vqfx3
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: vqfx3
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          [CTRL-C]
-          show bgp summary
-      description: 021 - Check neighbors BGP against ios1 from vqfx3
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed61
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed62
-  loglevel: INFO
-  name: 022 - Check OSPF ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show ip ospf neighbor
-          show ip ospf database
-      description: 022 - Check OSPF ios1
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed62
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed63
-  loglevel: INFO
-  name: 023 - Check MPLS ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show mpls ldp neighbor
-          show mpls forwarding
-      description: 023 - Check MPLS ios1
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed63
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed64
-  loglevel: INFO
-  name: 024 - Check BGP ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          show bgp all summary
-      description: 024 - Check BGP ios1
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed64
-- defaultTab: nodes
-  description: ''
-  executionEnabled: true
-  id: 368089c3-630d-471e-922b-0191dc69ed65
-  loglevel: INFO
-  name: 025 - Check connectivity MPLS ios1
-  nodeFilterEditable: false
-  nodefilters:
-    dispatch:
-      excludePrecedence: true
-      keepgoing: false
-      rankOrder: ascending
-      successOnEmptyNodeFilter: false
-      threadcount: '1'
-    filter: ios1
-  nodesSelectedByDefault: true
-  scheduleEnabled: true
-  sequence:
-    commands:
-    - configuration:
-        commandsList: |2-
-          enable
-          satec
-          term len 0
-          traceroute 10.1.0.4 source 10.1.0.1 probe 1 timeout 1 ttl 0 5
-      description: 025 - Check connectivity MPLS ios1
-      nodeStep: true
-      type: ssh-node-step-executor
-    keepgoing: false
-    strategy: node-first
-  uuid: 368089c3-630d-471e-922b-0191dc69ed65
+  uuid: 00000000-0000-0000-0000-000000000400

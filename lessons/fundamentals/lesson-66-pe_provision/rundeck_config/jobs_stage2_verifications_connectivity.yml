@@ -1,0 +1,55 @@
+jobs:
+- name: "ping contra la loopback de ce1"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  commandsList: |
+    !-- ping contra la loopback de ce1
+    ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
+- name: "traceroute contra la loobpack de ce1"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  commandsList: |
+    !-- traceroute contra la loobpack de ce1
+    traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
+- name: "ping contra la loopback de ce2"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  commandsList: |
+    !-- ping contra la loopback de ce2
+    ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
+- name: "traceroute contra la loobpack de ce2"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  commandsList: |
+    !-- traceroute contra la loobpack de ce2
+    traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
+- name: "ping contra la loopback de ce4"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  commandsList: |
+    !-- ping contra la loopback de ce4
+    ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
+- name: "traceroute contra la loobpack de ce4"
+  filter: ios.*
+  vendor: ios
+  regex: true
+  regex_negate: true
+  regex_expr: .* (5) + \*.*
+  commandsList: |
+    !-- traceroute contra la loobpack de ce4
+    traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5

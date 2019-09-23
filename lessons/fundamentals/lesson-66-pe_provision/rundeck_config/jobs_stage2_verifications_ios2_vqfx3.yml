@@ -1,0 +1,19 @@
+jobs:
+- name: "vqfx3: verificación de prefijos recibidos de ios2"
+  filter: vqfx3
+  regex: true
+  regex_negate: false
+  regex_expr: .*30.0.0.2/32 +(10.1.0.2).*
+  vendor: juniper
+  commandsList: |
+    !-- vqfx3: verificación de prefijos recibidos de ios2
+    show route receive-protocol bgp 10.1.0.2 table L3VPN.inet.0 30.0.0.2 | no-more
+- name: "vqfx3: verificación de prefijos anunciados ios2"
+  filter: vqfx3
+  regex: true
+  regex_negate: false
+  regex_expr: .*(30.0.0.2/32).*
+  vendor: juniper
+  commandsList: |
+    !-- vqfx3: verificación de prefijos anunciados ios2
+    show route protocol bgp next-hop 10.1.0.2 table L3VPN.inet.0 30.0.0.2 | no-more
