@@ -9,22 +9,22 @@
     copy:
       src: stage1-20190920-121200.rdproject.jar
       dest: /projects/
-      owner: rundeck
-      group: rundeck
+      owner: antidote
+      group: antidote
       mode: '0644'
   - name: Copy inventory file 
     copy:
       src: rundeckinventory
       dest: /projects/
-      owner: rundeck
-      group: rundeck
+      owner: antidote
+      group: antidote
       mode: '0644'
   - name: Copy password file
     copy:
       src: password
       dest: /projects/
-      owner: rundeck
-      group: rundeck
+      owner: antidote
+      group: antidote
       mode: '0644'
   - name: Delete project
     shell: rd projects delete -p stage1 -y
