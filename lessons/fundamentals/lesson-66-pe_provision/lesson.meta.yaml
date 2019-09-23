@@ -65,7 +65,7 @@ endpoints:
   additionalPorts: [22]
 
 - name: rundeck
-  image: khornem/rdkblabla
+  image: registry.int.satec.es/netautolab/satec-jt-rundeck
   configurationType: ansible
   presentations:
   - name: cli
