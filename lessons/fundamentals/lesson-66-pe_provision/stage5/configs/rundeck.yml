@@ -12,13 +12,7 @@
       owner: antidote
       group: antidote
       mode: '755'
-  - name: copy inventory
-    copy:
-      src: rundeckinventory.json
-      dest: /home/antidote/
-      owner: antidote
-      group: antidote
-      mode: '0644'
+
   - name: copy jobs
     copy:
       src: rundeck.jobs.yml
