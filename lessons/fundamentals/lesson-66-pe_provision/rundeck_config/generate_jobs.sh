@@ -4,6 +4,7 @@
 rm -rf stage1/
 rundeck_jobs -i jobs_lesson1_multiple.yml  -d stage1 -u 00000000-0000-0000-0000-000000000000 -l debug
 
+cp stage1/rundeck.jobs.yml ../stage1/configs/
 
 # stage 2 jobs
 rm -rf stage2/
@@ -29,6 +30,9 @@ for f in stage2/*.yml
 do
  cat $f >> stage2/rundeck.jobs.yml
 done
+cp stage2/rundeck.jobs.yml ../stage2/configs/
+
+
 
 #stage 3
 rm -rf stage3/
@@ -42,3 +46,6 @@ for f in stage3/*.yml
 do
  cat $f >> stage3/rundeck.jobs.yml
 done
+cp stage3/rundeck.jobs.yml ../stage3/configs/
+cp stage3/rundeck.jobs.yml ../stage4/configs/
+cp stage3/rundeck.jobs.yml ../stage5/configs/

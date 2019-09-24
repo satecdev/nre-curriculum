@@ -192,12 +192,12 @@
 
           term len 0
 
-          !-- conectividad con ios4 en GRT
+          !-- conectividad local enlace en L3VPN
 
-          ping 10.1.0.4 repeat 2 timeout 1 source loopback0
+          ping vrf L3VPN 30.1.2.100 repeat 2 timeout 1
 
           '
-      description: '[006][EXEC] ios1: conectividad con ios4 en GRT'
+      description: '[006][EXEC] ios1: conectividad enlace local de site 2 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -210,7 +210,63 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ ! -z "${data.result6}" ]'
-      description: '[006][TEST] ios1: conectividad con ios4 en GRT'
+      description: '[006][TEST] ios1: conectividad enlace local de site 2 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad local enlace en L3VPN
+
+          ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
+
+          '
+      description: '[007][EXEC] ios1: conectividad enlace local de site 4 en L3VPN'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result7
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result7}" ]'
+      description: '[007][TEST] ios1: conectividad enlace local de site 4 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad con ios4 en GRT
+
+          ping 10.1.0.4 repeat 2 timeout 1 source loopback0
+
+          '
+      description: '[008][EXEC] ios1: conectividad con ios4 en GRT'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result8
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result8}" ]'
+      description: '[008][TEST] ios1: conectividad con ios4 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -225,20 +281,20 @@
           traceroute 10.1.0.4 timeout 1 probe 1 source loopback0 ttl 0 5
 
           '
-      description: '[007][EXEC] ios1: traceroute con ios4 en GRT'
+      description: '[009][EXEC] ios1: traceroute con ios4 en GRT'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result7
+            name: result9
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result7}" ]'
-      description: '[007][TEST] ios1: traceroute con ios4 en GRT'
+        command: '[ -z "${data.result9}" ]'
+      description: '[009][TEST] ios1: traceroute con ios4 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -253,20 +309,20 @@
           ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
 
           '
-      description: '[008][EXEC] ios1: ping contra loopback CE site4 en L3VPN'
+      description: '[010][EXEC] ios1: ping contra loopback CE site4 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result8
+            name: result10
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result8}" ]'
-      description: '[008][TEST] ios1: ping contra loopback CE site4 en L3VPN'
+        command: '[ ! -z "${data.result10}" ]'
+      description: '[010][TEST] ios1: ping contra loopback CE site4 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -281,20 +337,20 @@
           ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 
           '
-      description: '[009][EXEC] ios1: ping contra loopback CE site2 en L3VPN'
+      description: '[011][EXEC] ios1: ping contra loopback CE site2 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result9
+            name: result11
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result9}" ]'
-      description: '[009][TEST] ios1: ping contra loopback CE site2 en L3VPN'
+        command: '[ ! -z "${data.result11}" ]'
+      description: '[011][TEST] ios1: ping contra loopback CE site2 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -309,20 +365,20 @@
           traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[010][EXEC] ios1: traceroute contra loopback CE site4 en L3VPN'
+      description: '[012][EXEC] ios1: traceroute contra loopback CE site4 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result10
+            name: result12
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result10}" ]'
-      description: '[010][TEST] ios1: traceroute contra loopback CE site4 en L3VPN'
+        command: '[ -z "${data.result12}" ]'
+      description: '[012][TEST] ios1: traceroute contra loopback CE site4 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -337,46 +393,7 @@
           traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[011][EXEC] ios1: traceroute contra loopback CE site2 en L3VPN'
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result11
-            regex: .* (5) + \*.*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ -z "${data.result11}" ]'
-      description: '[011][TEST] ios1: traceroute contra loopback CE site2 en L3VPN'
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
-          show bgp vpnv4 unicast vrf L3VPN summary\n"
-      description: "[012][EXEC] ios1: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result12
-            regex: .*30.1.1.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
-              +(\d+).*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ ! -z "${data.result12}" ]'
-      description: "[012][TEST] ios1: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
-      description: "[013][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][EXEC] ios1: traceroute contra loopback CE site2 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -384,18 +401,18 @@
             hideOutput: false
             logData: true
             name: result13
-            regex: .*Network not in (table).*
+            regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result13}" ]'
-      description: "[013][TEST] ios1: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][TEST] ios1: traceroute contra loopback CE site2 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
-      description: "[014][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.2"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
+          show bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[014][EXEC] ios1: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       plugins:
         LogFilter:
@@ -403,18 +420,19 @@
             hideOutput: false
             logData: true
             name: result14
-            regex: .*Network not in (table).*
+            regex: .*30.1.1.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result14}" ]'
-      description: "[014][TEST] ios1: verificaci\xF3n prefijos 30.0.0.2"
+        command: '[ ! -z "${data.result14}" ]'
+      description: "[014][TEST] ios1: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
-      description: "[015][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.4"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
+      description: "[015][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.1"
       nodeStep: true
       plugins:
         LogFilter:
@@ -427,7 +445,45 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result15}" ]'
-      description: "[015][TEST] ios1: verificaci\xF3n prefijos 30.0.0.4"
+      description: "[015][TEST] ios1: verificaci\xF3n prefijos 30.0.0.1"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
+      description: "[016][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result16
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result16}" ]'
+      description: "[016][TEST] ios1: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
+      description: "[017][EXEC] ios1: verificaci\xF3n prefijos 30.0.0.4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result17
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result17}" ]'
+      description: "[017][TEST] ios1: verificaci\xF3n prefijos 30.0.0.4"
       nodeStep: true
       type: localexec
     keepgoing: true
@@ -627,12 +683,12 @@
 
           term len 0
 
-          !-- conectividad con ios1 en GRT
+          !-- conectividad local enlace en L3VPN
 
-          ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+          ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
 
           '
-      description: '[006][EXEC] ios2: conectividad con ios1 en GRT'
+      description: '[006][EXEC] ios2: conectividad enlace local de site 1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -645,7 +701,63 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ ! -z "${data.result6}" ]'
-      description: '[006][TEST] ios2: conectividad con ios1 en GRT'
+      description: '[006][TEST] ios2: conectividad enlace local de site 1 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad local enlace en L3VPN
+
+          ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
+
+          '
+      description: '[007][EXEC] ios2: conectividad enlace local de site 4 en L3VPN'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result7
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result7}" ]'
+      description: '[007][TEST] ios2: conectividad enlace local de site 4 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad con ios1 en GRT
+
+          ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+
+          '
+      description: '[008][EXEC] ios2: conectividad con ios1 en GRT'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result8
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result8}" ]'
+      description: '[008][TEST] ios2: conectividad con ios1 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -660,20 +772,20 @@
           traceroute 10.1.0.1 timeout 1 probe 1 loopback0 ttl 0 5
 
           '
-      description: '[007][EXEC] ios2: traceroute con ios1 en GRT'
+      description: '[009][EXEC] ios2: traceroute con ios1 en GRT'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result7
+            name: result9
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result7}" ]'
-      description: '[007][TEST] ios2: traceroute con ios1 en GRT'
+        command: '[ -z "${data.result9}" ]'
+      description: '[009][TEST] ios2: traceroute con ios1 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -688,20 +800,20 @@
           ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
 
           '
-      description: '[008][EXEC] ios2: ping contra loopback CE site1 en L3VPN'
+      description: '[010][EXEC] ios2: ping contra loopback CE site1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result8
+            name: result10
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result8}" ]'
-      description: '[008][TEST] ios2: ping contra loopback CE site1 en L3VPN'
+        command: '[ ! -z "${data.result10}" ]'
+      description: '[010][TEST] ios2: ping contra loopback CE site1 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -716,20 +828,20 @@
           ping vrf L3VPN 30.0.0.4 repeat 2 timeout 1
 
           '
-      description: '[009][EXEC] ios2: ping contra loopback CE site4 en L3VPN'
+      description: '[011][EXEC] ios2: ping contra loopback CE site4 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result9
+            name: result11
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result9}" ]'
-      description: '[009][TEST] ios2: ping contra loopback CE site4 en L3VPN'
+        command: '[ ! -z "${data.result11}" ]'
+      description: '[011][TEST] ios2: ping contra loopback CE site4 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -744,20 +856,20 @@
           traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[010][EXEC] ios2: traceroute contra loopback CE site1 en L3VPN'
+      description: '[012][EXEC] ios2: traceroute contra loopback CE site1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result10
+            name: result12
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result10}" ]'
-      description: '[010][TEST] ios2: traceroute contra loopback CE site1 en L3VPN'
+        command: '[ -z "${data.result12}" ]'
+      description: '[012][TEST] ios2: traceroute contra loopback CE site1 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -772,46 +884,7 @@
           traceroute vrf L3VPN 30.0.0.4 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[011][EXEC] ios2: traceroute contra loopback CE site4 en L3VPN'
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result11
-            regex: .* (5) + \*.*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ -z "${data.result11}" ]'
-      description: '[011][TEST] ios2: traceroute contra loopback CE site4 en L3VPN'
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
-          show bgp vpnv4 unicast vrf L3VPN summary\n"
-      description: "[012][EXEC] ios2: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result12
-            regex: .*30.1.2.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
-              +(\d+).*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ ! -z "${data.result12}" ]'
-      description: "[012][TEST] ios2: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
-      description: "[013][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][EXEC] ios2: traceroute contra loopback CE site4 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -819,18 +892,18 @@
             hideOutput: false
             logData: true
             name: result13
-            regex: .*Network not in (table).*
+            regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result13}" ]'
-      description: "[013][TEST] ios2: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][TEST] ios2: traceroute contra loopback CE site4 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
-      description: "[014][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.2"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
+          show bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[014][EXEC] ios2: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       plugins:
         LogFilter:
@@ -838,18 +911,19 @@
             hideOutput: false
             logData: true
             name: result14
-            regex: .*Network not in (table).*
+            regex: .*30.1.2.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result14}" ]'
-      description: "[014][TEST] ios2: verificaci\xF3n prefijos 30.0.0.2"
+        command: '[ ! -z "${data.result14}" ]'
+      description: "[014][TEST] ios2: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
-      description: "[015][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.4"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
+      description: "[015][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.1"
       nodeStep: true
       plugins:
         LogFilter:
@@ -862,7 +936,45 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result15}" ]'
-      description: "[015][TEST] ios2: verificaci\xF3n prefijos 30.0.0.4"
+      description: "[015][TEST] ios2: verificaci\xF3n prefijos 30.0.0.1"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
+      description: "[016][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result16
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result16}" ]'
+      description: "[016][TEST] ios2: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
+      description: "[017][EXEC] ios2: verificaci\xF3n prefijos 30.0.0.4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result17
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result17}" ]'
+      description: "[017][TEST] ios2: verificaci\xF3n prefijos 30.0.0.4"
       nodeStep: true
       type: localexec
     keepgoing: true
@@ -1062,12 +1174,12 @@
 
           term len 0
 
-          !-- conectividad con ios1 en GRT
+          !-- conectividad local enlace en L3VPN
 
-          ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+          ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
 
           '
-      description: '[006][EXEC] ios4: conectividad con ios1 en GRT'
+      description: '[006][EXEC] ios4: conectividad enlace local de site 1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -1080,7 +1192,63 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ ! -z "${data.result6}" ]'
-      description: '[006][TEST] ios4: conectividad con ios1 en GRT'
+      description: '[006][TEST] ios4: conectividad enlace local de site 1 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad local enlace en L3VPN
+
+          ping vrf L3VPN 30.1.2.100 repeat 2 timeout 1
+
+          '
+      description: '[007][EXEC] ios4: conectividad enlace local de site 2 en L3VPN'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result7
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result7}" ]'
+      description: '[007][TEST] ios4: conectividad enlace local de site 2 en L3VPN'
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: 'enable
+
+          satec
+
+          term len 0
+
+          !-- conectividad con ios1 en GRT
+
+          ping 10.1.0.1 repeat 2 timeout 1 source loopback0
+
+          '
+      description: '[008][EXEC] ios4: conectividad con ios1 en GRT'
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result8
+            regex: .*Success rate is (100|50) percent.*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ ! -z "${data.result8}" ]'
+      description: '[008][TEST] ios4: conectividad con ios1 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -1095,20 +1263,20 @@
           traceroute 10.1.0.1 timeout 1 probe 1 source loopback0 ttl 0 5
 
           '
-      description: '[007][EXEC] ios4: traceroute con ios1 en GRT'
+      description: '[009][EXEC] ios4: traceroute con ios1 en GRT'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result7
+            name: result9
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result7}" ]'
-      description: '[007][TEST] ios4: traceroute con ios1 en GRT'
+        command: '[ -z "${data.result9}" ]'
+      description: '[009][TEST] ios4: traceroute con ios1 en GRT'
       nodeStep: true
       type: localexec
     - configuration:
@@ -1123,20 +1291,20 @@
           ping vrf L3VPN 30.0.0.1 repeat 2 timeout 1
 
           '
-      description: '[008][EXEC] ios4: ping contra loopback CE site1 en L3VPN'
+      description: '[010][EXEC] ios4: ping contra loopback CE site1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result8
+            name: result10
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result8}" ]'
-      description: '[008][TEST] ios4: ping contra loopback CE site1 en L3VPN'
+        command: '[ ! -z "${data.result10}" ]'
+      description: '[010][TEST] ios4: ping contra loopback CE site1 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -1151,20 +1319,20 @@
           ping vrf L3VPN 30.0.0.2 repeat 2 timeout 1
 
           '
-      description: '[009][EXEC] ios4: ping contra loopback CE site2 en L3VPN'
+      description: '[011][EXEC] ios4: ping contra loopback CE site2 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result9
+            name: result11
             regex: .*Success rate is (100|50) percent.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ ! -z "${data.result9}" ]'
-      description: '[009][TEST] ios4: ping contra loopback CE site2 en L3VPN'
+        command: '[ ! -z "${data.result11}" ]'
+      description: '[011][TEST] ios4: ping contra loopback CE site2 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -1179,20 +1347,20 @@
           traceroute vrf L3VPN 30.0.0.1 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[010][EXEC] ios4: traceroute contra loopback CE site1 en L3VPN'
+      description: '[012][EXEC] ios4: traceroute contra loopback CE site1 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
         - config:
             hideOutput: false
             logData: true
-            name: result10
+            name: result12
             regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result10}" ]'
-      description: '[010][TEST] ios4: traceroute contra loopback CE site1 en L3VPN'
+        command: '[ -z "${data.result12}" ]'
+      description: '[012][TEST] ios4: traceroute contra loopback CE site1 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
@@ -1207,46 +1375,7 @@
           traceroute vrf L3VPN 30.0.0.2 probe 1 timeout 1 ttl 0 5
 
           '
-      description: '[011][EXEC] ios4: traceroute contra loopback CE site2 en L3VPN'
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result11
-            regex: .* (5) + \*.*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ -z "${data.result11}" ]'
-      description: '[011][TEST] ios4: traceroute contra loopback CE site2 en L3VPN'
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
-          show bgp vpnv4 unicast vrf L3VPN summary\n"
-      description: "[012][EXEC] ios4: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      plugins:
-        LogFilter:
-        - config:
-            hideOutput: false
-            logData: true
-            name: result12
-            regex: .*30.1.4.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
-              +(\d+).*
-          type: key-value-data-multilines
-      type: ssh-node-step-executor
-    - configuration:
-        command: '[ ! -z "${data.result12}" ]'
-      description: "[012][TEST] ios4: verificaci\xF3n sesi\xF3n BGP"
-      nodeStep: true
-      type: localexec
-    - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
-      description: "[013][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][EXEC] ios4: traceroute contra loopback CE site2 en L3VPN'
       nodeStep: true
       plugins:
         LogFilter:
@@ -1254,18 +1383,18 @@
             hideOutput: false
             logData: true
             name: result13
-            regex: .*Network not in (table).*
+            regex: .* (5) + \*.*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result13}" ]'
-      description: "[013][TEST] ios4: verificaci\xF3n prefijos 30.0.0.1"
+      description: '[013][TEST] ios4: traceroute contra loopback CE site2 en L3VPN'
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
-      description: "[014][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.2"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n sesi\xF3n BGP\n\
+          show bgp vpnv4 unicast vrf L3VPN summary\n"
+      description: "[014][EXEC] ios4: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       plugins:
         LogFilter:
@@ -1273,18 +1402,19 @@
             hideOutput: false
             logData: true
             name: result14
-            regex: .*Network not in (table).*
+            regex: .*30.1.4.100 +\d+ +65002 +\d+ +\d+ +\d+ +\d+ +\d+ +\d+:\d+\:\d+
+              +(\d+).*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
-        command: '[ -z "${data.result14}" ]'
-      description: "[014][TEST] ios4: verificaci\xF3n prefijos 30.0.0.2"
+        command: '[ ! -z "${data.result14}" ]'
+      description: "[014][TEST] ios4: verificaci\xF3n sesi\xF3n BGP"
       nodeStep: true
       type: localexec
     - configuration:
-        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
-          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
-      description: "[015][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.4"
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.1\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.1\n"
+      description: "[015][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.1"
       nodeStep: true
       plugins:
         LogFilter:
@@ -1297,7 +1427,45 @@
       type: ssh-node-step-executor
     - configuration:
         command: '[ -z "${data.result15}" ]'
-      description: "[015][TEST] ios4: verificaci\xF3n prefijos 30.0.0.4"
+      description: "[015][TEST] ios4: verificaci\xF3n prefijos 30.0.0.1"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.2\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.2\n"
+      description: "[016][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result16
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result16}" ]'
+      description: "[016][TEST] ios4: verificaci\xF3n prefijos 30.0.0.2"
+      nodeStep: true
+      type: localexec
+    - configuration:
+        commandsList: "enable\nsatec\nterm len 0\n!-- verificaci\xF3n prefijos 30.0.0.4\n\
+          show bgp vpnv4 unicast vrf L3VPN 30.0.0.4\n"
+      description: "[017][EXEC] ios4: verificaci\xF3n prefijos 30.0.0.4"
+      nodeStep: true
+      plugins:
+        LogFilter:
+        - config:
+            hideOutput: false
+            logData: true
+            name: result17
+            regex: .*Network not in (table).*
+          type: key-value-data-multilines
+      type: ssh-node-step-executor
+    - configuration:
+        command: '[ -z "${data.result17}" ]'
+      description: "[017][TEST] ios4: verificaci\xF3n prefijos 30.0.0.4"
       nodeStep: true
       type: localexec
     keepgoing: true

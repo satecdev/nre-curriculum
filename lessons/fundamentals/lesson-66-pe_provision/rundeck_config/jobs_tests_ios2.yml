@@ -53,6 +53,33 @@ jobs:
   commandsList: |
     !-- conectividad con ios4 en L3VPN
     traceroute vrf L3VPN 30.1.4.1 probe 1 timeout 1 ttl 0 5
+
+
+
+- name: "ios2: conectividad enlace local de site 1 en L3VPN"
+  filter: ios2
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad local enlace en L3VPN
+    ping vrf L3VPN 30.1.1.100 repeat 2 timeout 1
+
+
+- name: "ios2: conectividad enlace local de site 4 en L3VPN"
+  filter: ios1
+  regex: true
+  regex_negate: false
+  regex_expr: .*Success rate is (100|50) percent.*
+  vendor: ios
+  commandsList: |
+    !-- conectividad local enlace en L3VPN
+    ping vrf L3VPN 30.1.4.100 repeat 2 timeout 1
+
+
+
+
 - name: "ios2: conectividad con ios1 en GRT"
   filter: ios2
   regex: true

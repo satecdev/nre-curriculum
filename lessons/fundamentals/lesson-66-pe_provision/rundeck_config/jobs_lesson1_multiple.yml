@@ -193,7 +193,7 @@ jobs:
       filter: vqfx3
       commandsList: |
         configure
-        set interfaces em3 unit 0 family inet address 10.1.13.3/24
+        set protocols ospf area 0 interface em3.0 interface-type p2p
         show | compare
         commit and-quit
       regex: true
@@ -345,7 +345,7 @@ jobs:
         show mpls forwarding
       regex: true
       regex_negate: false
-      regex_expr: ".*(Ident: 10.1.0.2.*Ident: 10.1.0.3).*"
+      regex_expr: ".*(Ident: 10.1.0.3.*Ident: 10.1.0.2|Ident: 10.1.0.2.*Ident: 10.1.0.3).*"
       vendor: ios
       
 

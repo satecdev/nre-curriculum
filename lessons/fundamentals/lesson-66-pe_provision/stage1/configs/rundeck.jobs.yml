@@ -537,7 +537,7 @@
     - configuration:
         commandsList: 'configure
 
-          set interfaces em3 unit 0 family inet address 10.1.13.3/24
+          set protocols ospf area 0 interface em3.0 interface-type p2p
 
           show | compare
 
@@ -1058,7 +1058,7 @@
             hideOutput: false
             logData: true
             name: result
-            regex: '.*(Ident: 10.1.0.2.*Ident: 10.1.0.3).*'
+            regex: '.*(Ident: 10.1.0.3.*Ident: 10.1.0.2|Ident: 10.1.0.2.*Ident: 10.1.0.3).*'
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
