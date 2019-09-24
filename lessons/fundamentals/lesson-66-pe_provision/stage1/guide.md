@@ -20,7 +20,13 @@ echo https://labs.jt.satec.es/$SYRINGE_FULL_REF
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck-cli', this)">Run this snippet</button>
 
+
+![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-snippet.png)
+
 El usuario y contraseña es `admin/admin`.
+
+![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-login.png)
+
 
 A continuación se describen todos los pasos necesarias para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
@@ -28,11 +34,13 @@ A continuación se describen todos los pasos necesarias para la integración con
 
 Una vez abierto Rundeck abriremos el projecto **SATEC**.
 
+![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-main.png)
 
 
 
 Al abrirlo en la barra de al izquierda veremos las diferentes opciones que nos ofrece. En particular la sección de `jobs`, donde se definen y ejecutan los trabajos de rundeck.
 
+![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-jobs.png)
 
 
 
