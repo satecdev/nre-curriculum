@@ -360,13 +360,107 @@
   sequence:
     commands:
     - configuration:
-        commandsList: 'configure
+        commandsList: '[CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+
+
+
+          configure
 
           set interfaces em3 unit 0 family inet address 10.1.13.3/24
 
           show | compare
 
           commit and-quit
+
+
+
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+          [CTRL+D]
+
+
+
+
+
+
+          show interfaces em3 | no-more
+
+
+
+
+          show configuration interfaces em3 | no-more
 
           '
       description: '[008][EXEC] Configure vqfx interface'
