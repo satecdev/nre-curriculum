@@ -11,6 +11,13 @@ La adición de un nuevo equipo tendría las siguientes etapas:
 5. Configuración de BGP contra los reflectores de rutas.
 6. Acceso al nuevo equipo y comprobaciones en el mismo
 
+En nuestro caso particular se integrará el equipos `ios1` en red:
+
+
+![lesson1](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-diagram.png)
+
+
+
 En cada paso es necesario ir comprobando que se ha cumplimentado correctamente.
 
 > Herramientas: Abrir rundeck en una nueva ventana, para ello ejecutar el siguiente snippet y acceder a rundeck con la url que genera el siguiente snippet.
@@ -142,7 +149,7 @@ Esta configuración se realiza habitualmente en base a plantillas.
 
 El equipo que se va a insertar en red es `ios1`.
 
-![lesson1](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-diagram)
+![lesson1](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-diagram.png)
 
 
 Primero se comprueba la configuración inicial del equipo:
