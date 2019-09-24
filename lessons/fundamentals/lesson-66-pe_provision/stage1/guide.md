@@ -13,14 +13,28 @@ La adición de un nuevo equipo tendría las siguientes etapas:
 
 En cada paso es necesario ir comprobando que se ha cumplimentado correctamente.
 
-> Herramientas: Abrir rundeck en una nueva ventana, para ello ejecutar el siguiente snippet y acceder a rundeck
+> Herramientas: Abrir rundeck en una nueva ventana, para ello ejecutar el siguiente snippet y acceder a rundeck con la url que genera el siguiente snippet.
 
 ```
-echo http://antidote-local:30001/$SYRINGE_FULL_REF
+echo https://labs.jt.satec.es/$SYRINGE_FULL_REF
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck-cli', this)">Run this snippet</button>
 
-A continuación se describen todos los pasos necesarioas para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
+El usuario y contraseña es `admin/admin`.
+
+A continuación se describen todos los pasos necesarias para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
+
+## Parte 0: Rundeck
+
+Una vez abierto Rundeck abriremos el projecto **SATEC**.
+
+
+
+
+Al abrirlo en la barra de al izquierda veremos las diferentes opciones que nos ofrece. En particular la sección de `jobs`, donde se definen y ejecutan los trabajos de rundeck.
+
+
+
 
 ## Parte 1: Preconfiguración completa del nuevo equipo
 
