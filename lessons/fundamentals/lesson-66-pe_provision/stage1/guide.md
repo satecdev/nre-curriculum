@@ -21,11 +21,11 @@ echo https://labs.jt.satec.es/$SYRINGE_FULL_REF
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck-cli', this)">Run this snippet</button>
 
 
-![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-snippet.png)
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-snippet.png)
 
 El usuario y contraseña es `admin/admin`.
 
-![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-login.png)
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-login.png)
 
 
 A continuación se describen todos los pasos necesarias para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
@@ -34,13 +34,103 @@ A continuación se describen todos los pasos necesarias para la integración con
 
 Una vez abierto Rundeck abriremos el projecto **SATEC**.
 
-![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-main.png)
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-main.png)
 
-
+### 0.1: revisión de trabajos configurados en rundeck
 
 Al abrirlo en la barra de al izquierda veremos las diferentes opciones que nos ofrece. En particular la sección de `jobs`, donde se definen y ejecutan los trabajos de rundeck.
 
-![snippet](https://github.com/satecdev/nre-curriculum/blob/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-jobs.png)
+Presionamos en jobs para ver los que están definidos.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-jobs.png)
+
+Todos los trabajos definidos están numerados:
+* del `000` al `003`: trabajos individuales que se corresponden con la preconfiguración de `ios1`.
+* del `004` al `012`: trabajos individuales que se corresponden con la configuración y comprobaciones necesarias para la integración de `ios1` contra `ios2`.
+* del `013` al `021`: trabajos individuales que se corresponden con la configuración y comprobaciones necesarias para la integración de `ios1` contra `vqfx3`.
+* del `022` al `025`: trabbajos individuales para al verfiicación de la correcta integración de `ios1`.
+* `100`: trabajo compuesto que englobal todos los trabajos del `013` al `021`.
+
+Si presionamos en el botón que aparece en el extremo derecho de cada tarea y seleccionamos editar podemos ver la apariencia que tiene un trabajo.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-edit-job.png)
+
+Dentro de la configuración del trabajo hay varias pestañas:
+* Details: nombre y descripción del trabajo.
+* workflow: pasos que se ejecutan en cada trabajo.
+* Nodes: en qué equipos se ejecuta el trabajo.
+* Schedule: cuándo se ejecuta el trabajo.
+* Notifications: a quién se notifica el resultado de la ejecución.
+* Other: otros parámetros de ejecución.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-edit-job-details.png)
+
+En la pestaña `workflow` vemos los pasos de los que consta el trabajo.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-edit-job-workflow.png)
+
+En este caso el trabajo consta de dos pasos o steps:
+1. un primero que ejecuta multiples comandos en el equipo y realiza capturas de la salida.
+2. un segundo que verifica el resultado de la ejecución.
+
+Si presionamos en el primer paso nos aparecerán los detalles del mismo. En nuestro caso los comandos que se van a enviar al equipo para su ejecución.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-edit-job-step.png)
+
+### Ejecución de trabajos del `000` al `003`
+
+Después de revisar los trabajos volvemos al apartado `jobs` para su ejecución.
+
+Puesto que la preconfiguración se corresponde con los trabajos del `000` al `004` los ejecutaremos secuencialmente.
+
+Para ejecutar un trabajo se presiona el botón de "play" a la izquierda del mismo.
+
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-run-job-play.png)
+
+
+Aparecerá una segunda ventana con las opciones de ejecución. Por defecto al ejecutar un trabajo el navegador te lleva a la pestaña de `activity` para ver el resultado de la ejecueción. Si desplegamos el botón `Run Job Now` veremos que permite:
+* activar los debugs de ejecución del trabajo (desactivados por defecto).
+* ir a ver el resultado de la ejecución (activado por defecto).
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-run-job-run-now.png)
+
+Durante la ejecución se puede verificar el estado de cada uno de los `steps` que se están ejecutando. Una vez finalizada la ejecución muestra el resumen de la ejecución.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-activity-result-summary.png)
+
+Si pinchamos en el trabajo nos despliega el resultado de ejecución de cada paso individual:
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-activity-result-step-summary.png)
+
+Si pinchamos en cualquiera de los steps vemos los logs de ejecución del mismo.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-activity-result-step.png)
+
+
+Ejecutamos todos los trabajo del `000` al `003` siguiendo el procedimiento anterior.
+
+### Ejecución de trabajos del `004` al `012`
+
+Estos trabajos los ejecutamos también de uno en uno y de forma correlativa.
+
+Podemos ir revisando los logs de ejecución para verificar que efectivamente el resultado de todas las pruebas es correcto.
+
+
+### Ejecución del trabajo `100`
+
+El trabajo `100` es un trabajo especial. Los pasos que lo componen son a su vez otros trabajo, en particular los que van del `013` al `021`.
+
+Rundeck permite de esta forma una gran modularidad en la composición de las tareas. No sólo permite agrupar tareas de esta formas, sino flujos de control que indiquen qué debe realizarse en caso de fallar una paso dentro de una tarea.
+
+Este tipo de tareas más complejas, junto con la adición de plantillas y parámetros, son lo que permite facilitar la automatización de tareas.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-activity-100-result.png)
+
+
+### Verificaciones finales: `022` a `024`
+
+Para finalizar ejecutamos de forma individual los trabajos que verifican en `ios1` que éste ha sido integrado correctamente.
 
 
 
@@ -52,7 +142,7 @@ Esta configuración se realiza habitualmente en base a plantillas.
 
 El equipo que se va a insertar en red es `ios1`.
 
-![lesson1](https://cdn1.imggmi.com/uploads/2019/9/19/7b56c268ea304425b62e779e40d2345f-full.png)
+![lesson1](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-diagram)
 
 
 Primero se comprueba la configuración inicial del equipo:

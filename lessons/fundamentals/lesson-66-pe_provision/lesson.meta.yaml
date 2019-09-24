@@ -1,8 +1,8 @@
 ---
-lessonName: Taller automatizacion con Rundeck bis
+lessonName: "Jueves Tecnológico: Taller práctico de automatización de redes con Rundeck"
 lessonId: 66
 category: fundamentals
-lessonDiagram: https://cdn1.imggmi.com/uploads/2019/9/19/53d489bb95e6b5b2acb9b8f039220a5b-full.png
+lessonDiagram: https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/lessondiagram.png
 tier: prod
 prereqs:
   - 14  # YAML
