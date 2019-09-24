@@ -127,6 +127,107 @@ jobs:
       regex_negate: true
       regex_expr: .*percent is 0 .*
       vendor: ios
+
+
+    - name: configure OSPF in ios2 - ios1 link
+      filter: ios2
+      commandsList: |
+        conf t
+        interface Ethernet1/0
+         ip ospf network point-to-point
+         ip ospf 1 area 0
+        !
+        router ospf 1
+         no passive-interface Ethernet1/0
+        !
+        end
+        wr     
+      regex: true
+      regex_negate: true
+      regex_expr: .*(% In).*
+      vendor: ios
+
+
+
+    - name: Verify OSPF in ios2 - ios1 link
+      filter: ios2
+      commandsList: |
+        show ip ospf neighbor
+        show ip route 10.1.0.1   
+      regex: true
+      regex_negate: False
+      regex_expr: .*10\.1\.0\.1 +0 +(FULL).*10.1.12.1.*from 10.1.0.1.*
+      vendor: ios
+
+
+
+    - name: configure LDP in ios2 - ios1 link
+      filter: ios2
+      commandsList: |
+        conf t
+        interface Ethernet1/0
+         mpls ip
+        !
+        end
+        wr  
+      regex: true
+      regex_negate: true
+      regex_expr: .*(% In).*
+      vendor: ios
+
+
+
+    - name: Verify LDP in ios2 - ios1 link
+      filter: ios2
+      commandsList: |
+        show mpls ldp neighbor  
+      regex: true
+      regex_negate: False
+      regex_expr: ".*Peer LDP Ident: (10.1.0.1).*"
+      vendor: ios
+
+
+    - name: configure BGP session in ios2 against ios1
+      filter: ios2
+      commandsList: |
+        conf t
+
+        router bgp 65001
+        neighbor 10.1.0.1 peer-group RR-CLIENT
+        !
+        address-family ipv4
+         neighbor 10.1.0.1 activate
+        exit-address-family
+        !
+        address-family vpnv4
+         neighbor 10.1.0.1 activate
+        exit-address-family
+        !        
+        end
+        wr
+      regex: true
+      regex_negate: true
+      regex_expr: .*(% In).*
+      vendor: ios
+
+
+
+    - name: Verify ios2 - ios1 BGP session
+      filter: ios2
+      commandsList: |
+        show bgp all
+        show ip bgp neighbor 10.1.0.1
+        show bgp all summary | i 10.1.0.1
+      regex: true
+      regex_negate: False
+      regex_expr: ".*BGP state = (Established).*"
+      vendor: ios
+
+
+
+
+
+
     - name: Verify vqfx3 current interface configuration
       filter: vqfx3
       commandsList: |
@@ -213,36 +314,6 @@ jobs:
       vendor: juniper
 
 
-    - name: configure OSPF in ios2 - ios1 link
-      filter: ios2
-      commandsList: |
-        conf t
-        interface Ethernet1/0
-         ip ospf network point-to-point
-         ip ospf 1 area 0
-        !
-        router ospf 1
-         no passive-interface Ethernet1/0
-        !
-        end
-        wr     
-      regex: true
-      regex_negate: true
-      regex_expr: .*(% In).*
-      vendor: ios
-
-
-
-    - name: Verify OSPF in ios2 - ios1 link
-      filter: ios2
-      commandsList: |
-        show ip ospf neighbor
-        show ip route 10.1.0.1   
-      regex: true
-      regex_negate: False
-      regex_expr: .*10\.1\.0\.1 +0 +(FULL).*10.1.12.1.*from 10.1.0.1.*
-      vendor: ios
-
     - name: Configure OSPF vqfx interface 
       filter: vqfx3
       commandsList: |
@@ -265,33 +336,6 @@ jobs:
       regex_expr: .*(Full +10.1.0.1).*via em3.0.*
       vendor: juniper
 
-
-
-
-    - name: configure LDP in ios2 - ios1 link
-      filter: ios2
-      commandsList: |
-        conf t
-        interface Ethernet1/0
-         mpls ip
-        !
-        end
-        wr  
-      regex: true
-      regex_negate: true
-      regex_expr: .*(% In).*
-      vendor: ios
-
-
-
-    - name: Verify LDP in ios2 - ios1 link
-      filter: ios2
-      commandsList: |
-        show mpls ldp neighbor  
-      regex: true
-      regex_negate: False
-      regex_expr: ".*Peer LDP Ident: (10.1.0.1).*"
-      vendor: ios
 
 
 
@@ -318,43 +362,6 @@ jobs:
       regex_negate: false
       regex_expr: .*(10.1.0.1 +Operational).*
       vendor: juniper
-
-
-    - name: configure BGP session in ios2 against ios1
-      filter: ios2
-      commandsList: |
-        conf t
-
-        router bgp 65001
-        neighbor 10.1.0.1 peer-group RR-CLIENT
-        !
-        address-family ipv4
-         neighbor 10.1.0.1 activate
-        exit-address-family
-        !
-        address-family vpnv4
-         neighbor 10.1.0.1 activate
-        exit-address-family
-        !        
-        end
-        wr
-      regex: true
-      regex_negate: true
-      regex_expr: .*(% In).*
-      vendor: ios
-
-
-
-    - name: Verify ios2 - ios1 BGP session
-      filter: ios2
-      commandsList: |
-        show bgp all
-        show ip bgp neighbor 10.1.0.1
-        show bgp all summary | i 10.1.0.1
-      regex: true
-      regex_negate: False
-      regex_expr: ".*BGP state = (Established).*"
-      vendor: ios
 
 
 
