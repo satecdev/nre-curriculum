@@ -1252,3 +1252,81 @@
     keepgoing: true
     strategy: node-first
   uuid: 00000000-0000-0000-0000-000000000025
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000100
+  loglevel: INFO
+  name: '[100] VQFX3 complete configuration job'
+  nodeFilterEditable: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        group: ''
+        name: '[013] Verify vqfx3 current interface configuration'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000013
+    - jobref:
+        group: ''
+        name: '[014] Configure vqfx interface'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000014
+    - jobref:
+        group: ''
+        name: '[015] Verify ping connectivity between vqfx3 and ios1'
+        nodeStep: 'true'
+        uuid: 00000000-0000-0000-0000-000000000015
+    - jobref:
+        group: ''
+        name: '[016] Configure OSPF vqfx interface'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000016
+    - configuration:
+        command: sleep 10
+      nodeStep: true
+      type: localexec
+    - jobref:
+        group: ''
+        name: '[017] Verify OSPF in vqfx3 - ios1 link'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000017
+    - jobref:
+        group: ''
+        name: '[018] Configure LDP vqfx interface'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000018
+    - configuration:
+        command: sleep 10
+      nodeStep: true
+      type: localexec
+    - jobref:
+        group: ''
+        name: '[019] Verify LDP in vqfx3 - ios1 link'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000019
+    - jobref:
+        group: ''
+        name: '[020] configure BGP session in vqfx3 against ios1'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000020
+    - configuration:
+        command: sleep 15
+      nodeStep: true
+      type: localexec
+    - jobref:
+        group: ''
+        name: '[021] Verify vqfx3 - ios1 BGP session'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000021
+    keepgoing: false
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000100

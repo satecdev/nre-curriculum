@@ -4,6 +4,8 @@
 rm -rf stage1/
 rundeck_jobs -i jobs_lesson1_multiple.yml  -d stage1 -u 00000000-0000-0000-0000-000000000000 -l debug
 
+cat jobs_stage1_vqfx3_composite.yml >> stage1/rundeck.jobs.yml
+
 cp stage1/rundeck.jobs.yml ../stage1/configs/
 
 # stage 2 jobs
