@@ -16,7 +16,7 @@ En cada paso es necesario ir comprobando que se ha cumplimentado correctamente.
 > Herramientas: Abrir rundeck en una nueva ventana, para ello ejecutar el siguiente snippet y acceder a rundeck
 
 ```
-echo http://antidote-local:30001/$SYRINGE_FULL_REF
+echo https://labs.jt.satec.es/$SYRINGE_FULL_REF
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck-cli', this)">Run this snippet</button>
 
