@@ -1,0 +1,31 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000003
+  loglevel: INFO
+  name: '[003] L3VPN CONFIGURATION'
+  nodeFilterEditable: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        group: ''
+        name: '[000]  Configuración en ios1 de la L3VPN'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000000
+    - jobref:
+        group: ''
+        name: '[001]  Configuración en ios2 de la L3VPN'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000001
+    - jobref:
+        group: ''
+        name: '[002]  Configuración en ios4 de la L3VPN'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000002
+    keepgoing: false
+    strategy: parallel
+  uuid: 00000000-0000-0000-0000-000000000003
