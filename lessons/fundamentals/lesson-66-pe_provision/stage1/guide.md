@@ -18,7 +18,7 @@ En cada paso es necesario ir comprobando que se ha cumplimentado correctamente.
 ```
 echo https://labs.jt.satec.es/$SYRINGE_FULL_REF
 ```
-<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck-cli', this)">Run this snippet</button>
+<button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('rundeck', this)">Run this snippet</button>
 
 A continuación se describen todos los pasos necesarioas para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
