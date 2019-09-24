@@ -27,6 +27,12 @@ rundeck_jobs -i jobs_stage2_verifications_ios4_vqfx3.yml -d stage2 -u 00000000-0
 
 rundeck_jobs -i jobs_stage2_verifications_connectivity.yml -d stage2 -u 00000000-0000-0000-0000-000000000000 -o 400 -l debug -s "end to end connectivity tests"
 
+cp jobs_stage2-003.yml stage2/
+cp jobs_stage2-100.yml stage2/
+cp jobs_stage2-200.yml stage2/
+cp jobs_stage2-300.yml stage2/
+
+
 rm stage2/rundeck.jobs.yml
 for f in stage2/*.yml
 do

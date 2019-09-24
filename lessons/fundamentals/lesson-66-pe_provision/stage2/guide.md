@@ -125,11 +125,45 @@ ios4:
 
 Con estos datos se pretende construir la topología adjunta:
 
-![lesson2](https://cdn1.imggmi.com/uploads/2019/9/19/307d0c24e2e61af815907e3c0348d7ea-full.png)
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-diagram.png)
+
+
+## Ejecución en rundeck
+
+Al igual que en la lección anterior continuaremos utilizando rundeck para la configuración, aunque más abajo se pueden utilizar *snippets* de configuración para realizar la misma configuración.
+
+Refrescamos la ventana de rundeck y comprobamos los nuevos trabajos que nos aparecen:
+
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-jobs.png)
+
+En este caso tenemos los siguientes:
+* `000` - `002`: Trabajos de configuración de la vrf L3VPN en `ios1`, `ios2` e `ios4`.
+* `003`: trabajo compuesto que ejecuta los tres trabajos anteriores.
+* `101` - `103`: Trabajos que comprueba que la conectividad pe-ce y el routing configurado en `ios1` es correcto.
+* `100`: trabajo que aglutina las comprobaciones de `ios1`
+* `201` - `202`: Trabajos que comprueba que la conectividad pe-ce y el routing configurado en `ios2` es correcto.
+* `200`: trabajo que aglutina las comprobaciones de `ios2`
+* `301` - `303`: Trabajos que comprueba que la conectividad pe-ce y el routing configurado en `ios4` es correcto.
+* `300`: trabajo que aglutina las comprobaciones de `ios4`
+* `400`: trabajo que contine pings entre todos los sites y que se ejecuta por igual en los tres equipos ios que forman parte de la L3VPN.
+
+ El trabajo `400` introduce el concepto de un mismo trabajo que se ejecute en varios equipos a la vez.
+
+ Para poder realizar esto es necesario definirlo en la pestaña `nodes` al editar el trabajo.
+
+ En la siguiente imagen se ve la configuración de esta tarea en particular.
+
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-jobs-400.png)
+
+En este punto podemos ejecutar los trabajos individuales de forma correlativa, o ejecutar los trabajos compuestos.
+
+
+## Paso 1: Configuración en ios1
 
 A continuación se describen todos los pasos necesarioas para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
-## Paso 1: Configuración en ios1
 
 Primero introducimos la configuración en este equipo:
 

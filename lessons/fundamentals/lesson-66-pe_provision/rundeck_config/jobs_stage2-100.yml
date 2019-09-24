@@ -1,0 +1,31 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000100
+  loglevel: INFO
+  name: '[100] IOS1 VERIFICATIONS'
+  nodeFilterEditable: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        group: ''
+        name: '[101] ios1: l3vpn configuration verification at ios1'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000101
+    - jobref:
+        group: ''
+        name: '[102] ios1: l3vpn configuration verification at ios2-rr'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000102
+    - jobref:
+        group: ''
+        name: '[103] ios1: l3vpn configuration verification at vqfx3-rr'
+        nodeStep: 'true'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000103
+    keepgoing: false
+    strategy: parallel
+  uuid: 00000000-0000-0000-0000-000000000100
