@@ -269,9 +269,6 @@
                 </ospf>
                 <ldp>
                     <interface>
-                        <name>em3.0</name>
-                    </interface>
-                    <interface>
                         <name>em4.0</name>
                     </interface>
                 </ldp>

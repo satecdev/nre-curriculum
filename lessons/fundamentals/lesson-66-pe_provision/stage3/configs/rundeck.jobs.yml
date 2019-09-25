@@ -8,7 +8,7 @@
   nodefilters:
     dispatch:
       excludePrecedence: true
-      keepgoing: false
+      keepgoing: true
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
@@ -499,7 +499,7 @@
   nodefilters:
     dispatch:
       excludePrecedence: true
-      keepgoing: false
+      keepgoing: true
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
@@ -990,7 +990,7 @@
   nodefilters:
     dispatch:
       excludePrecedence: true
-      keepgoing: false
+      keepgoing: true
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
