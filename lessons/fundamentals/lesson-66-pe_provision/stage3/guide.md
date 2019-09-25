@@ -273,5 +273,5 @@ Una vez levantado podemos volver a repetir las pruebas. Se puede ejecutar desde 
 
 Finalmente, vemos que todo funciona correctamente:
 
-![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-sucess.png)
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-success.png)
 

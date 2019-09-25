@@ -161,7 +161,7 @@ En este punto podemos ejecutar los trabajos individuales de forma correlativa, o
 
 La ejecución del trabajo 400 nos mostrará que se están ejecutacando los mismos pasos en los tres equipos:
 
-![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-jobs-400-activity-detail.png)
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-job-400-activity-detail.png)
 
 
 
