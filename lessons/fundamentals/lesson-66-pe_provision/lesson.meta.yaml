@@ -65,7 +65,7 @@ endpoints:
   additionalPorts: [22]
 
 - name: rundeck
-  image: khornem/rdkblabla
+  image: satecdev/rundeck
   configurationType: ansible
   presentations:
   - name: cli
