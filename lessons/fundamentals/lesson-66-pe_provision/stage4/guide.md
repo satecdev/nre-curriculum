@@ -5,6 +5,11 @@
 Se ejecutan las mismas pruebas que en el ticket anterior.
 
 
+El resultado final tiene que ser similar a éste:
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-job-400-fail.png)
+
+
 El resultado de la ejecución del trabajo se muestra a continuación de forma tabulada.
 
 ![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-tshoot.png)
@@ -37,6 +42,9 @@ show run vrf L3VPN
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-snippet-check.png)
+
+
 Corregimos el route-target y repetimos las pruebas (para acelerar el update del prefijo reiniciamos bgp):
 
 ```
@@ -63,6 +71,9 @@ show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-snippet-correct.png)
 
 
-Una vez levantado podemos volver a repetir las pruebas.
+Una vez levantado podemos volver a repetir las pruebas, que ahora serán exitosas:
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-job-400-success.png)

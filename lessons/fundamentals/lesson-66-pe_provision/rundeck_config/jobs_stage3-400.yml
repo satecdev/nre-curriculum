@@ -23,6 +23,6 @@
         name: '[403] IOS4:_TROUBLESHOOTING_TESTS'
         useName: 'true'
         uuid: 00000000-0000-0000-0000-000000000403
-    keepgoing: false
-    strategy: node-first
+    keepgoing: true
+    strategy: parallel
   uuid: 00000000-0000-0000-0000-000000000400

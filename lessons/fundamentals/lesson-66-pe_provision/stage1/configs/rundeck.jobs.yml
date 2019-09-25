@@ -897,17 +897,15 @@
   sequence:
     commands:
     - configuration:
-        commandsList: 'configure
-
-          set interfaces em3 unit 0 family mpls
-
-          set protocols ldp interface em3.0
-
-          show | compare
-
-          commit and-quit
-
-          '
+        commandsList: "configure\nset interfaces em3 unit 0 family mpls\nset protocols\
+          \ ldp interface em3.0\nset protocols mpls interface em3.0\nshow | compare\n\
+          commit and-quit\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n\
+          [CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n[CTRL+D]\n \n"
       description: '[018][EXEC] Configure LDP vqfx interface'
       nodeStep: true
       plugins:
@@ -1041,7 +1039,7 @@
   sequence:
     commands:
     - configuration:
-        commandsList: 'show bgp summary | no-more
+        commandsList: 'show bgp summary | match 10.1.0.1 | no-more
 
           '
       description: '[021][EXEC] Verify vqfx3 - ios1 BGP session'
@@ -1052,7 +1050,7 @@
             hideOutput: false
             logData: true
             name: result
-            regex: .*10.1.0.1 +65001 +\d+ +\d+ +\d+ +\d+ +\d+:\d+:\d+ +(Establ).*
+            regex: .*10.1.0.1 +65001 .* +(Establ).*
           type: key-value-data-multilines
       type: ssh-node-step-executor
     - configuration:
