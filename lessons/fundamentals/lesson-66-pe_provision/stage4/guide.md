@@ -2,12 +2,12 @@
 
 ## Ejecución de pruebas en rundeck
 
-Como primer paso abrimos rundeck y ejecutamos las pruebas XXX
+Se ejecutan las mismas pruebas que en el ticket anterior.
 
 
-Tras la ejecución de la prueba veamos los resultados de forma tabulada:
+El resultado de la ejecución del trabajo se muestra a continuación de forma tabulada.
 
-![stage4](https://cdn1.imggmi.com/uploads/2019/9/19/0b6cd74d901af28a7ba1532637fac7f5-full.png)
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage4-tshoot.png)
 
 
 ## Análisis de los resultados

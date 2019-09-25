@@ -205,12 +205,24 @@ show bgp vpnv4 unicast vrf L3VPN 30.0.0.4
 
 ## Ticket 01: fallo de conectividad con del site 1 con el site 4
 
-Como primer paso abrimos rundeck y ejecutamos el trabajo **INSERTAR NOMBRE DE TRABAJO**
+En este caso tendremos 4 trabajos diferentes en rundeck:
+* Trabajos `401` a `403` contienen los comandos y la verificaciones para cada equipo definidas en el apartado anterior.
+* Trabajo `400`: ejecuta los tres trabajos anteriores de forma paralela
 
-El resultado de la ejecución del trabajo se muestra a contiuación de forma tabulada:
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-jobs.png)
 
-![stage3](https://cdn1.imggmi.com/uploads/2019/9/19/21304f46e267304cf77bce0e58db52df-full.png)
 
+Como primer paso abrimos rundeck y ejecutamos o bien el trabajo `400` o los otros tres de forma individual en paralelo. Tarda aproximadamente tres minutos en ejecutarse cada uno de los trabajos.
+
+El resultado de la ejecución del trabajo se muestra a continuación de forma tabulada.
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-tshoot.png)
+
+Se puede verificar en la pestaña `activity` y ver qué paso particular ha fallado para cada job. El log de la ejecución de la prueba que ha fallado es siempre el paso anterior al que ha fallado, ya que cada verificación se divide en dos:
+* [XXX][EXEC]: ejecución del comando de verificación.
+* [XXX][TEST]: verificación de la ejecución del comando anterior.
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-result.png)
 
 Vemos que con la primera batería de prueba bastaría para comprobar que el problema reside en que la sesión BGP no levanta en ios4, aún teniendo ping local.
 
@@ -221,6 +233,7 @@ term len 0
 term mon
 enable
 satec
+show run interface ethernet1/2
 conf t
 int ethernet1/2
  ip address 30.1.4.1 255.255.255.0

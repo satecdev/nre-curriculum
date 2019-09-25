@@ -50,6 +50,8 @@ rundeck_jobs -i jobs_tests_ios2.yml -d stage3 -u 00000000-0000-0000-0000-0000000
 rundeck_jobs -i jobs_tests_ios4.yml -d stage3 -u 00000000-0000-0000-0000-000000000000 -o 403 -l debug -s "IOS4:_TROUBLESHOOTING_TESTS"
 rm stage3/rundeck.jobs.yml
 
+cp jobs_stage3-400.yml stage3/
+
 for f in stage3/*.yml
 do
  cat $f >> stage3/rundeck.jobs.yml

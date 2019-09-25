@@ -1471,3 +1471,31 @@
     keepgoing: true
     strategy: node-first
   uuid: 00000000-0000-0000-0000-000000000403
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  id: 00000000-0000-0000-0000-000000000400
+  loglevel: INFO
+  name: '[400] TSHOOT L3VPN'
+  nodeFilterEditable: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        group: ''
+        name: '[401] IOS1:_TROUBLESHOOTING_TESTS'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000401
+    - jobref:
+        group: ''
+        name: '[402] IOS2:_TROUBLESHOOTING_TESTS'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000402
+    - jobref:
+        group: ''
+        name: '[403] IOS4:_TROUBLESHOOTING_TESTS'
+        useName: 'true'
+        uuid: 00000000-0000-0000-0000-000000000403
+    keepgoing: false
+    strategy: node-first
+  uuid: 00000000-0000-0000-0000-000000000400

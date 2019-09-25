@@ -7,10 +7,11 @@ Como primer paso abrimos rundeck y ejecutamos la batería de pruebas.
 
 ## Análisis de los resultados
 
-Tras la ejecución de la prueba veamos los resultados de forma tabulada:
+Se ejecutan las mismas pruebas que en el ticket anterior.
 
-![stage5](https://cdn1.imggmi.com/uploads/2019/9/19/eb9562072d8d4bdb610a4bdcf6508077-full.png)
+El resultado de la ejecución del trabajo se muestra a continuación de forma tabulada.
 
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage5-tshoot.png)
 
 
 En este caso el plano de control es correcto extremo a extremo y hay conectividad en la tabla global.
