@@ -214,6 +214,15 @@ En este caso tendremos 4 trabajos diferentes en rundeck:
 
 Como primer paso abrimos rundeck y ejecutamos o bien el trabajo `400` o los otros tres de forma individual en paralelo. Tarda aproximadamente tres minutos en ejecutarse cada uno de los trabajos.
 
+Si ejecutamos el trabajo 400 podemos ver en qué paso está la ejecución de cada trabajo:
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-activity.png)
+
+El resultado final tiene que ser similar a éste:
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-fail.png)
+
+
+
 El resultado de la ejecución del trabajo se muestra a continuación de forma tabulada.
 
 ![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-tshoot.png)
@@ -222,8 +231,12 @@ Se puede verificar en la pestaña `activity` y ver qué paso particular ha falla
 * [XXX][EXEC]: ejecución del comando de verificación.
 * [XXX][TEST]: verificación de la ejecución del comando anterior.
 
-![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-result.png)
+A continuación se ven dos ejemplos:
+* Verificación de ping que falla:
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-result-failed.png)
 
+* Verificación de ping que funciona:
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-result-success.png)
 Vemos que con la primera batería de prueba bastaría para comprobar que el problema reside en que la sesión BGP no levanta en ios4, aún teniendo ping local.
 
 Si verificamos la configuración de al interfaz `Ethernet1/2` de `ios4` se puede ver que la dirección IP asignada no es consistente con el diagrama. Corregimos la configuración:
@@ -243,7 +256,7 @@ wr
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-Esperamos a que levante la sesión BGP:
+Esperamos a que levante la sesión BGP ejecutando el siguiente snipppet hasta que veamos la sesión levantada.
 
 ```
 show bgp vpnv4 unicast vrf L3VPN summary
@@ -251,4 +264,14 @@ show bgp vpnv4 unicast vrf L3VPN summary
 ```
 <button type="button" class="btn btn-primary btn-sm" onclick="runSnippetInTab('ios4', this)">Run this snippet</button>
 
-Una vez levantado podemos volver a repetir las pruebas.
+Una vez levantado podemos volver a repetir las pruebas. Se puede ejecutar desde la sección `jobs` o también se puede pedir a rundeck que repita un trabajo que ha fallado. Para hacer esto:
+1. vamos a la pestaña activity.
+2. señalamos el trabajo que ha fallado.
+3. Elegimos la opción `Run again`
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-retry.png)
+
+Finalmente, vemos que todo funciona correctamente:
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage3-job-400-sucess.png)
+

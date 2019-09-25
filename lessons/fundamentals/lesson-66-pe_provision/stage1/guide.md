@@ -37,19 +37,17 @@ El usuario y contraseña es `admin/admin`.
 
 A continuación se describen todos los pasos necesarias para la integración con su configuración asociada. Esta configuración se puede ejecutar desde esta guía, pero el objetivo es realizarla con rundeck. Por tanto estos *snippets* quedan como referencia.
 
-## Parte 0: Rundeck
+# Configuración utilizando rundeck
+## Parte 0: Acceso al proyecto SATEC.
 
 Una vez abierto Rundeck abriremos el projecto **SATEC**.
 
 ![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-main.png)
 
-### 0.1: revisión de trabajos configurados en rundeck
+## Parte 1: revisión de trabajos configurados en rundeck
 
-Al abrirlo en la barra de al izquierda veremos las diferentes opciones que nos ofrece. En particular la sección de `jobs`, donde se definen y ejecutan los trabajos de rundeck.
+Al abrirlo en la barra de al izquierda veremos las diferentes opciones que nos ofrece. En particular la sección de `jobs`, a la que nos ha dirigido rundeck.
 
-Presionamos en jobs para ver los que están definidos.
-
-![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-jobs.png)
 
 Todos los trabajos definidos están numerados:
 * del `000` al `003`: trabajos individuales que se corresponden con la preconfiguración de `ios1`.
@@ -57,6 +55,8 @@ Todos los trabajos definidos están numerados:
 * del `013` al `021`: trabajos individuales que se corresponden con la configuración y comprobaciones necesarias para la integración de `ios1` contra `vqfx3`.
 * del `022` al `025`: trabbajos individuales para al verfiicación de la correcta integración de `ios1`.
 * `100`: trabajo compuesto que englobal todos los trabajos del `013` al `021`.
+
+![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-jobs.png)
 
 Si presionamos en el botón que aparece en el extremo derecho de cada tarea y seleccionamos editar podemos ver la apariencia que tiene un trabajo.
 
@@ -84,7 +84,7 @@ Si presionamos en el primer paso nos aparecerán los detalles del mismo. En nues
 
 ![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-edit-job-step.png)
 
-### Ejecución de trabajos del `000` al `003`
+## Parte 2: Ejecución de trabajos del `000` al `003`
 
 Después de revisar los trabajos volvemos al apartado `jobs` para su ejecución.
 
@@ -117,14 +117,14 @@ Si pinchamos en cualquiera de los steps vemos los logs de ejecución del mismo.
 
 Ejecutamos todos los trabajo del `000` al `003` siguiendo el procedimiento anterior.
 
-### Ejecución de trabajos del `004` al `012`
+## Parte 3: Ejecución de trabajos del `004` al `012`
 
 Estos trabajos los ejecutamos también de uno en uno y de forma correlativa.
 
 Podemos ir revisando los logs de ejecución para verificar que efectivamente el resultado de todas las pruebas es correcto.
 
 
-### Ejecución del trabajo `100`
+## Parte 4: Ejecución del trabajo `100`
 
 El trabajo `100` es un trabajo especial. Los pasos que lo componen son a su vez otros trabajo, en particular los que van del `013` al `021`.
 
@@ -135,12 +135,18 @@ Este tipo de tareas más complejas, junto con la adición de plantillas y parám
 ![snippet](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage1-rundeck-activity-100-result.png)
 
 
-### Verificaciones finales: `022` a `024`
+## Parte 5: Verificaciones finales: `022` a `024`
 
 Para finalizar ejecutamos de forma individual los trabajos que verifican en `ios1` que éste ha sido integrado correctamente.
 
+## Cambio al siguiente `stage`
+
+Se puede cambiar de lección de dos formas:
+* Al final de la guía hay un enlace que conduce a la siguiente `stage`.
+* En la parte superior izquierda de la pantalla hay un desplegable que te permite seleccionar cualquier `stage`.
 
 
+# Configuración via snippets de NRE
 ## Parte 1: Preconfiguración completa del nuevo equipo
 
 En despliegues grandes es habitual enviar todos los equipos preconfigurados, de forma que durante la integración del nuevo equipo sólo es necesario configurar en extremos remotos.

@@ -345,8 +345,62 @@ jobs:
         configure
         set interfaces em3 unit 0 family mpls
         set protocols ldp interface em3.0
+        set protocols mpls interface em3.0
         show | compare
         commit and-quit
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+        [CTRL+D]
+         
       regex: true
       regex_negate: true
       regex_expr: .*(error)*
@@ -380,10 +434,10 @@ jobs:
     - name: Verify vqfx3 - ios1 BGP session
       filter: vqfx3
       commandsList: |
-        show bgp summary | no-more
+        show bgp summary | match 10.1.0.1 | no-more
       regex: true
       regex_negate: False
-      regex_expr: .*10.1.0.1 +65001 +\d+ +\d+ +\d+ +\d+ +\d+:\d+:\d+ +(Establ).*
+      regex_expr: .*10.1.0.1 +65001 .* +(Establ).*
       vendor: juniper
 
 

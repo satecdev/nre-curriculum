@@ -159,6 +159,11 @@ En este caso tenemos los siguientes:
 
 En este punto podemos ejecutar los trabajos individuales de forma correlativa, o ejecutar los trabajos compuestos.
 
+La ejecución del trabajo 400 nos mostrará que se están ejecutacando los mismos pasos en los tres equipos:
+
+![stage2](https://raw.githubusercontent.com/satecdev/nre-curriculum/satec-lesson-66-pe_provision/lessons/fundamentals/lesson-66-pe_provision/resources/images/stage2-jobs-400-activity-detail.png)
+
+
 
 ## Paso 1: Configuración en ios1
 
