@@ -243,9 +243,9 @@ Si verificamos la configuración de al interfaz `Ethernet1/2` de `ios4` se puede
 
 ```
 term len 0
-term mon
 enable
 satec
+term mon
 show run interface ethernet1/2
 conf t
 int ethernet1/2
